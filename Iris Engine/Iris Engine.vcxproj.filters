@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{1cd4c63a-0ab3-45ce-9876-98f09e40ac9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cache">
+      <UniqueIdentifier>{a9dd38fc-0ea9-4668-b84f-bd7ba7866a98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lua">
+      <UniqueIdentifier>{5f83161b-55ba-46ef-a676-07f3844ef7e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{b40581ea-bfe7-4c11-af54-d6191a145d20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{a210e4b6-243c-406b-9c1f-260c14858224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lua\WaitCommands">
+      <UniqueIdentifier>{49434f32-b456-4f07-aa03-6492e58bb520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Components">
+      <UniqueIdentifier>{09404989-13b0-4572-9855-0e30e26bf880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render">
+      <UniqueIdentifier>{b54f0262-c1f1-4643-b1ce-8b39b273b557}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render\Shaders">
+      <UniqueIdentifier>{427c5cb5-d99c-4f06-8304-0ebac673bae4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Interpolators">
+      <UniqueIdentifier>{07ba53e5-54e8-4f87-b141-4cab01b97262}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Config.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInput.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="TextWindow.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageBoxLogger.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Iris.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Locator.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaCharacter.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaEnvironment.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset.cpp">
+      <Filter>Source Files\Cache</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files\Cache</Filter>
+    </ClCompile>
+    <ClCompile Include="LRUCache.cpp">
+      <Filter>Source Files\Cache</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaSprite.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaCharacterSprite.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitQueue.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitForText.cpp">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitForTimer.cpp">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="ClearScene.cpp">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitForTransition.cpp">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="FontComponent.cpp">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaButton.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonMenu.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitForChoice.cpp">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaQuestion.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Source Files\Cache</Filter>
+    </ClCompile>
+    <ClCompile Include="MixAudio.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="TransitionUtils.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLTexture.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLRenderer.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="GPURenderer.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="GPUTexture.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="GPUShaderProgram.cpp">
+      <Filter>Source Files\Render\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="TestShader.cpp">
+      <Filter>Source Files\Render\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="DissolveShader.cpp">
+      <Filter>Source Files\Render\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageDissolveShader.cpp">
+      <Filter>Source Files\Render\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Interpolator.cpp">
+      <Filter>Source Files\Objects\Interpolators</Filter>
+    </ClCompile>
+    <ClCompile Include="LinearInterpolator.cpp">
+      <Filter>Source Files\Objects\Interpolators</Filter>
+    </ClCompile>
+    <ClCompile Include="EaseInInterpolator.cpp">
+      <Filter>Source Files\Objects\Interpolators</Filter>
+    </ClCompile>
+    <ClCompile Include="EaseOutInterpolator.cpp">
+      <Filter>Source Files\Objects\Interpolators</Filter>
+    </ClCompile>
+    <ClCompile Include="EaseInOutInterpolator.cpp">
+      <Filter>Source Files\Objects\Interpolators</Filter>
+    </ClCompile>
+    <ClCompile Include="Cursor.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ClickableMap.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaClickableMap.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitForVisible.cpp">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitForFunction.cpp">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Vector.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="TextWindow.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageBoxLogger.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaEnvironment.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaCharacter.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Locator.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ILogger.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectManager.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInput.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ICache.h">
+      <Filter>Source Files\Cache</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Source Files\Cache</Filter>
+    </ClInclude>
+    <ClInclude Include="LRUCache.h">
+      <Filter>Source Files\Cache</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset.h">
+      <Filter>Source Files\Cache</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteObject.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaSprite.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterObject.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaCharacterSprite.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundObject.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitQueue.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitCommand.h">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitForText.h">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitForTimer.h">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="TransitionType.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="ClearScene.h">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitForTransition.h">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="IInput.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="FontComponent.h">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonObject.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaButton.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="IClickableObject.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonMenu.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitForChoice.h">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaQuestion.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="IAudio.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="MixAudio.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Source Files\Cache</Filter>
+    </ClInclude>
+    <ClInclude Include="TransitionUtils.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="FontProperties.h">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderer.h">
+      <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLRenderer.h">
+      <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="ITexture.h">
+      <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLTexture.h">
+      <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="GPURenderer.h">
+      <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="GPUTexture.h">
+      <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="GPUShaderProgram.h">
+      <Filter>Source Files\Render\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="TestShader.h">
+      <Filter>Source Files\Render\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="IShaderProgram.h">
+      <Filter>Source Files\Render\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="DissolveShader.h">
+      <Filter>Source Files\Render\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageDissolveShader.h">
+      <Filter>Source Files\Render\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interpolator.h">
+      <Filter>Source Files\Objects\Interpolators</Filter>
+    </ClInclude>
+    <ClInclude Include="LinearInterpolator.h">
+      <Filter>Source Files\Objects\Interpolators</Filter>
+    </ClInclude>
+    <ClInclude Include="EaseInInterpolator.h">
+      <Filter>Source Files\Objects\Interpolators</Filter>
+    </ClInclude>
+    <ClInclude Include="EaseOutInterpolator.h">
+      <Filter>Source Files\Objects\Interpolators</Filter>
+    </ClInclude>
+    <ClInclude Include="EaseInOutInterpolator.h">
+      <Filter>Source Files\Objects\Interpolators</Filter>
+    </ClInclude>
+    <ClInclude Include="InterpolatorType.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Cursor.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ClickableMap.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaClickableMap.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitForVisible.h">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="Alignment.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitForFunction.h">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Iris Engine.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

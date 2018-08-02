@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4D5F6F88-18B9-46C2-956F-2C509842197C}</ProjectGuid>
+    <RootNamespace>IrisEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Dev\sdl-gpu-master\build\lib\include;C:\Dev\SDL2_mixer-2.0.1\include;C:\Dev\SDL2_ttf-2.0.14\include;C:\Dev\sol;C:\Dev\SDL2-2.0.5\include;C:\Dev\SDL2_image-2.0.1\include;C:\Dev\eris-1.1.2-lua5.3\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\Dev\sdl-gpu-master\build\lib\include;C:\Dev\SDL2_mixer-2.0.1\include;C:\Dev\SDL2_ttf-2.0.14\include;C:\Dev\sol;C:\Dev\SDL2-2.0.5\include;C:\Dev\SDL2_image-2.0.1\include;C:\Dev\eris-1.1.2-lua5.3\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>C:\Dev\SDL2-2.0.5\lib\x86\SDL2.lib C:\Dev\SDL2-2.0.5\lib\x86\SDL2main.lib C:\Dev\eris-1.1.2-lua5.3\lib\lua5.3.0.lib C:\Dev\SDL2_image-2.0.1\lib\x86\SDL2_image.lib C:\Dev\SDL2_ttf-2.0.14\lib\x86\SDL2_ttf.lib C:\Dev\SDL2_mixer-2.0.1\lib\x86\SDL2_mixer.lib C:\Dev\sdl-gpu-master\build\lib\Release\SDL2_gpu.lib %(AdditionalOptions)</AdditionalOptions>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalOptions>C:\Dev\SDL2-2.0.5\lib\x86\SDL2.lib C:\Dev\SDL2-2.0.5\lib\x86\SDL2main.lib C:\Dev\eris-1.1.2-lua5.3\lib\lua5.3.0.lib C:\Dev\SDL2_image-2.0.1\lib\x86\SDL2_image.lib C:\Dev\SDL2_ttf-2.0.14\lib\x86\SDL2_ttf.lib C:\Dev\SDL2_mixer-2.0.1\lib\x86\SDL2_mixer.lib C:\Dev\sdl-gpu-master\build\lib\Release\SDL2_gpu.lib %(AdditionalOptions)</AdditionalOptions>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Asset.cpp" />
+    <ClCompile Include="BackgroundObject.cpp" />
+    <ClCompile Include="ButtonMenu.cpp" />
+    <ClCompile Include="ButtonObject.cpp" />
+    <ClCompile Include="CharacterObject.cpp" />
+    <ClCompile Include="ClearScene.cpp" />
+    <ClCompile Include="ClickableMap.cpp" />
+    <ClCompile Include="Config.cpp" />
+    <ClCompile Include="Cursor.cpp" />
+    <ClCompile Include="DissolveShader.cpp" />
+    <ClCompile Include="EaseInInterpolator.cpp" />
+    <ClCompile Include="EaseInOutInterpolator.cpp" />
+    <ClCompile Include="EaseOutInterpolator.cpp" />
+    <ClCompile Include="FontComponent.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameInput.cpp" />
+    <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="GPURenderer.cpp" />
+    <ClCompile Include="GPUShaderProgram.cpp" />
+    <ClCompile Include="GPUTexture.cpp" />
+    <ClCompile Include="ImageDissolveShader.cpp" />
+    <ClCompile Include="Interpolator.cpp" />
+    <ClCompile Include="Iris.cpp" />
+    <ClCompile Include="LinearInterpolator.cpp" />
+    <ClCompile Include="Locator.cpp" />
+    <ClCompile Include="LRUCache.cpp" />
+    <ClCompile Include="LuaButton.cpp" />
+    <ClCompile Include="LuaCharacter.cpp" />
+    <ClCompile Include="LuaCharacterSprite.cpp" />
+    <ClCompile Include="LuaClickableMap.cpp" />
+    <ClCompile Include="LuaEnvironment.cpp" />
+    <ClCompile Include="LuaQuestion.cpp" />
+    <ClCompile Include="LuaSprite.cpp" />
+    <ClCompile Include="MessageBoxLogger.cpp" />
+    <ClCompile Include="MixAudio.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="SDLRenderer.cpp" />
+    <ClCompile Include="SDLTexture.cpp" />
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SpriteObject.cpp" />
+    <ClCompile Include="TestShader.cpp" />
+    <ClCompile Include="TextWindow.cpp" />
+    <ClCompile Include="TransitionUtils.cpp" />
+    <ClCompile Include="WaitForChoice.cpp" />
+    <ClCompile Include="WaitForFunction.cpp" />
+    <ClCompile Include="WaitForText.cpp" />
+    <ClCompile Include="WaitForTimer.cpp" />
+    <ClCompile Include="WaitForTransition.cpp" />
+    <ClCompile Include="WaitForVisible.cpp" />
+    <ClCompile Include="WaitQueue.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BackgroundObject.h" />
+    <ClInclude Include="ButtonObject.h" />
+    <ClInclude Include="CharacterObject.h" />
+    <ClInclude Include="Alignment.h" />
+    <ClInclude Include="ButtonMenu.h" />
+    <ClInclude Include="ClearScene.h" />
+    <ClInclude Include="ClickableMap.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="Cursor.h" />
+    <ClInclude Include="DissolveShader.h" />
+    <ClInclude Include="EaseInInterpolator.h" />
+    <ClInclude Include="EaseInOutInterpolator.h" />
+    <ClInclude Include="EaseOutInterpolator.h" />
+    <ClInclude Include="FontComponent.h" />
+    <ClInclude Include="FontProperties.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameInput.h" />
+    <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="Asset.h" />
+    <ClInclude Include="GPURenderer.h" />
+    <ClInclude Include="GPUShaderProgram.h" />
+    <ClInclude Include="GPUTexture.h" />
+    <ClInclude Include="IAudio.h" />
+    <ClInclude Include="IClickableObject.h" />
+    <ClInclude Include="IInput.h" />
+    <ClInclude Include="ICache.h" />
+    <ClInclude Include="ILogger.h" />
+    <ClInclude Include="ImageDissolveShader.h" />
+    <ClInclude Include="Interpolator.h" />
+    <ClInclude Include="InterpolatorType.h" />
+    <ClInclude Include="IRenderer.h" />
+    <ClInclude Include="IShaderProgram.h" />
+    <ClInclude Include="ITexture.h" />
+    <ClInclude Include="LinearInterpolator.h" />
+    <ClInclude Include="Locator.h" />
+    <ClInclude Include="LRUCache.h" />
+    <ClInclude Include="LuaButton.h" />
+    <ClInclude Include="LuaCharacter.h" />
+    <ClInclude Include="LuaCharacterSprite.h" />
+    <ClInclude Include="LuaClickableMap.h" />
+    <ClInclude Include="LuaEnvironment.h" />
+    <ClInclude Include="LuaQuestion.h" />
+    <ClInclude Include="LuaSprite.h" />
+    <ClInclude Include="MessageBoxLogger.h" />
+    <ClInclude Include="MixAudio.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="SDLRenderer.h" />
+    <ClInclude Include="SDLTexture.h" />
+    <ClInclude Include="Sound.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SpriteObject.h" />
+    <ClInclude Include="TestShader.h" />
+    <ClInclude Include="TextWindow.h" />
+    <ClInclude Include="TransitionType.h" />
+    <ClInclude Include="TransitionUtils.h" />
+    <ClInclude Include="Vector.h" />
+    <ClInclude Include="WaitCommand.h" />
+    <ClInclude Include="WaitForChoice.h" />
+    <ClInclude Include="WaitForFunction.h" />
+    <ClInclude Include="WaitForText.h" />
+    <ClInclude Include="WaitForTimer.h" />
+    <ClInclude Include="WaitForTransition.h" />
+    <ClInclude Include="WaitForVisible.h" />
+    <ClInclude Include="WaitQueue.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Iris Engine.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
