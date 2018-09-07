@@ -47,7 +47,7 @@ public:
 	/// <param name="fullscreen">if set to <c>true</c> fullscreen mode will be enabled.</param>
 	/// <param name="virtualW">The width of the logical resolution.</param>
 	/// <param name="virtualH">The height of the logical resolution.</param>
-	void setFullScreen(bool fullscreen, int virtualW, int virtualH) override;
+	void setFullScreen(bool fullscreen) override;
 	
 	/// <summary>
 	/// Gets the resolution of the window.
@@ -116,16 +116,18 @@ public:
 private:
 	// Targets
 	struct GPU_Target* screen;
+	struct GPU_Target* windowTarget;
 	struct GPU_Target* currentTarget;
+
+	// Buffers
+	class GPUTexture* virtualScreen;
+
+	// Fullscreen scaling values
+	float scalingFactor;
+	Vector2<float> screenPosition;
 
 	// Properties
 	bool valid;
-
-	// Letterboxing
-	bool letterboxHorizontal;
-	bool letterboxVertical;
-	Vector2<int> letterboxSize;
-	Vector2<int> screenSize;
 
 	// Shaders
 	TestShader testShader;

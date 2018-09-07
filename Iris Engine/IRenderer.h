@@ -8,6 +8,7 @@
 /// </summary>
 enum class TextureFormat
 {
+	RGB,
 	RGBA8
 };
 
@@ -56,9 +57,7 @@ public:
 	/// to fit the actual size of the screen.
 	/// </summary>
 	/// <param name="fullscreen">if set to <c>true</c> fullscreen mode will be enabled.</param>
-	/// <param name="virtualW">The width of the logical resolution.</param>
-	/// <param name="virtualH">The height of the logical resolution.</param>
-	virtual void setFullScreen(bool fullscreen, int virtualW, int virtualH) = 0;
+	virtual void setFullScreen(bool fullscreen) = 0;
 	
 	/// <summary>
 	/// Gets the resolution of the window.

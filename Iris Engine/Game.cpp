@@ -163,7 +163,7 @@ void Game::toggleFullscreen()
 {
 	Vector2<int> res(Config::values().screen.resolution.x, Config::values().screen.resolution.y);
 
-	renderer->setFullScreen(!renderer->getFullscreen(), res.x, res.y);
+	renderer->setFullScreen(!renderer->getFullscreen());
 	
 	if (renderer->getFullscreen())
 		gameInput.correctForFullscreen(renderer->getWindowResolution(), res);

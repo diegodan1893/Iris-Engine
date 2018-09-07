@@ -4,8 +4,7 @@
 #include <cmath>
 
 GPURenderer::GPURenderer(SDL_Window* window)
-	:letterboxHorizontal(false),
-	 letterboxVertical(false)
+	:scalingFactor(1.0f)
 {
 	int w, h;
 	Uint32 windowID;
@@ -14,11 +13,16 @@ GPURenderer::GPURenderer(SDL_Window* window)
 	windowID = SDL_GetWindowID(window);
 
 	GPU_SetInitWindow(windowID);
-	screen = currentTarget = GPU_Init(w, h, GPU_INIT_ENABLE_VSYNC);
+	windowTarget = GPU_Init(w, h, GPU_INIT_ENABLE_VSYNC);
 
-	if (screen)
+	if (windowTarget)
 	{
 		valid = true;
+
+		// Create intermediate buffer
+		virtualScreen = (GPUTexture*)createTexture(TextureFormat::RGB, TextureAccess::TARGET, w, h);
+		currentTarget = screen = virtualScreen->getTarget();
+		screenPosition = Vector2<float>(w / 2.0f, h / 2.0f);
 
 		// Load shaders
 		testShader.loadProgram();
@@ -46,62 +50,47 @@ bool GPURenderer::getFullscreen()
 	return GPU_GetFullscreen();
 }
 
-void GPURenderer::setFullScreen(bool fullscreen, int virtualW, int virtualH)
+void GPURenderer::setFullScreen(bool fullscreen)
 {
+	int virtualW = screen->base_w;
+	int virtualH = screen->base_h;
+
 	if (fullscreen)
 	{
 		// Enable fullscreen
 		GPU_SetFullscreen(true, true);
 
 		// Get new resolution
-		int w = screen->base_w;
-		int h = screen->base_h;
-
-		// Create a camera for letterboxing
-		GPU_Camera camera = GPU_GetCamera(screen);
+		int w = windowTarget->base_w;
+		int h = windowTarget->base_h;
 
 		if (virtualW > virtualH)
 		{
 			// Scale so that the width of the game is the same as the width of the screen
-			camera.zoom = (float)w / virtualW;
-
-			letterboxHorizontal = true;
-			letterboxSize.x = virtualW;
-			letterboxSize.y = std::ceil((h - virtualH * camera.zoom) / camera.zoom);
+			scalingFactor = (float)w / virtualW;
 		}
 		else
 		{
 			// Scale so that the height of the game is the same as the height of the screen
-			camera.zoom = (float)h / virtualH;
-
-			letterboxVertical = true;
-			letterboxSize.x = std::ceil((w - virtualW * camera.zoom) / camera.zoom);
-			letterboxSize.y = virtualH;
+			scalingFactor = (float)h / virtualH;
 		}
 
-		camera.x = -w / 2.0f + virtualW / 2.0f;
-		camera.y = -h / 2.0f + virtualH / 2.0f;
-
-		GPU_SetCamera(screen, &camera);
-
-		if (letterboxSize.x == 0 || letterboxSize.y == 0)
-			letterboxHorizontal = letterboxVertical = 0;
-
-		screenSize.x = virtualW;
-		screenSize.y = virtualH;
+		screenPosition.x = w / 2.0f;
+		screenPosition.y = h / 2.0f;
 	}
 	else
 	{
 		GPU_SetFullscreen(false, true);
-		GPU_SetCamera(screen, NULL);
-
-		letterboxHorizontal = letterboxVertical = false;
+		
+		scalingFactor = 1.0f;
+		screenPosition.x = windowTarget->base_w / 2.0f;
+		screenPosition.y = windowTarget->base_h / 2.0f;
 	}
 }
 
 Vector2<int> GPURenderer::getWindowResolution()
 {
-	return Vector2<int>(screen->base_w, screen->base_h);
+	return Vector2<int>(windowTarget->base_w, windowTarget->base_h);
 }
 
 void GPURenderer::clear()
@@ -111,23 +100,25 @@ void GPURenderer::clear()
 
 void GPURenderer::present()
 {
+	// Render to target
+	GPU_Flip(currentTarget);
+
+	// If we want to render to the screen, copy the intermediate buffer to the actual screen
 	if (currentTarget == screen)
 	{
-		// Apply letterboxing
-		if (letterboxHorizontal)
-		{
-			GPU_RectangleFilled(currentTarget, 0, -letterboxSize.y, letterboxSize.x, 0, { 0, 0, 0, 255 });
-			GPU_RectangleFilled(currentTarget, 0, screenSize.y, letterboxSize.x, letterboxSize.y + screenSize.y, { 0, 0, 0, 255 });
-		}
-		else if (letterboxVertical)
-		{
-			GPU_RectangleFilled(currentTarget, -letterboxSize.x, 0, 0, screenSize.y, { 0, 0, 0, 255 });
-			GPU_RectangleFilled(currentTarget, screenSize.x, 0, letterboxSize.x + screenSize.x, screenSize.y, { 0, 0, 0, 255 });
-		}
-	}
+		GPU_Clear(windowTarget);
+		GPU_BlitScale(
+			virtualScreen->getInternalTexture(),
+			nullptr,
+			windowTarget,
+			screenPosition.x,
+			screenPosition.y,
+			scalingFactor,
+			scalingFactor
+		);
 
-	// Render to screen
-	GPU_Flip(currentTarget);
+		GPU_Flip(windowTarget);
+	}
 }
 
 void GPURenderer::setRenderTarget(ITexture* texture)
@@ -160,6 +151,10 @@ ITexture* GPURenderer::createTexture(TextureFormat format, TextureAccess access,
 
 	switch (format)
 	{
+	case TextureFormat::RGB:
+		textureFormat = GPU_FORMAT_RGB;
+		break;
+
 	case TextureFormat::RGBA8:
 		textureFormat = GPU_FORMAT_RGBA;
 		break;
