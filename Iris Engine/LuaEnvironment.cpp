@@ -194,6 +194,7 @@ void LuaEnvironment::setUp(
 
 		// Properties
 		"disableOnClick", sol::property(&LuaClickableMap::setDisableOnClick),
+		"nonBlocking", sol::property(&LuaClickableMap::setNonBlocking),
 
 		// Functions
 		"enable", &LuaClickableMap::enable,

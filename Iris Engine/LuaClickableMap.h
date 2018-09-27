@@ -17,6 +17,7 @@ public:
 	void disable();
 
 	void setDisableOnClick(bool disableOnClick);
+	void setNonBlocking(bool nonBlocking);
 
 	void setOnMouseEnter(int r, int g, int b, sol::function function);
 	void setOnMouseExit(int r, int g, int b, sol::function function);
@@ -30,4 +31,6 @@ private:
 	class GameObjectManager* gameObjectManager;
 	class LuaEnvironment* lua;
 	class ClickableMap* map;
+
+	bool nonBlocking;
 };

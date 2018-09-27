@@ -6,7 +6,8 @@
 
 LuaClickableMap::LuaClickableMap(GameObjectManager* gameObjectManager, LuaEnvironment* lua, const std::string& file)
 	:gameObjectManager(gameObjectManager),
-	 lua(lua)
+	 lua(lua),
+	 nonBlocking(false)
 {
 	// Create map
 	map = new ClickableMap(file);
@@ -27,9 +28,12 @@ void LuaClickableMap::enable(sol::this_state s)
 {
 	map->setVisible(true);
 
-	// Wait until the map is not visible
-	lua->waitFor(new WaitForVisible(map, false));
-	lua_yield(s, 0);
+	if (!nonBlocking)
+	{
+		// Wait until the map is not visible
+		lua->waitFor(new WaitForVisible(map, false));
+		lua_yield(s, 0);
+	}
 }
 
 void LuaClickableMap::disable()
@@ -40,6 +44,11 @@ void LuaClickableMap::disable()
 void LuaClickableMap::setDisableOnClick(bool disableOnClick)
 {
 	map->setDisableOnClick(disableOnClick);
+}
+
+void LuaClickableMap::setNonBlocking(bool nonBlocking)
+{
+	this->nonBlocking = nonBlocking;
 }
 
 void LuaClickableMap::setOnMouseEnter(int r, int g, int b, sol::function function)
