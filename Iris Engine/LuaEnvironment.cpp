@@ -50,6 +50,8 @@ void LuaEnvironment::setUp(
 	this->background = background;
 	this->sceneTransitionEffect = sceneTransition;
 
+	now = last = SDL_GetPerformanceCounter();
+
 	// Set up lua environment
 	lua.open_libraries(sol::lib::base, sol::lib::string, sol::lib::math, sol::lib::table);
 
@@ -242,6 +244,7 @@ void LuaEnvironment::setUp(
 	lua.set_function("stopSound", &LuaEnvironment::stopSound, this);
 	lua.set_function("yield", &LuaEnvironment::yield, this);
 	lua.set_function("sleep", &LuaEnvironment::sleep, this);
+	lua.set_function("getDeltaSeconds", &LuaEnvironment::getDeltaSeconds, this);
 	lua.set_function("openScript", &LuaEnvironment::openScript, this);
 	lua.set_function("precacheImage", &LuaEnvironment::precacheImage, this);
 	lua.set_function("exitGame", &LuaEnvironment::exitGame, this);
@@ -304,6 +307,10 @@ bool LuaEnvironment::ready()
 
 void LuaEnvironment::resume()
 {
+	// Calculate time since last Lua execution
+	last = now;
+	now = SDL_GetPerformanceCounter();
+
 	// Execute all coroutines in the stack that are ready
 	do {
 		auto result = coroutineStack.top().coroutine();
@@ -704,6 +711,11 @@ void LuaEnvironment::sleep(float seconds, sol::this_state s)
 	gameObjectManager->startTimer(seconds);
 	waitFor(new WaitForTimer(gameObjectManager));
 	lua_yield(s, 0);
+}
+
+float LuaEnvironment::getDeltaSeconds()
+{
+	return ((now - last) / (float)SDL_GetPerformanceFrequency());
 }
 
 void LuaEnvironment::openScript(const std::string& file, sol::this_state s)

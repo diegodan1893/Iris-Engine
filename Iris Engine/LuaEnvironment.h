@@ -87,6 +87,7 @@ private:
 
 	// Other variables
 	bool wantsToExit;
+	uint64_t now, last;
 
 	// Static variables needed for the Lua API
 	static class IRenderer* renderer;
@@ -173,6 +174,7 @@ private:
 	void stopSound(const std::string& file);
 	void yield(sol::this_state s);
 	void sleep(float seconds, sol::this_state s);
+	float getDeltaSeconds();
 	void openScript(const std::string& file, sol::this_state s);
 	void precacheImage(const std::string& file);
 	void exitGame(sol::this_state s);
