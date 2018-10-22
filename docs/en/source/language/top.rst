@@ -176,6 +176,8 @@ If the text to display is too long to fit in the :term:`text window`, the game w
 split it automatically as if you had written it using multiple calls to the say function.
 
 
+.. _using-characters-for-dialogue:
+
 Defining characters
 ^^^^^^^^^^^^^^^^^^^
 

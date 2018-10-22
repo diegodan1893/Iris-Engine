@@ -6,7 +6,8 @@ and **dialogue**, which is labeled with the name of the character that is saying
 
 In Iris Engine, dialogue is written using Character objects.
 Once defined, these objects can be used in the same way as
-:doc:`the say function<../../globals/say>`.
+:doc:`the say function<../../globals/say>`. See :ref:`using-characters-for-dialogue`
+for a quick explanation on how to use them.
 
 
 
