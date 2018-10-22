@@ -32,6 +32,7 @@ Functions
     globals/stopSound
     globals/yield
     globals/sleep
+    globals/getDeltaSeconds
     globals/openScript
     globals/exitGame
     globals/precacheImage
@@ -124,17 +125,19 @@ Functions
 .. table::
     :widths: 1 100
 
-    +---------------------------------------+--------------------------------------------+
-    | Function                              | Description                                |
-    +=======================================+============================================+
-    | :doc:`yield<globals/yield>`           | Pause Lua execution until the next frame   |
-    +---------------------------------------+--------------------------------------------+
-    | :doc:`sleep<globals/sleep>`           | Pause Lua execution for the specified time |
-    +---------------------------------------+--------------------------------------------+
-    | :doc:`openScript<globals/openScript>` | Transfer execution to the specified script |
-    +---------------------------------------+--------------------------------------------+
-    | :doc:`exitGame<globals/exitGame>`     | Close the game                             |
-    +---------------------------------------+--------------------------------------------+
+    +-------------------------------------------------+-------------------------------------------------------------------+
+    | Function                                        | Description                                                       |
+    +=================================================+===================================================================+
+    | :doc:`yield<globals/yield>`                     | Pause Lua execution until the next frame                          |
+    +-------------------------------------------------+-------------------------------------------------------------------+
+    | :doc:`sleep<globals/sleep>`                     | Pause Lua execution for the specified time                        |
+    +-------------------------------------------------+-------------------------------------------------------------------+
+    | :doc:`getDeltaSeconds<globals/getDeltaSeconds>` | Get the number of seconds elapsed since the last execution of Lua |
+    +-------------------------------------------------+-------------------------------------------------------------------+
+    | :doc:`openScript<globals/openScript>`           | Transfer execution to the specified script                        |
+    +-------------------------------------------------+-------------------------------------------------------------------+
+    | :doc:`exitGame<globals/exitGame>`               | Close the game                                                    |
+    +-------------------------------------------------+-------------------------------------------------------------------+
 
 
 **Caching**

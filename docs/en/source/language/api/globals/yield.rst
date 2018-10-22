@@ -41,3 +41,4 @@ See also
 ^^^^^^^^
 
 * :doc:`sleep`
+* :doc:`getDeltaSeconds`

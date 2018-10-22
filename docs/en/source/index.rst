@@ -3,7 +3,7 @@ Welcome to Iris Engine's documentation!
 
 Iris Engine is a visual novel engine that will help you tell interactive stories.
 
-It's scripting language, `Lua <https://www.lua.org/>`_, is really easy to learn,
+Its scripting language, `Lua <https://www.lua.org/>`_, is really easy to learn,
 so you will be able to express your ideas even if you don't know anything about
 programming. Here is an example of a conversation between two characters:
 
@@ -18,6 +18,9 @@ programming. Here is an example of a conversation between two characters:
 	s "This is all you need to do to display dialogue on the screen."
 	h "Easy, right?"
 
+.. warning::
+	Iris Engine is still in development and some important features have not
+	been implemented yet. Using it for production is not recommended.
 
 
 Getting Started
