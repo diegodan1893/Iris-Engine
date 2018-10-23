@@ -767,7 +767,7 @@ LuaCharacter LuaEnvironment::createCharacter(const std::string& name)
 	return LuaCharacter(name, textWindow, thisEnvironment);
 }
 
-LuaQuestion LuaEnvironment::createQuestion(const sol::table & choices)
+LuaQuestion LuaEnvironment::createQuestion(const sol::table& choices)
 {
 	return LuaQuestion(thisEnvironment, choicesMenu, textWindow, choices);
 }

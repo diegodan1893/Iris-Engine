@@ -10,7 +10,6 @@ Once defined, these objects can be used in the same way as
 for a quick explanation on how to use them.
 
 
-
 Properties
 ^^^^^^^^^^
 
@@ -20,14 +19,13 @@ Properties
     name
 
 .. table::
-    :widths: 1 1 100
+    :widths: 1 1 1 100
 
-    +----------+-------------------+----------------------------------------+
-    | Type     | Name              | Description                            |
-    +==========+===================+========================================+
-    | *string* | :doc:`name<name>` | Gets or sets the name of the character |
-    +----------+-------------------+----------------------------------------+
-
+    +----------+-------------------+------------------------+----------------------------------------+
+    | Type     | Name              | Default value          | Description                            |
+    +==========+===================+========================+========================================+
+    | *string* | :doc:`name<name>` | Defined in constructor | Gets or sets the name of the character |
+    +----------+-------------------+------------------------+----------------------------------------+
 
 
 Member functions
