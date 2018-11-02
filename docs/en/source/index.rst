@@ -33,7 +33,7 @@ Getting Started
 :doc:`Examples and templates<getting_started/templates>`
 	Use these as a base for your game so that you can start creating right away.
 
-Working with visuals
+:doc:`Working with visuals<visuals>`
 	Learn how Iris Engine handles backgrounds, sprites and character sprites.
 
 :doc:`API reference<language/api/top>`
@@ -51,8 +51,8 @@ The config file
 	:caption: Contents:
 
 	getting_started/top
-	visuals
 	language/top
+	visuals
 	config
 	formats
 	glossary

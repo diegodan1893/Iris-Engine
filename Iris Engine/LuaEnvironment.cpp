@@ -802,7 +802,7 @@ LuaEnvironment::CharacterSpritePtr LuaEnvironment::createCharacterSpriteSimple(c
 	return CharacterSpritePtr(new LuaCharacterSprite(renderer, gameObjectManager, thisEnvironment, file));
 }
 
-LuaEnvironment::CharacterSpritePtr LuaEnvironment::createCharacterPosition(const std::string & file, Alignment position)
+LuaEnvironment::CharacterSpritePtr LuaEnvironment::createCharacterPosition(const std::string& file, Alignment position)
 {
 	return CharacterSpritePtr(new LuaCharacterSprite(renderer, gameObjectManager, thisEnvironment, file, position));
 }
