@@ -197,6 +197,8 @@ for ``Transition.none``, and the only function without this requirement is
 
 
 
+.. _using-sprites:
+
 Sprites
 -------
 
