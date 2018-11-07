@@ -1,7 +1,8 @@
 Welcome to Iris Engine's documentation!
 =======================================
 
-Iris Engine is a visual novel engine that will help you tell interactive stories.
+`Iris Engine <https://github.com/diegodan1893/Iris-Engine>`_ is a visual novel engine
+that will help you tell interactive stories.
 
 Its scripting language, `Lua <https://www.lua.org/>`_, is really easy to learn,
 so you will be able to express your ideas even if you don't know anything about

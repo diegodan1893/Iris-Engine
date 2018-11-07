@@ -391,6 +391,8 @@ Here is an example using the previous sprite sheet:
 
 
 
+.. _using-character-sprites:
+
 Character sprites
 -----------------
 
