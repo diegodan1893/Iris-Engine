@@ -63,4 +63,4 @@ See also
 ^^^^^^^^
 
 * :doc:`append`
-* :doc:`../character`
+* :doc:`../classes/character/top`

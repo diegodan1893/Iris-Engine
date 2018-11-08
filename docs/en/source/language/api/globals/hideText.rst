@@ -5,7 +5,7 @@ The hideText function
 :Returns: *nil*
 
 This function is used to hide the :term:`text window` with the transition specified in
-the :doc:`config file<../../config>`. This will always be a
+the :doc:`config file<../../../config>`. This will always be a
 :term:`blocking transition`.
 
 It is usually called before the transition to a new :doc:`scene<scene>`.
@@ -15,7 +15,7 @@ Remarks
 ^^^^^^^
 
 The :term:`text window` will remain hidden until new dialogue is displayed by using
-the :doc:`say<say>` function or a :doc:`Character<../character>` object.
+the :doc:`say<say>` function or a :doc:`Character<../classes/character/top>` object.
 
 
 Examples
@@ -39,4 +39,4 @@ See also
 ^^^^^^^^
 
 * :doc:`say`
-* :doc:`../character`
+* :doc:`../classes/character/top`

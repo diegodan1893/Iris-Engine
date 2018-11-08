@@ -39,7 +39,7 @@ Remarks
 ^^^^^^^
 
 The path of the *baseImage* parameter must be relative to the *characters* path
-specified in the :doc:`config file<../../../config>`.
+specified in the :doc:`config file<../../../../config>`.
 
 You can specify the position of the character sprite using
 :doc:`the Position enum<../../enums/position>` or a *table*. If you use the
@@ -56,7 +56,7 @@ character sprite. For example, if you want to place the sprite at coordinates
 the origin of character sprites is located at the bottom center of the sprite.
 
 If the *zindex* parameter is not specified, the engine will use the default z-index
-for characters defined in the :doc:`config file<../../../config>`.
+for characters defined in the :doc:`config file<../../../../config>`.
 
 
 Examples

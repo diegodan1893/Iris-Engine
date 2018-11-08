@@ -47,4 +47,4 @@ See also
 ^^^^^^^^
 
 * :doc:`say`
-* :doc:`../character`
+* :doc:`../classes/character/top`

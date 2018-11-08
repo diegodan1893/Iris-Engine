@@ -1,5 +1,5 @@
 The moveX method
-===============
+================
 
 :Syntax: 
 	| moveX(

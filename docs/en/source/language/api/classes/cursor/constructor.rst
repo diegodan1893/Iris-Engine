@@ -24,7 +24,7 @@ Remarks
 ^^^^^^^
 
 The path of the *image* parameter must be relative to the *gui* path specified in
-the :doc:`config file<../../../config>`.
+the :doc:`config file<../../../../config>`.
 
 
 Examples

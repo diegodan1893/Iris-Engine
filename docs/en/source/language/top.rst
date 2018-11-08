@@ -182,9 +182,9 @@ Defining characters
 ^^^^^^^^^^^^^^^^^^^
 
 In order to write dialogue, that is, text that is labeled with the name of the character that is saying it, you will need to create a
-:doc:`Character<api/character>` object and store it in a variable. After that, you
-will be able to use that variable the same way as `the say function`_. Here is an
-example:
+:doc:`Character<api/classes/character/top>` object and store it in a variable. After
+that, you will be able to use that variable the same way as `the say function`_.
+Here is an example:
 
 .. code-block:: lua
 
@@ -263,8 +263,8 @@ Choices
 ^^^^^^^
 
 Many visual novels ask the player to make choices that influence the outcome of
-the story. In Iris Engine, this is done using :doc:`Question<api/question>`
-objects.
+the story. In Iris Engine, this is done using
+:doc:`Question<api/classes/question/top>` objects.
 
 In order to present a choice to the player, you will need to create a Question
 object and store it in a variable. Let's see an example:

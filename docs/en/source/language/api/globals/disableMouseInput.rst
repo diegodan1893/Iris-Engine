@@ -1,13 +1,13 @@
 The disableMouseInput function
-=============================
+==============================
 
 :Syntax: disableMouseInput()
 :Returns: *nil*
 
-After calling this function, :doc:`buttons<../button>` and
-:doc:`clickable maps<../clickableMap>` will **not** accept mouse input. This means that
-the associated *onMouseEnter*, *onMouseExit* and *onClick* events will not be triggered
-even if the conditions are met.
+After calling this function, :doc:`buttons<../classes/button/top>` and
+:doc:`clickable maps<../classes/clickableMap/top>` will **not** accept mouse input.
+This means that the associated *onMouseEnter*, *onMouseExit* and *onClick* events
+will not be triggered even if the conditions are met.
 
 
 Remarks

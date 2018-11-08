@@ -41,7 +41,7 @@ Getting Started
 	Here you will find detailed information about all the functions and classes
 	available to you.
 
-The config file
+:doc:`The config file<config>`
 	Detailed information about all the settings you can change to make your game
 	work the way you want.
 

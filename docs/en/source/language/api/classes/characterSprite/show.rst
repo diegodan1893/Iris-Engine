@@ -28,7 +28,7 @@ If the expression base for this character is ``sakura1.png`` and the provided
 ``sakura1 smiling.png``. In this example, the name of the base image and the name
 of the expression have been connected with a space character to form the final
 filename of the expression image, but you can alter this behavior in the
-:doc:`config file<../../../config>`.
+:doc:`config file<../../../../config>`.
 
 If no *transition* is given, these ones will be used by default:
 

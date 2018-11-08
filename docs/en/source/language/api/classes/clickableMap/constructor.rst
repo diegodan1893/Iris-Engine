@@ -20,7 +20,7 @@ Remarks
 ^^^^^^^
 
 The path of the *image* parameter must be relative to the *gui* path specified in
-the :doc:`config file<../../../config>`.
+the :doc:`config file<../../../../config>`.
 
 In this image, each region must be represented using a different color. All of the
 pixels of the image with the same color will be considered part of the same region.

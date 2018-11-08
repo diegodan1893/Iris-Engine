@@ -39,7 +39,7 @@ Remarks
 ^^^^^^^
 
 The path of the *baseImage* and *expressionBase* parameters must be relative to the
-*characters* path specified in the :doc:`config file<../../../config>`.
+*characters* path specified in the :doc:`config file<../../../../config>`.
 
 The base image that will be drawn is the one specified in the *baseImage* parameter.
 The *expressionBase* parameter specifies the base image used when constructing the
@@ -51,7 +51,7 @@ If the *expressionBase* is ``sakura1.png`` and the provided *expression* is
 ``smiling``, the expression image that will be drawn is ``sakura1 smiling.png``.
 In this example, the name of the base and the name of the expression have been
 connected using a space character to form the final filename of the expression
-image. This behavior can be altered in the :doc:`config file<../../../config>`.
+image. This behavior can be altered in the :doc:`config file<../../../../config>`.
 
 If no *transition* is given, this one will be used by default:
 

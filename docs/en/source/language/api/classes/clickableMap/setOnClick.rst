@@ -80,6 +80,6 @@ See also
 ^^^^^^^^
 
 * :doc:`setOnMouseEnter`
-* :doc:`setOnMouseClick`
+* :doc:`setOnMouseExit`
 * :doc:`enable`
 * :doc:`disableOnClick`

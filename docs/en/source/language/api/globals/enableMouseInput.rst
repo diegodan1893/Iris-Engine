@@ -4,10 +4,10 @@ The enableMouseInput function
 :Syntax: enableMouseInput()
 :Returns: *nil*
 
-After calling this function, :doc:`buttons<../button>` and
-:doc:`clickable maps<../clickableMap>` will accept mouse input. This means that
-the associated *onMouseEnter*, *onMouseExit* and *onClick* events will be triggered
-when the conditions are met.
+After calling this function, :doc:`buttons<../classes/button/top>` and
+:doc:`clickable maps<../classes/clickableMap/top>` will accept mouse input. This
+means that the associated *onMouseEnter*, *onMouseExit* and *onClick* events will be
+triggered when the conditions are met.
 
 Mouse input is enabled by default.
 

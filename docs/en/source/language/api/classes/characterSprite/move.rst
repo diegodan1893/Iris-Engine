@@ -2,13 +2,13 @@ The move method
 ===============
 
 :Syntax: 
-	| move(
-	|	*number* x,
-	|	*number* y,
-	|	*number* time,
-	|	*bool* shouldBlock,
-	|	*Interpolator* interpolator = Interpolator.easeInOut
-	| )
+    | move(
+    |   *number* x,
+    |   *number* y,
+    |   *number* time,
+    |   *bool* shouldBlock,
+    |   *Interpolator* interpolator = Interpolator.easeInOut
+    | )
     | move(
     |   *Position* position,
     |   *number* time,

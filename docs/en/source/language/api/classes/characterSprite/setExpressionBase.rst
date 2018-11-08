@@ -22,7 +22,7 @@ Remarks
 ^^^^^^^
 
 The path of the *expressionBase* parameter must be relative to the *characters* path
-specified in the :doc:`config file<../../../config>`.
+specified in the :doc:`config file<../../../../config>`.
 
 The *expressionBase* parameter specifies the base image used when constructing the
 filenames of expression images, allowing you to use the set of expressions
