@@ -20,8 +20,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Iris Engine'
-copyright = '2018, Diego Iáñez Ávila'
-author = 'Diego Iáñez Ávila'
+copyright = u'2018, Diego Iáñez Ávila'
+author = u'Diego Iáñez Ávila'
 
 # The short X.Y version
 version = ''
@@ -130,7 +130,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'IrisEngine.tex', 'Iris Engine Documentation',
-     'Diego Iáñez Ávila', 'manual'),
+     u'Diego Iáñez Ávila', 'manual'),
 ]
 
 
