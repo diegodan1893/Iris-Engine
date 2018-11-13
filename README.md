@@ -21,8 +21,8 @@ have not been implemented yet. Using it for production is not recommended.
 
 # Getting Started
 * [Latest stable release](https://github.com/diegodan1893/Iris-Engine/releases/latest)
-* [Tutorial: Your first game with Iris Engine]()
-* [Full documentation]()
+* [Tutorial: Your first game with Iris Engine](https://iris-engine.readthedocs.io/en/latest/getting_started/first_game.html)
+* [Full documentation](http://iris-engine.readthedocs.io/)
 * [Examples](https://github.com/diegodan1893/Iris-Engine-Examples)
 
 # System requirements
