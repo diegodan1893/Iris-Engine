@@ -29,7 +29,7 @@ Unzip the contents of ``720p-VN-Template.zip`` to the folder of your game, so th
 
 If you try to run the game now, you should see something like this:
 
-.. image:: ../media/fg_firstrun.png
+.. image:: ../media/fg_firstRun.png
     :align: center
 
 Now open ``config.lua`` in any text editor. I personally recommend using
