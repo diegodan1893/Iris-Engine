@@ -4,6 +4,10 @@ Your first game with Iris Engine
 The purpose of this tutorial is to demonstrate how you can make a simple visual
 novel using Iris Engine from start to finish.
 
+.. warning::
+    Iris Engine is still in development and some important features have not
+    been implemented yet. Using it for production is not recommended.
+
 
 
 Preparations
