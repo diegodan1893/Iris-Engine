@@ -115,6 +115,19 @@ public:
 		float time,
 		bool canBeSkipped
 	);
+	
+	/// <summary>
+	/// Enables color grading and sets the color LUT image to use.
+	/// </summary>
+	/// <param name="colorLUT">Path to the color LUT image.</param>
+	/// <param name = "time">Duration in seconds of the lLUT transition.< / param>
+	void setColorLut(const std::string& colorLUT, float time);
+	
+	/// <summary>
+	/// Disables the color grading effect for this character.
+	/// </summary>
+	/// <param name = "colorLUT">Duration in seconds of the lLUT transition.< / param>
+	void disableColorGrading(float time);
 
 private:
 	std::string basePath;
@@ -129,19 +142,28 @@ private:
 	bool inDissolveBase;
 	bool transitionTextureHasBeenUpdated;
 
+	// LUTs
+	std::string colorLUT, previousColorLUT;
+	bool colorGradingEnabled;
+	bool blendLUTs;
+	LinearInterpolator lutTransition;
+
 	// Rendering
 	class IRenderer* renderer;
 	class ITexture* transitionTexture;
 	class ITexture* dissolveBaseTransitionTexture;
+	class ITexture* dissolveBaseFinalTexture;
 
 	void setUp(const std::string& baseFile);
 	void centerOrigin();
 	void initializeSize(int w, int h);
 
-	void drawCharacter(Rect<float>& rect, bool drawWithoutBlending);
+	void drawCharacter(Rect<float>& rect, bool drawWithoutBlending, bool applyColorGrading = true);
 	void drawExpression(const std::string& expression, Rect<float>& rect, Uint8 alpha);
 	
-	void redrawTransitionTexture(class ITexture* texture);
+	void redrawTransitionTexture(class ITexture* texture, bool applyColorGrading = true);
 	Vector2<float> calculatePosition(Alignment position);
 	void freeTransitionTextures();
+
+	void setUpLutShader(class ColorGradingShader* colorGradingShader);
 };

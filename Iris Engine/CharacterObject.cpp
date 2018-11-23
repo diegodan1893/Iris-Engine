@@ -4,6 +4,7 @@
 #include "IRenderer.h"
 #include "ITexture.h"
 #include "DissolveShader.h"
+#include "ColorGradingShader.h"
 #include <cmath>
 
 CharacterObject::CharacterObject(IRenderer* renderer, const std::string& baseFile, Alignment position, int zindex)
@@ -12,9 +13,12 @@ CharacterObject::CharacterObject(IRenderer* renderer, const std::string& baseFil
 	 sizeWasSet(false),
 	 inDissolveBase(false),
 	 transitionTextureHasBeenUpdated(false),
+	 colorGradingEnabled(false),
+	 blendLUTs(false),
 	 renderer(renderer),
 	 transitionTexture(nullptr),
-	 dissolveBaseTransitionTexture(nullptr)
+	 dissolveBaseTransitionTexture(nullptr),
+	 dissolveBaseFinalTexture(nullptr)
 {
 	setUp(baseFile);
 	setCharacterPosition(position);
@@ -26,9 +30,12 @@ CharacterObject::CharacterObject(IRenderer* renderer, const std::string& baseFil
 	 sizeWasSet(false),
 	 inDissolveBase(false),
 	 transitionTextureHasBeenUpdated(false),
+	 colorGradingEnabled(false),
+	 blendLUTs(false),
 	 renderer(renderer),
 	 transitionTexture(nullptr),
-	dissolveBaseTransitionTexture(nullptr)
+	 dissolveBaseTransitionTexture(nullptr),
+	 dissolveBaseFinalTexture(nullptr)
 {
 	setUp(baseFile);
 	setPosition(position);
@@ -58,8 +65,29 @@ void CharacterObject::draw(IRenderer* renderer)
 			// to fade at the same time
 			dissolveShader->setParameters(transitionTexture, getDissolveAlpha() / 255.0);
 
-			renderer->copy(dissolveBaseTransitionTexture, nullptr, &getRect());
+			Rect<float> rect;
+			rect.x = 0;
+			rect.y = 0;
+			rect.w = getRect().w;
+			rect.h = getRect().h;
+
+			// Draw character to intermediate texture
+			renderer->setRenderTarget(dissolveBaseFinalTexture);
+			renderer->clear();
+			renderer->copy(dissolveBaseTransitionTexture, nullptr, &rect);
+			renderer->setRenderTarget(nullptr);
+
 			dissolveShader->unbind();
+
+			// Draw intermediate texture to screen applying color grading
+			ColorGradingShader* colorGradingShader = renderer->getColorGradingShader();
+
+			if (colorGradingEnabled)
+				setUpLutShader(colorGradingShader);
+
+			renderer->copy(dissolveBaseFinalTexture, nullptr, &getRect());
+
+			colorGradingShader->unbind();
 		}
 		else
 		{
@@ -82,7 +110,7 @@ void CharacterObject::update(float elapsedSeconds)
 			// drawing several layers with the same alpha on top of each
 			// other, we need to prerender the character and its expression
 			// to a texture and fade that texture.
-			if (!transitionTextureHasBeenUpdated)
+			if (!transitionTextureHasBeenUpdated || lutTransition.inTransition())
 			{
 				redrawTransitionTexture(transitionTexture);
 				transitionTextureHasBeenUpdated = true;
@@ -116,6 +144,20 @@ void CharacterObject::update(float elapsedSeconds)
 		// Update move transitions
 		if (inMovement())
 			updateMovement(elapsedSeconds);
+
+		// Update LUT transitions
+		if (lutTransition.inTransition())
+		{
+			lutTransition.update(elapsedSeconds);
+
+			if (!lutTransition.inTransition())
+			{
+				if (lutTransition.getStep() == 0.0f)
+					colorGradingEnabled = false;
+
+				blendLUTs = false;
+			}
+		}
 	}
 }
 
@@ -190,15 +232,40 @@ void CharacterObject::startDissolveBase(
 
 	// Create an intermediate texture with the current base and expression
 	// so that we can use alpha blending without weird artifacts
-	redrawTransitionTexture(transitionTexture);
+	redrawTransitionTexture(transitionTexture, false);
 
 	// Create an intermediate texture with the new base and expression
 	setBase(base, expressionBase);
 	setExpression(expression);
-	redrawTransitionTexture(dissolveBaseTransitionTexture);
+	redrawTransitionTexture(dissolveBaseTransitionTexture, false);
 
 	startDissolve(time, canBeSkipped);
 	inDissolveBase = true;
+}
+
+void CharacterObject::setColorLut(const std::string& colorLUT, float time)
+{
+	if (colorGradingEnabled)
+	{
+		previousColorLUT = this->colorLUT;
+		blendLUTs = true;
+	}
+	else
+	{
+		blendLUTs = false;
+	}
+
+	this->colorLUT = Config::values().paths.luts + colorLUT;
+	colorGradingEnabled = true;
+	transitionTextureHasBeenUpdated = false;
+
+	lutTransition.start(time, false);
+}
+
+void CharacterObject::disableColorGrading(float time)
+{
+	blendLUTs = false;
+	lutTransition.start(time, true);
 }
 
 void CharacterObject::setUp(const std::string& baseFile)
@@ -239,12 +306,24 @@ void CharacterObject::initializeSize(int w, int h)
 
 	transitionTexture = renderer->createTexture(TextureFormat::RGBA8, TextureAccess::TARGET, w, h);
 	transitionTexture->setBlendMode(BlendMode::BLEND);
+
 	dissolveBaseTransitionTexture = renderer->createTexture(TextureFormat::RGBA8, TextureAccess::TARGET, w, h);
-	dissolveBaseTransitionTexture->setBlendMode(BlendMode::BLEND);
+	dissolveBaseTransitionTexture->setBlendMode(BlendMode::SET);
+
+	dissolveBaseFinalTexture = renderer->createTexture(TextureFormat::RGBA8, TextureAccess::TARGET, w, h);
+	dissolveBaseFinalTexture->setBlendMode(BlendMode::BLEND);
 }
 
-void CharacterObject::drawCharacter(Rect<float>& rect, bool drawWithoutBlending)
+void CharacterObject::drawCharacter(Rect<float>& rect, bool drawWithoutBlending, bool applyColorGrading)
 {
+	// Activate color grading shader
+	ColorGradingShader* colorGradingShader = renderer->getColorGradingShader();
+
+	if (colorGradingEnabled && applyColorGrading)
+	{
+		setUpLutShader(colorGradingShader);
+	}
+
 	// Get base
 	Sprite* baseSprite = Locator::getCache()->getSprite(basePath);
 
@@ -286,6 +365,10 @@ void CharacterObject::drawCharacter(Rect<float>& rect, bool drawWithoutBlending)
 		// Avoid showing an error message every frame
 		setValid(false);
 	}
+
+	// Unbind color grading shader
+	if (colorGradingEnabled)
+		colorGradingShader->unbind();
 }
 
 void CharacterObject::drawExpression(const std::string& expression, Rect<float>& rect, Uint8 alpha)
@@ -311,7 +394,7 @@ void CharacterObject::drawExpression(const std::string& expression, Rect<float>&
 	}
 }
 
-void CharacterObject::redrawTransitionTexture(ITexture* texture)
+void CharacterObject::redrawTransitionTexture(ITexture* texture, bool applyColorGrading)
 {
 	Sprite* baseSprite = Locator::getCache()->getSprite(basePath);
 
@@ -331,7 +414,7 @@ void CharacterObject::redrawTransitionTexture(ITexture* texture)
 		renderer->clear();
 
 		// Draw character without blending the base to avoid applying alpha twice
-		drawCharacter(rect, true);
+		drawCharacter(rect, true, applyColorGrading);
 
 		// Stop rendering to texture
 		renderer->setRenderTarget(nullptr);
@@ -371,4 +454,43 @@ void CharacterObject::freeTransitionTextures()
 
 	if (dissolveBaseTransitionTexture)
 		delete dissolveBaseTransitionTexture;
+
+	if (dissolveBaseFinalTexture)
+		delete dissolveBaseFinalTexture;
+}
+
+void CharacterObject::setUpLutShader(ColorGradingShader* colorGradingShader)
+{
+	Sprite* colorLUTSprite = Locator::getCache()->getSprite(colorLUT);
+
+	if (colorLUTSprite)
+	{
+		colorGradingShader->bind();
+
+		if (lutTransition.inTransition())
+		{
+			if (blendLUTs)
+			{
+				Sprite* previousColorLUTSprite = Locator::getCache()->getSprite(previousColorLUT);
+
+				if (previousColorLUTSprite)
+					colorGradingShader->setParameters(previousColorLUTSprite->getTexture(), colorLUTSprite->getTexture(), lutTransition.getStep());
+				else
+					blendLUTs = false;
+			}
+			else
+			{
+				colorGradingShader->setParameters(colorLUTSprite->getTexture(), lutTransition.getStep());
+			}
+		}
+		else
+		{
+			colorGradingShader->setParameters(colorLUTSprite->getTexture());
+		}
+	}
+	else
+	{
+		colorGradingEnabled = false;
+		lutTransition.skip();
+	}
 }

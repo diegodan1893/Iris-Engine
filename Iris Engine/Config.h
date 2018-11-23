@@ -77,6 +77,7 @@ private:
 		std::string backgrounds;
 		std::string transitions;
 		std::string gui;
+		std::string luts;
 		std::string music;
 		std::string sounds;
 		std::string separator;

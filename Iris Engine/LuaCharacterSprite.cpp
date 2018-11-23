@@ -58,6 +58,8 @@ void LuaCharacterSprite::show(const std::string& expression)
 {
 	if (!character->visible())
 	{
+		character->skipTransition();
+
 		// By default, character sprites show with a non-blocking 0.3 seconds fade
 		character->setExpression(expression);
 		character->startFadeIn(0.3f, false);
@@ -261,6 +263,16 @@ void LuaCharacterSprite::setBaseTransition(
 			break;
 		}
 	}
+}
+
+void LuaCharacterSprite::setColorLut(const std::string& colorLUT, float time)
+{
+	character->setColorLut(colorLUT, time);
+}
+
+void LuaCharacterSprite::disableColorGrading(float time)
+{
+	character->disableColorGrading(time);
 }
 
 void LuaCharacterSprite::skipTransition()

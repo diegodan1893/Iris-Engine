@@ -40,6 +40,8 @@ public:
 		const sol::table& transition,
 		sol::this_state s
 	);
+	void setColorLut(const std::string& colorLUT, float time);
+	void disableColorGrading(float time);
 	void skipTransition();
 	void setPosition(float x, float y);
 	void setPositionX(float x);
