@@ -4,6 +4,7 @@
 #include "TestShader.h"
 #include "DissolveShader.h"
 #include "ImageDissolveShader.h"
+#include "ColorGradingShader.h"
 
 /// <summary>
 /// A renderer context that uses
@@ -112,6 +113,7 @@ public:
 	TestShader* getTestShader() override;
 	DissolveShader* getDissolveShader() override;
 	ImageDissolveShader* getImageDissolveShader() override;
+	ColorGradingShader* getColorGradingShader() override;
 
 private:
 	// Targets
@@ -133,4 +135,5 @@ private:
 	TestShader testShader;
 	DissolveShader dissolveShader;
 	ImageDissolveShader imageDissolveShader;
+	ColorGradingShader colorGradingShader;
 };

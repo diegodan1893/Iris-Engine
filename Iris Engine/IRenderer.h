@@ -122,4 +122,5 @@ public:
 	virtual class TestShader* getTestShader() = 0;
 	virtual class DissolveShader* getDissolveShader() = 0;
 	virtual class ImageDissolveShader* getImageDissolveShader() = 0;
+	virtual class ColorGradingShader* getColorGradingShader() = 0;
 };

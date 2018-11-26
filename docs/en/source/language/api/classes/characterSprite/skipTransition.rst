@@ -5,8 +5,8 @@ The skipTransition function
 :Returns: *nil*
 
 This method is used to instantly finish any transitions currently affecting this
-object, including fades and movement animations started with
-:doc:`the move method<move>`.
+object (except for color grading transitions), including fades and movement animations
+started with :doc:`the move method<move>`.
 
 
 Remarks

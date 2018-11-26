@@ -239,6 +239,10 @@ They can all point to the same folder if you want to.
 ``gui``
 	Path to the folder where GUI images are located.
 
+``luts``
+	Path to the folder where the lookup tables (LUTs) used for color grading are
+	located.
+
 ``music``
 	Path to the folder where the soundtrack of your game is located.
 

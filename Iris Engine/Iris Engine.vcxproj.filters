@@ -194,6 +194,9 @@
     <ClCompile Include="WaitForFunction.cpp">
       <Filter>Source Files\Lua\WaitCommands</Filter>
     </ClCompile>
+    <ClCompile Include="ColorGradingShader.cpp">
+      <Filter>Source Files\Render\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector.h">
@@ -388,6 +391,9 @@
     </ClInclude>
     <ClInclude Include="WaitForFunction.h">
       <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorGradingShader.h">
+      <Filter>Source Files\Render\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

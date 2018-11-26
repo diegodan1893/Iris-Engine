@@ -140,6 +140,7 @@
     <ClCompile Include="CharacterObject.cpp" />
     <ClCompile Include="ClearScene.cpp" />
     <ClCompile Include="ClickableMap.cpp" />
+    <ClCompile Include="ColorGradingShader.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="DissolveShader.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="ButtonMenu.h" />
     <ClInclude Include="ClearScene.h" />
     <ClInclude Include="ClickableMap.h" />
+    <ClInclude Include="ColorGradingShader.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Cursor.h" />
     <ClInclude Include="DissolveShader.h" />

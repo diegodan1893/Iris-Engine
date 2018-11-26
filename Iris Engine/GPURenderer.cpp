@@ -28,6 +28,7 @@ GPURenderer::GPURenderer(SDL_Window* window)
 		testShader.loadProgram();
 		dissolveShader.loadProgram();
 		imageDissolveShader.loadProgram();
+		colorGradingShader.loadProgram();
 	}
 	else
 	{
@@ -207,4 +208,9 @@ DissolveShader* GPURenderer::getDissolveShader()
 ImageDissolveShader* GPURenderer::getImageDissolveShader()
 {
 	return &imageDissolveShader;
+}
+
+ColorGradingShader* GPURenderer::getColorGradingShader()
+{
+	return &colorGradingShader;
 }

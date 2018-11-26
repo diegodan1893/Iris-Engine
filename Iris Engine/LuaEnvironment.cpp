@@ -162,6 +162,8 @@ void LuaEnvironment::setUp(
 			&LuaCharacterSprite::setBase,
 			&LuaCharacterSprite::setBaseTransition
 		),
+		"setColorLUT", &LuaCharacterSprite::setColorLut,
+		"disableColorGrading", &LuaCharacterSprite::disableColorGrading,
 		"skipTransition", &LuaCharacterSprite::skipTransition,
 		"setPosition", sol::overload(
 			&LuaCharacterSprite::setPosition,
