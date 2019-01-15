@@ -38,6 +38,8 @@ GPURenderer::GPURenderer(SDL_Window* window)
 
 GPURenderer::~GPURenderer()
 {
+	delete virtualScreen;
+
 	GPU_Quit();
 }
 
