@@ -201,7 +201,7 @@ ITexture* GPURenderer::createTexture(SDL_Surface* surface)
 void GPURenderer::saveScreenshot(const std::string& path, int w, int h)
 {
 	// Create a texture for the screenshot
-	GPUTexture* screenshotTexture = (GPUTexture*)createTexture(TextureFormat::RGB, TextureAccess::TARGET, w, h);
+	GPUTexture* screenshotTexture = (GPUTexture*)createTexture(TextureFormat::RGBA8, TextureAccess::TARGET, w, h);
 	GPU_Target* screenshotTarget = screenshotTexture->getTarget();
 
 	// Copy the screen to the texture scaling it to fit the desired resolution
