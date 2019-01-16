@@ -14,6 +14,7 @@
 #include "TransitionUtils.h"
 #include "InterpolatorType.h"
 #include "Cursor.h"
+#include "IRenderer.h"
 
 bool LuaEnvironment::instantiated = false;
 LuaEnvironment* LuaEnvironment::thisEnvironment;
@@ -250,6 +251,7 @@ void LuaEnvironment::setUp(
 	lua.set_function("openScript", &LuaEnvironment::openScript, this);
 	lua.set_function("precacheImage", &LuaEnvironment::precacheImage, this);
 	lua.set_function("exitGame", &LuaEnvironment::exitGame, this);
+	lua.set_function("saveScreenshot", &LuaEnvironment::saveScreenshot, this);
 	lua.set_function("setCursor", &LuaEnvironment::setCursor, this);
 	lua.set_function("setOnRightClick", &LuaEnvironment::setOnRightClick, this);
 
@@ -740,6 +742,11 @@ void LuaEnvironment::exitGame(sol::this_state s)
 {
 	wantsToExit = true;
 	lua_yield(s, 0);
+}
+
+void LuaEnvironment::saveScreenshot(const std::string& path, int w, int h)
+{
+	renderer->saveScreenshot(path, w, h);
 }
 
 void LuaEnvironment::setCursor(Cursor* cursor)

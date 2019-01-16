@@ -35,6 +35,7 @@ Functions
     globals/getDeltaSeconds
     globals/openScript
     globals/exitGame
+    globals/saveScreenshot
     globals/precacheImage
 
 **Narration**
@@ -137,6 +138,8 @@ Functions
     | :doc:`openScript<globals/openScript>`           | Transfer execution to the specified script                        |
     +-------------------------------------------------+-------------------------------------------------------------------+
     | :doc:`exitGame<globals/exitGame>`               | Close the game                                                    |
+    +-------------------------------------------------+-------------------------------------------------------------------+
+    | :doc:`saveScreenshot<globals/saveScreenshot>`   | Save a screenshot of the game to a file                           |
     +-------------------------------------------------+-------------------------------------------------------------------+
 
 

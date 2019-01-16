@@ -178,6 +178,7 @@ private:
 	void openScript(const std::string& file, sol::this_state s);
 	void precacheImage(const std::string& file);
 	void exitGame(sol::this_state s);
+	void saveScreenshot(const std::string& path, int w, int h);
 	void setCursor(class Cursor* cursor);
 	void setOnRightClick(sol::function function);
 
