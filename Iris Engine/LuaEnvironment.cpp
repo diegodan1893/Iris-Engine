@@ -124,7 +124,8 @@ void LuaEnvironment::setUp(
 			&LuaEnvironment::createSimpleButton,
 			&LuaEnvironment::createSimpleButtonLayout,
 			&LuaEnvironment::createButton,
-			&LuaEnvironment::createButtonLayout
+			&LuaEnvironment::createButtonLayout,
+			&LuaEnvironment::createButtonAll
 		),
 
 		// Properties
@@ -804,6 +805,53 @@ LuaEnvironment::ButtonPtr LuaEnvironment::createButton(const std::string& file, 
 LuaEnvironment::ButtonPtr LuaEnvironment::createButtonLayout(const std::string& file, int zindex, const std::string& text, bool useVerticalLayout)
 {
 	return ButtonPtr(new LuaButton(gameObjectManager, thisEnvironment, new ButtonObject(renderer, file, zindex, text, useVerticalLayout)));
+}
+
+LuaEnvironment::ButtonPtr LuaEnvironment::createButtonAll(
+	const std::string& file,
+	int zindex,
+	const std::string& text,
+	bool useVerticalLayout,
+	const sol::table& font,
+	const sol::table& disabledColor,
+	const sol::table& disabledShadowColor
+)
+{
+	FontProperties fontProperties;
+	fontProperties.fontFile = font["file"];
+	fontProperties.fontSize = font["size"];
+	fontProperties.fontColor = Color(font["color"]["r"], font["color"]["g"], font["color"]["b"], font["color"]["a"]);
+	fontProperties.shadowDistance = font["shadowDistance"];
+	fontProperties.shadowColor = Color(font["shadowColor"]["r"], font["shadowColor"]["g"], font["shadowColor"]["b"], font["shadowColor"]["a"]);
+
+	Color disabled;
+	disabled.r = disabledColor["r"];
+	disabled.g = disabledColor["g"];
+	disabled.b = disabledColor["b"];
+	disabled.a = disabledColor["a"];
+
+	Color disabledShadow;
+	disabledShadow.r = disabledShadowColor["r"];
+	disabledShadow.g = disabledShadowColor["g"];
+	disabledShadow.b = disabledShadowColor["b"];
+	disabledShadow.a = disabledShadowColor["a"];
+
+	return ButtonPtr(
+		new LuaButton(
+			gameObjectManager,
+			thisEnvironment,
+			new ButtonObject(
+				renderer,
+				file,
+				zindex,
+				text,
+				useVerticalLayout,
+				fontProperties,
+				disabled,
+				disabledShadow
+			)
+		)
+	);
 }
 
 LuaEnvironment::CharacterSpritePtr LuaEnvironment::createCharacterSpriteSimple(const std::string& file)

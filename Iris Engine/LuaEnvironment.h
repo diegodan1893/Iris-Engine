@@ -200,6 +200,15 @@ private:
 	static ButtonPtr createSimpleButtonLayout(const std::string& file, int zindex, bool useVerticalLayout);
 	static ButtonPtr createButton(const std::string& file, int zindex, const std::string& text);
 	static ButtonPtr createButtonLayout(const std::string& file, int zindex, const std::string& text, bool useVerticalLayout);
+	static ButtonPtr createButtonAll(
+		const std::string& file,
+		int zindex,
+		const std::string& text,
+		bool useVerticalLayout,
+		const sol::table& font,
+		const sol::table& disabledColor,
+		const sol::table& disabledShadowColor
+	);
 
 	// Character objects
 	typedef std::unique_ptr<LuaCharacterSprite> CharacterSpritePtr;
