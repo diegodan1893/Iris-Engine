@@ -10,6 +10,7 @@
 #include "BackgroundObject.h"
 #include "SpriteObject.h"
 #include "ButtonObject.h"
+#include "TextObject.h"
 #include "Locator.h"
 #include "TransitionUtils.h"
 #include "InterpolatorType.h"
@@ -88,33 +89,45 @@ void LuaEnvironment::setUp(
 		"ask", &LuaQuestion::ask
 	);
 
+	// Register Object class
+	lua.new_usertype<LuaObject>("Sprite",
+		// Constructor
+
+		// Properties
+		"visible", sol::property(&LuaObject::getVisible),
+
+		// Functions
+		"show", sol::overload(
+			&LuaObject::show,
+			&LuaObject::showTransition
+		),
+		"hide", sol::overload(
+			&LuaObject::hide,
+			&LuaObject::hideTransition
+		),
+		"skipTransition", &LuaObject::skipTransition,
+		"setPosition", &LuaObject::setPosition,
+		"getPosition", &LuaObject::getPosition,
+		"setOrigin", &LuaObject::setOrigin,
+		"move", sol::overload(
+			&LuaObject::moveInterpolator,
+			&LuaObject::move
+		)
+	);
+
 	// Register Sprite class
 	lua.new_usertype<LuaSprite>("Sprite",
 		// Constructor
 		"new", sol::factories(&LuaEnvironment::createSpriteSimple),
 
 		// Properties
-		"visible", sol::property(&LuaSprite::getVisible),
 
 		// Functions
-		"show", sol::overload(
-			&LuaSprite::show,
-			&LuaSprite::showTransition
-		),
-		"hide", sol::overload(
-			&LuaSprite::hide,
-			&LuaSprite::hideTransition
-		),
-		"skipTransition", &LuaSprite::skipTransition,
-		"setPosition", &LuaSprite::setPosition,
-		"getPosition", &LuaSprite::getPosition,
-		"setOrigin", &LuaSprite::setOrigin,
-		"move", sol::overload(
-			&LuaSprite::moveInterpolator,
-			&LuaSprite::move
-		),
 		"defineSpriteSheet", &LuaSprite::defineSpriteSheet,
-		"setFrame", &LuaSprite::setFrame
+		"setFrame", &LuaSprite::setFrame,
+
+		// Base class
+		sol::base_classes, sol::bases<LuaObject>()
 	);
 
 	// Register Button class
@@ -137,7 +150,21 @@ void LuaEnvironment::setUp(
 		// Functions
 
 		// Base class
-		sol::base_classes, sol::bases<LuaSprite>()
+		sol::base_classes, sol::bases<LuaObject>()
+	);
+
+	// Register Text class
+	lua.new_usertype<LuaText>("Text",
+		// Constructor
+		"new", sol::factories(createText),
+
+		// Properties
+
+		// Functions
+		"setText", &LuaText::setText,
+
+		// Base class
+		sol::base_classes, sol::bases<LuaObject>()
 	);
 
 	// Register Character Sprite class
@@ -852,6 +879,18 @@ LuaEnvironment::ButtonPtr LuaEnvironment::createButtonAll(
 			)
 		)
 	);
+}
+
+LuaEnvironment::LuaTextPtr LuaEnvironment::createText(const sol::table& font, int zindex)
+{
+	FontProperties fontProperties;
+	fontProperties.fontFile = font["file"];
+	fontProperties.fontSize = font["size"];
+	fontProperties.fontColor = Color(font["color"]["r"], font["color"]["g"], font["color"]["b"], font["color"]["a"]);
+	fontProperties.shadowDistance = font["shadowDistance"];
+	fontProperties.shadowColor = Color(font["shadowColor"]["r"], font["shadowColor"]["g"], font["shadowColor"]["b"], font["shadowColor"]["a"]);
+
+	return LuaTextPtr(new LuaText(gameObjectManager, thisEnvironment, new TextObject(fontProperties, zindex)));
 }
 
 LuaEnvironment::CharacterSpritePtr LuaEnvironment::createCharacterSpriteSimple(const std::string& file)

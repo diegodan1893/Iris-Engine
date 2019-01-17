@@ -4,6 +4,7 @@
 #include "LuaCharacter.h"
 #include "LuaSprite.h"
 #include "LuaButton.h"
+#include "LuaText.h"
 #include "LuaQuestion.h"
 #include "LuaCharacterSprite.h"
 #include "LuaClickableMap.h"
@@ -209,6 +210,10 @@ private:
 		const sol::table& disabledColor,
 		const sol::table& disabledShadowColor
 	);
+
+	// Text objects
+	typedef std::unique_ptr<LuaText> LuaTextPtr;
+	static LuaTextPtr createText(const sol::table& font, int zindex);
 
 	// Character objects
 	typedef std::unique_ptr<LuaCharacterSprite> CharacterSpritePtr;

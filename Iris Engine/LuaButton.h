@@ -1,8 +1,8 @@
 #pragma once
 
-#include "LuaSprite.h"
+#include "LuaObject.h"
 
-class LuaButton : public LuaSprite
+class LuaButton : public LuaObject
 {
 public:
 	LuaButton(

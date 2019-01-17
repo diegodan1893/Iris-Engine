@@ -77,13 +77,21 @@ public:
 	/// </summary>
 	/// <param name="color">The new shadow color.</param>
 	void setShadowColor(const Color& color);
+	
+	/// <summary>
+	/// When the text is rendered, the oppacity of the
+	/// text will be modulated by this alpha value.
+	/// </summary>
+	/// <param name="alpha">The alpha multiplied into render operations.</param>
+	void setAlphaMod(uint8_t alpha);
 
 private:
 	TTF_Font* font;
 	SDL_Color fontColor;
 	int shadowDistance;
 	SDL_Color shadowColor;
+	float alphaModulation;
 
 	std::u16string convertToUTF16(const std::string& string);
-	void drawLine(class IRenderer* renderer, int x, int y, const std::u16string& line, const SDL_Color& color);
+	void drawLine(class IRenderer* renderer, int x, int y, const std::u16string& line, SDL_Color color);
 };

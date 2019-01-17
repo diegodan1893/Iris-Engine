@@ -6,7 +6,8 @@
 #include <codecvt>
 
 FontComponent::FontComponent(const FontProperties& fontProperties)
-	:shadowDistance(fontProperties.shadowDistance)
+	:shadowDistance(fontProperties.shadowDistance),
+	 alphaModulation(1.0f)
 {
 	font = TTF_OpenFont(fontProperties.fontFile.c_str(), fontProperties.fontSize);
 
@@ -93,6 +94,11 @@ void FontComponent::setShadowColor(const Color& color)
 	};
 }
 
+void FontComponent::setAlphaMod(uint8_t alpha)
+{
+	alphaModulation = alpha / 255.0f;
+}
+
 std::u16string FontComponent::convertToUTF16(const std::string& string)
 {
 	// Convert string to utf-16 so that it can be redered with the same function
@@ -104,8 +110,11 @@ std::u16string FontComponent::convertToUTF16(const std::string& string)
 	return (char16_t*)convert.from_bytes(string).c_str();
 }
 
-void FontComponent::drawLine(IRenderer* renderer, int x, int y, const std::u16string& line, const SDL_Color& color)
+void FontComponent::drawLine(IRenderer* renderer, int x, int y, const std::u16string& line, SDL_Color color)
 {
+	// Apply alpha modulation
+	color.a *= alphaModulation;
+
 	SDL_Surface* lineSurface = TTF_RenderUNICODE_Blended(font, (Uint16*)line.c_str(), color);
 
 	if (lineSurface)

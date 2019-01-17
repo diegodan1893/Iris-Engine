@@ -3,7 +3,7 @@
 #include "LuaEnvironment.h"
 
 LuaButton::LuaButton(GameObjectManager* gameObjectManager, LuaEnvironment* lua, ButtonObject* object)
-	:LuaSprite(gameObjectManager, lua, object),
+	:LuaObject(gameObjectManager, lua, object),
 	 lua(lua)
 {
 }
