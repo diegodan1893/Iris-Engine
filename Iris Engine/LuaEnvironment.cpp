@@ -559,10 +559,6 @@ void LuaEnvironment::sceneTime(const std::string& file, float seconds, sol::this
 
 void LuaEnvironment::sceneTransition(const std::string& file, const sol::table& transition, sol::this_state s)
 {
-	// Disable mouse input while in transition
-	bool mouseInputEnabled = Locator::getInput()->getMouseInputEnabled();
-	Locator::getInput()->setMouseInputEnabled(false);
-
 	TransitionType transitionType;
 
 	if (TransitionUtils::getTransitionType(transition, transitionType))
@@ -585,6 +581,10 @@ void LuaEnvironment::sceneTransition(const std::string& file, const sol::table& 
 
 		case TransitionType::IMAGE_DISSOLVE:
 		{
+			// Disable mouse input while in transition
+			bool mouseInputEnabled = Locator::getInput()->getMouseInputEnabled();
+			Locator::getInput()->setMouseInputEnabled(false);
+
 			float transitionTime;
 			std::string image;
 
