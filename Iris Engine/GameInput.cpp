@@ -7,7 +7,8 @@ GameInput::GameInput()
 	:allowSkipping(true),
 	 objectPointedByUser(nullptr),
 	 defaultCursor(nullptr),
-	 mouseInputEnabled(true)
+	 mouseInputEnabled(true),
+	 mouseInputMinZindex(INT_MIN)
 {
 	inputNow.mouseLeft = inputNow.mouseMiddle = inputNow.mouseRight = false;
 	inputNow.mouseWheelDown = inputNow.enterKey = inputNow.altEnterKeys = false;
@@ -204,6 +205,11 @@ void GameInput::setMouseInputEnabled(bool enabled)
 	mouseInputEnabled = enabled;
 }
 
+void GameInput::disableMouseInputBelow(int zindex)
+{
+	mouseInputMinZindex = zindex;
+}
+
 bool GameInput::getMouseInputEnabled() const
 {
 	return mouseInputEnabled;
@@ -211,17 +217,20 @@ bool GameInput::getMouseInputEnabled() const
 
 void GameInput::setObjectPointedByUser(IClickableObject* object, int zindex)
 {
-	if (!objectPointedByUser)
+	if (zindex >= mouseInputMinZindex)
 	{
-		objectPointedByUser = object;
-		objectZindex = zindex;
-	}
-	else
-	{
-		if (objectZindex <= zindex)
+		if (!objectPointedByUser)
 		{
 			objectPointedByUser = object;
 			objectZindex = zindex;
+		}
+		else
+		{
+			if (objectZindex <= zindex)
+			{
+				objectPointedByUser = object;
+				objectZindex = zindex;
+			}
 		}
 	}
 }

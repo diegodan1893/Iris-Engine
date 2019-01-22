@@ -165,7 +165,7 @@ private:
 	void setTextAlign(Alignment align);
 	void disableSkip();
 	void enableSkip();
-	void disableMouseInput();
+	void disableMouseInput(sol::object zindex);
 	void enableMouseInput();
 	void playMusic(const std::string& file);
 	void fadeInMusic(const std::string& file, float seconds);

@@ -693,14 +693,18 @@ void LuaEnvironment::enableSkip()
 	Locator::getInput()->setAllowSkipping(true);
 }
 
-void LuaEnvironment::disableMouseInput()
+void LuaEnvironment::disableMouseInput(sol::object zindex)
 {
-	Locator::getInput()->setMouseInputEnabled(false);
+	if (zindex != sol::nil && zindex.is<int>())
+		Locator::getInput()->disableMouseInputBelow(zindex.as<int>());
+	else
+		Locator::getInput()->setMouseInputEnabled(false);
 }
 
 void LuaEnvironment::enableMouseInput()
 {
 	Locator::getInput()->setMouseInputEnabled(true);
+	Locator::getInput()->disableMouseInputBelow(INT_MIN);
 }
 
 void LuaEnvironment::playMusic(const std::string& file)

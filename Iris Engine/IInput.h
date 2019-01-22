@@ -69,6 +69,13 @@ public:
 	virtual void setMouseInputEnabled(bool enabled) = 0;
 	
 	/// <summary>
+	/// Disables the mouse input for objects with
+	/// lower zindex than the one provided.
+	/// </summary>
+	/// <param name="zindex">The zindex.</param>
+	virtual void disableMouseInputBelow(int zindex) = 0;
+	
+	/// <summary>
 	/// Gets whether or not mouse input is enabled.
 	/// </summary>
 	/// <returns><c>true</c> if mouse input is enabled; otherwise, <c>false</c></returns>
