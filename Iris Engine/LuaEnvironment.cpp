@@ -671,11 +671,14 @@ void LuaEnvironment::sceneTransition(const std::string& file, const sol::table& 
 
 void LuaEnvironment::hideText(sol::this_state s)
 {
-	textWindow->startFadeOut(Config::values().textWindow.hideTransitionTime, true);
+	if (textWindow->visible())
+	{
+		textWindow->startFadeOut(Config::values().textWindow.hideTransitionTime, true);
 
-	// Wait for the transition to finish
-	waitFor(new WaitForTransition(textWindow));
-	lua_yield(s, 0);
+		// Wait for the transition to finish
+		waitFor(new WaitForTransition(textWindow));
+		lua_yield(s, 0);
+	}
 }
 
 void LuaEnvironment::setTextAlign(Alignment align)
