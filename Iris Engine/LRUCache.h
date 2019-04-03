@@ -40,6 +40,15 @@ public:
 	Sound* getSound(const std::string& path) override;
 	
 	/// <summary>
+	/// Gets an image that can be used efficiently by the CPU.
+	/// </summary>
+	/// <param name="path">The path.</param>
+	/// <returns>
+	/// The image located in path or <c>null</c> if it could not be loaded.
+	/// </returns>
+	CPUImage* getCPUImage(const std::string& path) override;
+	
+	/// <summary>
 	/// Determines whether the specified asset is present in the cache
 	/// without loading it.
 	/// </summary>
@@ -91,6 +100,7 @@ private:
 	enum AssetType
 	{
 		SPRITE,
-		SOUND
+		SOUND,
+		CPUIMAGE
 	};
 };

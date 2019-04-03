@@ -142,6 +142,7 @@
     <ClCompile Include="ClickableMap.cpp" />
     <ClCompile Include="ColorGradingShader.cpp" />
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="CPUImage.cpp" />
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="DissolveShader.cpp" />
     <ClCompile Include="EaseInInterpolator.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="ClickableMap.h" />
     <ClInclude Include="ColorGradingShader.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="CPUImage.h" />
     <ClInclude Include="Cursor.h" />
     <ClInclude Include="DissolveShader.h" />
     <ClInclude Include="EaseInInterpolator.h" />

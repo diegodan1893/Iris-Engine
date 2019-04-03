@@ -1,32 +1,22 @@
 #include "ClickableMap.h"
 #include "Locator.h"
 #include "Config.h"
+#include "CPUImage.h"
 #include <SDL_image.h>
 
 ClickableMap::ClickableMap(const std::string& file)
 	:Object(Config::values().zindexes.backgrounds),
 	 autoDisableOnClick(true)
 {
-	map = IMG_Load((Config::values().paths.gui + file).c_str());
+	mapPath = Config::values().paths.gui + file;
+	selectedPixel = previousSelectedPixel = 0;
 
-	if (map)
-	{
-		selectedPixel = previousSelectedPixel = 0;
-	}
-	else
-	{
-		Locator::getLogger()->log(
-			LogCategory::OBJECT,
-			LogPriority::ERROR,
-			u8"Clickable map image could not be loaded:\n" + std::string(IMG_GetError())
-		);
-	}
+	if (Config::values().cache.allowPrecaching)
+		Locator::getCache()->getCPUImage(mapPath);
 }
 
 ClickableMap::~ClickableMap()
 {
-	if (map)
-		SDL_FreeSurface(map);
 }
 
 void ClickableMap::draw(IRenderer* renderer)
@@ -36,13 +26,15 @@ void ClickableMap::draw(IRenderer* renderer)
 
 void ClickableMap::update(float elapsedSeconds)
 {
-	if (map)
+	// Map is enabled if the object is visible
+	if (visible() && valid())
 	{
-		// Map is enabled if the object is visible
-		if (visible())
+		CPUImage* map = Locator::getCache()->getCPUImage(mapPath);
+
+		if (map)
 		{
 			previousSelectedPixel = selectedPixel;
-			selectedPixel = getSelectedPixel();
+			selectedPixel = getSelectedPixel(map);
 
 			auto selected = delegates.find(selectedPixel);
 			auto previous = delegates.find(previousSelectedPixel);
@@ -72,9 +64,13 @@ void ClickableMap::update(float elapsedSeconds)
 		}
 		else
 		{
-			if (selectedPixel != 0)
-				selectedPixel = previousSelectedPixel = 0;
+			setValid(false);
 		}
+	}
+	else
+	{
+		if (selectedPixel != 0)
+			selectedPixel = previousSelectedPixel = 0;
 	}
 }
 
@@ -85,27 +81,29 @@ void ClickableMap::setDisableOnClick(bool disableOnClick)
 
 void ClickableMap::setOnMouseEnter(Uint8 r, Uint8 g, Uint8 b, std::function<void(void)> function)
 {
-	Uint32 mappedColor = SDL_MapRGB(map->format, r, g, b);
+	Uint32 mappedColor = mapColor(r, g, b);
 
 	delegates[mappedColor].onMouseEnter = function;
 }
 
 void ClickableMap::setOnMouseExit(Uint8 r, Uint8 g, Uint8 b, std::function<void(void)> function)
 {
-	Uint32 mappedColor = SDL_MapRGB(map->format, r, g, b);
+	Uint32 mappedColor = mapColor(r, g, b);
 
 	delegates[mappedColor].onMouseExit = function;
 }
 
 void ClickableMap::setOnClick(Uint8 r, Uint8 g, Uint8 b, std::function<void(void)> function)
 {
-	Uint32 mappedColor = SDL_MapRGB(map->format, r, g, b);
+	Uint32 mappedColor = mapColor(r, g, b);
 
 	delegates[mappedColor].onClick = function;
 }
 
-Uint32 ClickableMap::getSelectedPixel()
+Uint32 ClickableMap::getSelectedPixel(CPUImage* mapImage)
 {
+	SDL_Surface* map = mapImage->getImage();
+
 	// Get mouse coordinates
 	int x, y;
 	Locator::getInput()->getMouseCoordinates(x, y);
@@ -143,4 +141,26 @@ Uint32 ClickableMap::getSelectedPixel()
 	{
 		return SDL_MapRGB(map->format, 0, 0, 0);
 	}
+}
+
+Uint32 ClickableMap::mapColor(Uint8 r, Uint8 g, Uint8 b)
+{
+	Uint32 mappedColor = 0;
+
+	if (valid())
+	{
+		CPUImage* map = Locator::getCache()->getCPUImage(mapPath);
+
+		if (map)
+		{
+			SDL_Surface* surface = map->getImage();
+			mappedColor = SDL_MapRGB(surface->format, r, g, b);
+		}
+		else
+		{
+			setValid(false);
+		}
+	}
+
+	return mappedColor;
 }

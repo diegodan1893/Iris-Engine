@@ -3,6 +3,7 @@
 #include "Locator.h"
 #include "Sprite.h"
 #include "Sound.h"
+#include "CPUImage.h"
 #include "IRenderer.h"
 #include <algorithm>
 
@@ -26,6 +27,11 @@ Sprite* LRUCache::getSprite(const std::string& path)
 Sound* LRUCache::getSound(const std::string& path)
 {
 	return (Sound*)getAsset(path, LRUCache::SOUND);
+}
+
+CPUImage* LRUCache::getCPUImage(const std::string & path)
+{
+	return (CPUImage*)getAsset(path, LRUCache::CPUIMAGE);
 }
 
 bool LRUCache::isPresent(const std::string & path)
@@ -78,8 +84,12 @@ Asset* LRUCache::getAsset(const std::string& path, AssetType type)
 			asset = new Sound(path);
 			break;
 
+		case LRUCache::CPUIMAGE:
+			asset = new CPUImage(path);
+			break;
+
 		default:
-			Locator::getLogger()->log(LogCategory::CACHE, LogPriority::ERROR, u8"Invalid asset type");
+			Locator::getLogger()->log(LogCategory::CACHE, LogPriority::ERROR, u8"Trying to cache an invalid asset type");
 			return nullptr;
 		}
 

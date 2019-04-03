@@ -206,6 +206,9 @@
     <ClCompile Include="LuaText.cpp">
       <Filter>Source Files\Lua</Filter>
     </ClCompile>
+    <ClCompile Include="CPUImage.cpp">
+      <Filter>Source Files\Cache</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector.h">
@@ -412,6 +415,9 @@
     </ClInclude>
     <ClInclude Include="LuaText.h">
       <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="CPUImage.h">
+      <Filter>Source Files\Cache</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
