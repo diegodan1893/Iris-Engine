@@ -166,6 +166,7 @@ Classes
     classes/question/top
     classes/sprite/top
     classes/button/top
+    classes/text/top
     classes/characterSprite/top
     classes/cursor/top
     classes/clickableMap/top
@@ -183,6 +184,8 @@ Classes
     | :doc:`Sprite<classes/sprite/top>`                   | An image that can be drawn on the screen           |
     +-----------------------------------------------------+----------------------------------------------------+
     | :doc:`Button<classes/button/top>`                   | A button the user can click                        |
+    +-----------------------------------------------------+----------------------------------------------------+
+    | :doc:`Text<classes/text/top>`                       | Used to draw text on the screen                    |
     +-----------------------------------------------------+----------------------------------------------------+
     | :doc:`CharacterSprite<classes/characterSprite/top>` | An image that represents a character               |
     +-----------------------------------------------------+----------------------------------------------------+
