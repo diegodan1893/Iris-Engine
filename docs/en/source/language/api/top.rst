@@ -35,6 +35,7 @@ Functions
     globals/getDeltaSeconds
     globals/openScript
     globals/exitGame
+    globals/saveScreenshot
     globals/precacheImage
 
 **Narration**
@@ -138,6 +139,8 @@ Functions
     +-------------------------------------------------+-------------------------------------------------------------------+
     | :doc:`exitGame<globals/exitGame>`               | Close the game                                                    |
     +-------------------------------------------------+-------------------------------------------------------------------+
+    | :doc:`saveScreenshot<globals/saveScreenshot>`   | Save a screenshot of the game to a file                           |
+    +-------------------------------------------------+-------------------------------------------------------------------+
 
 
 **Caching**
@@ -163,6 +166,7 @@ Classes
     classes/question/top
     classes/sprite/top
     classes/button/top
+    classes/text/top
     classes/characterSprite/top
     classes/cursor/top
     classes/clickableMap/top
@@ -180,6 +184,8 @@ Classes
     | :doc:`Sprite<classes/sprite/top>`                   | An image that can be drawn on the screen           |
     +-----------------------------------------------------+----------------------------------------------------+
     | :doc:`Button<classes/button/top>`                   | A button the user can click                        |
+    +-----------------------------------------------------+----------------------------------------------------+
+    | :doc:`Text<classes/text/top>`                       | Used to draw text on the screen                    |
     +-----------------------------------------------------+----------------------------------------------------+
     | :doc:`CharacterSprite<classes/characterSprite/top>` | An image that represents a character               |
     +-----------------------------------------------------+----------------------------------------------------+

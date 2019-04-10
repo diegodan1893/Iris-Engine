@@ -142,6 +142,7 @@
     <ClCompile Include="ClickableMap.cpp" />
     <ClCompile Include="ColorGradingShader.cpp" />
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="CPUImage.cpp" />
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="DissolveShader.cpp" />
     <ClCompile Include="EaseInInterpolator.cpp" />
@@ -166,7 +167,9 @@
     <ClCompile Include="LuaClickableMap.cpp" />
     <ClCompile Include="LuaEnvironment.cpp" />
     <ClCompile Include="LuaQuestion.cpp" />
+    <ClCompile Include="LuaObject.cpp" />
     <ClCompile Include="LuaSprite.cpp" />
+    <ClCompile Include="LuaText.cpp" />
     <ClCompile Include="MessageBoxLogger.cpp" />
     <ClCompile Include="MixAudio.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -176,6 +179,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteObject.cpp" />
     <ClCompile Include="TestShader.cpp" />
+    <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="TextWindow.cpp" />
     <ClCompile Include="TransitionUtils.cpp" />
     <ClCompile Include="WaitForChoice.cpp" />
@@ -196,6 +200,7 @@
     <ClInclude Include="ClickableMap.h" />
     <ClInclude Include="ColorGradingShader.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="CPUImage.h" />
     <ClInclude Include="Cursor.h" />
     <ClInclude Include="DissolveShader.h" />
     <ClInclude Include="EaseInInterpolator.h" />
@@ -210,6 +215,7 @@
     <ClInclude Include="GPURenderer.h" />
     <ClInclude Include="GPUShaderProgram.h" />
     <ClInclude Include="GPUTexture.h" />
+    <ClInclude Include="LuaText.h" />
     <ClInclude Include="IAudio.h" />
     <ClInclude Include="IClickableObject.h" />
     <ClInclude Include="IInput.h" />
@@ -230,6 +236,7 @@
     <ClInclude Include="LuaClickableMap.h" />
     <ClInclude Include="LuaEnvironment.h" />
     <ClInclude Include="LuaQuestion.h" />
+    <ClInclude Include="LuaObject.h" />
     <ClInclude Include="LuaSprite.h" />
     <ClInclude Include="MessageBoxLogger.h" />
     <ClInclude Include="MixAudio.h" />
@@ -241,6 +248,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteObject.h" />
     <ClInclude Include="TestShader.h" />
+    <ClInclude Include="TextObject.h" />
     <ClInclude Include="TextWindow.h" />
     <ClInclude Include="TransitionType.h" />
     <ClInclude Include="TransitionUtils.h" />

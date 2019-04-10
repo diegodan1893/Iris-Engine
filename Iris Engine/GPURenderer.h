@@ -108,6 +108,17 @@ public:
 	/// A pointer to the new texture
 	/// </returns>
 	ITexture* createTexture(struct SDL_Surface* surface) override;
+	
+	/// <summary>
+	/// Captures a screenshot of the game and saves
+	/// it to a file.
+	/// The image is stretched to fit the provided
+	/// resolution.
+	/// </summary>
+	/// <param name="path">The path where you want to save the screenshot.</param>
+	/// <param name="w">The width of the final image in pixels.</param>
+	/// <param name="h">The height of the final image in pixels.</param>
+	void saveScreenshot(const std::string& path, int w, int h);
 
 	// Shaders
 	TestShader* getTestShader() override;

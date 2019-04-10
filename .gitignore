@@ -244,3 +244,4 @@ ModelManifest.xml
 # Do not track test assets
 Iris\ Engine/assets
 Iris\ Engine/config.lua
+Iris\ Engine/savedata

@@ -26,7 +26,7 @@ Sprite::Sprite(const std::string& path, IRenderer* renderer)
 		Locator::getLogger()->log(
 			LogCategory::FILE,
 			LogPriority::ERROR,
-			"Error opening file " + path + ":\n" + std::string(SDL_GetError())
+			u8"Error opening file " + path + ":\n" + std::string(SDL_GetError())
 		);
 	}
 }

@@ -74,4 +74,4 @@ Member functions
     +-----------------------------------+------------------------+
 
 The Button class inherits all of the methods of
-:doc:`the Sprite class <../sprite/top>`.
+:doc:`the Sprite class <../sprite/top>` except *defineSpriteSheet* and *setFrame*.

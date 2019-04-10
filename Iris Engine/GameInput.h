@@ -98,6 +98,13 @@ public:
 	/// </summary>
 	/// <param name="enabled">if set to <c>true</c> mouse input will be enabled.</param>
 	void setMouseInputEnabled(bool enabled) override;
+
+	/// <summary>
+	/// Disables the mouse input for objects with
+	/// lower zindex than the one provided.
+	/// </summary>
+	/// <param name="zindex">The zindex.</param>
+	virtual void disableMouseInputBelow(int zindex);
 	
 	/// <summary>
 	/// Gets whether or not mouse input is enabled.
@@ -147,6 +154,7 @@ private:
 	IClickableObject* objectPointedByUser;
 	int objectZindex;
 	bool mouseInputEnabled;
+	int mouseInputMinZindex;
 
 	// Fullscreen correction
 	float zoom;

@@ -23,6 +23,13 @@ public:
 	/// <param name="path">The path.</param>
 	/// <returns>The sound located in path or <c>null</c> if it could not be loaded.</returns>
 	virtual class Sound* getSound(const std::string& path) = 0;
+
+	/// <summary>
+	/// Gets an image that can be used efficiently by the CPU.
+	/// </summary>
+	/// <param name="path">The path.</param>
+	/// <returns>The image located in path or <c>null</c> if it could not be loaded.</returns>
+	virtual class CPUImage* getCPUImage(const std::string& path) = 0;
 	
  	/// <summary>
 	/// Determines whether the specified asset is present in the cache

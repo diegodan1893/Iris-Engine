@@ -2,6 +2,7 @@
 
 #include "Vector.h"
 #include <cstdint>
+#include <string>
 
 /// <summary>
 /// Supported texture formats.
@@ -117,6 +118,17 @@ public:
 	/// <param name="surface">The surface.</param>
 	/// <returns>A pointer to the new texture</returns>
 	virtual ITexture* createTexture(struct SDL_Surface* surface) = 0;
+	
+	/// <summary>
+	/// Captures a screenshot of the game and saves
+	/// it to a file.
+	/// The image is stretched to fit the provided
+	/// resolution.
+	/// </summary>
+	/// <param name="path">The path where you want to save the screenshot.</param>
+	/// <param name="w">The width of the final image in pixels.</param>
+	/// <param name="h">The height of the final image in pixels.</param>
+	virtual void saveScreenshot(const std::string& path, int w, int h) = 0;
 
 	// Shaders
 	virtual class TestShader* getTestShader() = 0;

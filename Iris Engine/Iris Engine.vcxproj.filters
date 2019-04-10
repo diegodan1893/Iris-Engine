@@ -86,9 +86,6 @@
     <ClCompile Include="SpriteObject.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="LuaSprite.cpp">
-      <Filter>Source Files\Lua</Filter>
-    </ClCompile>
     <ClCompile Include="CharacterObject.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
@@ -197,6 +194,21 @@
     <ClCompile Include="ColorGradingShader.cpp">
       <Filter>Source Files\Render\Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="TextObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaObject.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaSprite.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaText.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="CPUImage.cpp">
+      <Filter>Source Files\Cache</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector.h">
@@ -249,9 +261,6 @@
     </ClInclude>
     <ClInclude Include="SpriteObject.h">
       <Filter>Source Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="LuaSprite.h">
-      <Filter>Source Files\Lua</Filter>
     </ClInclude>
     <ClInclude Include="CharacterObject.h">
       <Filter>Source Files\Objects</Filter>
@@ -394,6 +403,21 @@
     </ClInclude>
     <ClInclude Include="ColorGradingShader.h">
       <Filter>Source Files\Render\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="TextObject.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaObject.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaSprite.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaText.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="CPUImage.h">
+      <Filter>Source Files\Cache</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

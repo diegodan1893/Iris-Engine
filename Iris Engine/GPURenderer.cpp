@@ -1,5 +1,6 @@
 #include "GPURenderer.h"
 #include "GPUTexture.h"
+#include "Locator.h"
 #include <SDL_gpu.h>
 #include <cmath>
 
@@ -38,6 +39,8 @@ GPURenderer::GPURenderer(SDL_Window* window)
 
 GPURenderer::~GPURenderer()
 {
+	delete virtualScreen;
+
 	GPU_Quit();
 }
 
@@ -193,6 +196,46 @@ ITexture* GPURenderer::createTexture(SDL_Surface* surface)
 		return new GPUTexture(internalTexture);
 	else
 		return nullptr;
+}
+
+void GPURenderer::saveScreenshot(const std::string& path, int w, int h)
+{
+	// Create a texture for the screenshot
+	GPUTexture* screenshotTexture = (GPUTexture*)createTexture(TextureFormat::RGBA8, TextureAccess::TARGET, w, h);
+	GPU_Target* screenshotTarget = screenshotTexture->getTarget();
+
+	// Copy the screen to the texture scaling it to fit the desired resolution
+	GPU_Rect rect;
+	rect.x = 0;
+	rect.y = 0;
+	rect.w = w;
+	rect.h = h;
+
+	GPU_BlitRect(virtualScreen->getInternalTexture(), nullptr, screenshotTarget, &rect);
+	GPU_Flip(screenshotTarget);
+
+	// Save the screenshot to a file
+	GPU_bool success = GPU_SaveImage(screenshotTexture->getInternalTexture(), path.c_str(), GPU_FILE_AUTO);
+
+	if (success)
+	{
+		Locator::getLogger()->log(
+			LogCategory::RENDER,
+			LogPriority::INFO,
+			"Saved screenshot to the path: " + path
+		);
+	}
+	else
+	{
+		Locator::getLogger()->log(
+			LogCategory::RENDER,
+			LogPriority::ERROR,
+			"Couldn't save image to the path " + path
+		);
+	}
+	
+	// Delete temporal textures
+	delete screenshotTexture;
 }
 
 TestShader* GPURenderer::getTestShader()

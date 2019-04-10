@@ -10,10 +10,12 @@
 #include "BackgroundObject.h"
 #include "SpriteObject.h"
 #include "ButtonObject.h"
+#include "TextObject.h"
 #include "Locator.h"
 #include "TransitionUtils.h"
 #include "InterpolatorType.h"
 #include "Cursor.h"
+#include "IRenderer.h"
 
 bool LuaEnvironment::instantiated = false;
 LuaEnvironment* LuaEnvironment::thisEnvironment;
@@ -53,7 +55,7 @@ void LuaEnvironment::setUp(
 	now = last = SDL_GetPerformanceCounter();
 
 	// Set up lua environment
-	lua.open_libraries(sol::lib::base, sol::lib::string, sol::lib::math, sol::lib::table);
+	lua.open_libraries(sol::lib::base, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::io, sol::lib::os);
 
 	// Set the random seed to the current time
 	lua["math"]["randomseed"](time(0));
@@ -87,33 +89,45 @@ void LuaEnvironment::setUp(
 		"ask", &LuaQuestion::ask
 	);
 
+	// Register Object class
+	lua.new_usertype<LuaObject>("Sprite",
+		// Constructor
+
+		// Properties
+		"visible", sol::property(&LuaObject::getVisible),
+
+		// Functions
+		"show", sol::overload(
+			&LuaObject::show,
+			&LuaObject::showTransition
+		),
+		"hide", sol::overload(
+			&LuaObject::hide,
+			&LuaObject::hideTransition
+		),
+		"skipTransition", &LuaObject::skipTransition,
+		"setPosition", &LuaObject::setPosition,
+		"getPosition", &LuaObject::getPosition,
+		"setOrigin", &LuaObject::setOrigin,
+		"move", sol::overload(
+			&LuaObject::moveInterpolator,
+			&LuaObject::move
+		)
+	);
+
 	// Register Sprite class
 	lua.new_usertype<LuaSprite>("Sprite",
 		// Constructor
 		"new", sol::factories(&LuaEnvironment::createSpriteSimple),
 
 		// Properties
-		"visible", sol::property(&LuaSprite::getVisible),
 
 		// Functions
-		"show", sol::overload(
-			&LuaSprite::show,
-			&LuaSprite::showTransition
-		),
-		"hide", sol::overload(
-			&LuaSprite::hide,
-			&LuaSprite::hideTransition
-		),
-		"skipTransition", &LuaSprite::skipTransition,
-		"setPosition", &LuaSprite::setPosition,
-		"getPosition", &LuaSprite::getPosition,
-		"setOrigin", &LuaSprite::setOrigin,
-		"move", sol::overload(
-			&LuaSprite::moveInterpolator,
-			&LuaSprite::move
-		),
 		"defineSpriteSheet", &LuaSprite::defineSpriteSheet,
-		"setFrame", &LuaSprite::setFrame
+		"setFrame", &LuaSprite::setFrame,
+
+		// Base class
+		sol::base_classes, sol::bases<LuaObject>()
 	);
 
 	// Register Button class
@@ -123,7 +137,8 @@ void LuaEnvironment::setUp(
 			&LuaEnvironment::createSimpleButton,
 			&LuaEnvironment::createSimpleButtonLayout,
 			&LuaEnvironment::createButton,
-			&LuaEnvironment::createButtonLayout
+			&LuaEnvironment::createButtonLayout,
+			&LuaEnvironment::createButtonAll
 		),
 
 		// Properties
@@ -135,7 +150,21 @@ void LuaEnvironment::setUp(
 		// Functions
 
 		// Base class
-		sol::base_classes, sol::bases<LuaSprite>()
+		sol::base_classes, sol::bases<LuaObject>()
+	);
+
+	// Register Text class
+	lua.new_usertype<LuaText>("Text",
+		// Constructor
+		"new", sol::factories(createText),
+
+		// Properties
+
+		// Functions
+		"setText", &LuaText::setText,
+
+		// Base class
+		sol::base_classes, sol::bases<LuaObject>()
 	);
 
 	// Register Character Sprite class
@@ -250,6 +279,7 @@ void LuaEnvironment::setUp(
 	lua.set_function("openScript", &LuaEnvironment::openScript, this);
 	lua.set_function("precacheImage", &LuaEnvironment::precacheImage, this);
 	lua.set_function("exitGame", &LuaEnvironment::exitGame, this);
+	lua.set_function("saveScreenshot", &LuaEnvironment::saveScreenshot, this);
 	lua.set_function("setCursor", &LuaEnvironment::setCursor, this);
 	lua.set_function("setOnRightClick", &LuaEnvironment::setOnRightClick, this);
 
@@ -556,10 +586,6 @@ void LuaEnvironment::sceneTime(const std::string& file, float seconds, sol::this
 
 void LuaEnvironment::sceneTransition(const std::string& file, const sol::table& transition, sol::this_state s)
 {
-	// Disable mouse input while in transition
-	bool mouseInputEnabled = Locator::getInput()->getMouseInputEnabled();
-	Locator::getInput()->setMouseInputEnabled(false);
-
 	TransitionType transitionType;
 
 	if (TransitionUtils::getTransitionType(transition, transitionType))
@@ -582,6 +608,10 @@ void LuaEnvironment::sceneTransition(const std::string& file, const sol::table& 
 
 		case TransitionType::IMAGE_DISSOLVE:
 		{
+			// Disable mouse input while in transition
+			bool mouseInputEnabled = Locator::getInput()->getMouseInputEnabled();
+			Locator::getInput()->setMouseInputEnabled(false);
+
 			float transitionTime;
 			std::string image;
 
@@ -641,11 +671,14 @@ void LuaEnvironment::sceneTransition(const std::string& file, const sol::table& 
 
 void LuaEnvironment::hideText(sol::this_state s)
 {
-	textWindow->startFadeOut(Config::values().textWindow.hideTransitionTime, true);
+	if (textWindow->visible())
+	{
+		textWindow->startFadeOut(Config::values().textWindow.hideTransitionTime, true);
 
-	// Wait for the transition to finish
-	waitFor(new WaitForTransition(textWindow));
-	lua_yield(s, 0);
+		// Wait for the transition to finish
+		waitFor(new WaitForTransition(textWindow));
+		lua_yield(s, 0);
+	}
 }
 
 void LuaEnvironment::setTextAlign(Alignment align)
@@ -663,14 +696,18 @@ void LuaEnvironment::enableSkip()
 	Locator::getInput()->setAllowSkipping(true);
 }
 
-void LuaEnvironment::disableMouseInput()
+void LuaEnvironment::disableMouseInput(sol::object zindex)
 {
-	Locator::getInput()->setMouseInputEnabled(false);
+	if (zindex != sol::nil && zindex.is<int>())
+		Locator::getInput()->disableMouseInputBelow(zindex.as<int>());
+	else
+		Locator::getInput()->setMouseInputEnabled(false);
 }
 
 void LuaEnvironment::enableMouseInput()
 {
 	Locator::getInput()->setMouseInputEnabled(true);
+	Locator::getInput()->disableMouseInputBelow(INT_MIN);
 }
 
 void LuaEnvironment::playMusic(const std::string& file)
@@ -742,6 +779,11 @@ void LuaEnvironment::exitGame(sol::this_state s)
 	lua_yield(s, 0);
 }
 
+void LuaEnvironment::saveScreenshot(const std::string& path, int w, int h)
+{
+	renderer->saveScreenshot(path, w, h);
+}
+
 void LuaEnvironment::setCursor(Cursor* cursor)
 {
 	Locator::getInput()->setCursor(cursor);
@@ -797,6 +839,65 @@ LuaEnvironment::ButtonPtr LuaEnvironment::createButton(const std::string& file, 
 LuaEnvironment::ButtonPtr LuaEnvironment::createButtonLayout(const std::string& file, int zindex, const std::string& text, bool useVerticalLayout)
 {
 	return ButtonPtr(new LuaButton(gameObjectManager, thisEnvironment, new ButtonObject(renderer, file, zindex, text, useVerticalLayout)));
+}
+
+LuaEnvironment::ButtonPtr LuaEnvironment::createButtonAll(
+	const std::string& file,
+	int zindex,
+	const std::string& text,
+	bool useVerticalLayout,
+	const sol::table& font,
+	const sol::table& disabledColor,
+	const sol::table& disabledShadowColor
+)
+{
+	FontProperties fontProperties;
+	fontProperties.fontFile = font["file"];
+	fontProperties.fontSize = font["size"];
+	fontProperties.fontColor = Color(font["color"]["r"], font["color"]["g"], font["color"]["b"], font["color"]["a"]);
+	fontProperties.shadowDistance = font["shadowDistance"];
+	fontProperties.shadowColor = Color(font["shadowColor"]["r"], font["shadowColor"]["g"], font["shadowColor"]["b"], font["shadowColor"]["a"]);
+
+	Color disabled;
+	disabled.r = disabledColor["r"];
+	disabled.g = disabledColor["g"];
+	disabled.b = disabledColor["b"];
+	disabled.a = disabledColor["a"];
+
+	Color disabledShadow;
+	disabledShadow.r = disabledShadowColor["r"];
+	disabledShadow.g = disabledShadowColor["g"];
+	disabledShadow.b = disabledShadowColor["b"];
+	disabledShadow.a = disabledShadowColor["a"];
+
+	return ButtonPtr(
+		new LuaButton(
+			gameObjectManager,
+			thisEnvironment,
+			new ButtonObject(
+				renderer,
+				file,
+				zindex,
+				text,
+				useVerticalLayout,
+				fontProperties,
+				disabled,
+				disabledShadow
+			)
+		)
+	);
+}
+
+LuaEnvironment::LuaTextPtr LuaEnvironment::createText(const sol::table& font, int zindex)
+{
+	FontProperties fontProperties;
+	fontProperties.fontFile = font["file"];
+	fontProperties.fontSize = font["size"];
+	fontProperties.fontColor = Color(font["color"]["r"], font["color"]["g"], font["color"]["b"], font["color"]["a"]);
+	fontProperties.shadowDistance = font["shadowDistance"];
+	fontProperties.shadowColor = Color(font["shadowColor"]["r"], font["shadowColor"]["g"], font["shadowColor"]["b"], font["shadowColor"]["a"]);
+
+	return LuaTextPtr(new LuaText(gameObjectManager, thisEnvironment, new TextObject(fontProperties, zindex)));
 }
 
 LuaEnvironment::CharacterSpritePtr LuaEnvironment::createCharacterSpriteSimple(const std::string& file)

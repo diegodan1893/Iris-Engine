@@ -4,6 +4,7 @@
 #include "LuaCharacter.h"
 #include "LuaSprite.h"
 #include "LuaButton.h"
+#include "LuaText.h"
 #include "LuaQuestion.h"
 #include "LuaCharacterSprite.h"
 #include "LuaClickableMap.h"
@@ -164,7 +165,7 @@ private:
 	void setTextAlign(Alignment align);
 	void disableSkip();
 	void enableSkip();
-	void disableMouseInput();
+	void disableMouseInput(sol::object zindex);
 	void enableMouseInput();
 	void playMusic(const std::string& file);
 	void fadeInMusic(const std::string& file, float seconds);
@@ -178,6 +179,7 @@ private:
 	void openScript(const std::string& file, sol::this_state s);
 	void precacheImage(const std::string& file);
 	void exitGame(sol::this_state s);
+	void saveScreenshot(const std::string& path, int w, int h);
 	void setCursor(class Cursor* cursor);
 	void setOnRightClick(sol::function function);
 
@@ -199,6 +201,19 @@ private:
 	static ButtonPtr createSimpleButtonLayout(const std::string& file, int zindex, bool useVerticalLayout);
 	static ButtonPtr createButton(const std::string& file, int zindex, const std::string& text);
 	static ButtonPtr createButtonLayout(const std::string& file, int zindex, const std::string& text, bool useVerticalLayout);
+	static ButtonPtr createButtonAll(
+		const std::string& file,
+		int zindex,
+		const std::string& text,
+		bool useVerticalLayout,
+		const sol::table& font,
+		const sol::table& disabledColor,
+		const sol::table& disabledShadowColor
+	);
+
+	// Text objects
+	typedef std::unique_ptr<LuaText> LuaTextPtr;
+	static LuaTextPtr createText(const sol::table& font, int zindex);
 
 	// Character objects
 	typedef std::unique_ptr<LuaCharacterSprite> CharacterSpritePtr;

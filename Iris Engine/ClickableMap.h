@@ -75,7 +75,7 @@ public:
 
 private:
 	// Image to use as map
-	SDL_Surface* map;
+	std::string mapPath;
 
 	// Selected pixel
 	Uint32 selectedPixel, previousSelectedPixel;
@@ -92,5 +92,6 @@ private:
 	};
 	std::unordered_map<Uint32, Delegates> delegates;
 
-	Uint32 getSelectedPixel();
+	Uint32 getSelectedPixel(class CPUImage* mapImage);
+	Uint32 mapColor(Uint8 r, Uint8 g, Uint8 b);
 };
