@@ -5,6 +5,7 @@ GPUTexture::GPUTexture(GPU_Image* texture)
 	:texture(texture),
 	 target(nullptr)
 {
+	GPU_SetSnapMode(texture, GPU_SNAP_NONE);
 }
 
 GPUTexture::~GPUTexture()

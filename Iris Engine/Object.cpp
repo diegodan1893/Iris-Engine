@@ -298,12 +298,7 @@ void Object::updateMovement(float elapsedSeconds)
 		if (movementInterpolator)
 		{
 			movementInterpolator->update(elapsedSeconds);
-
-			// Avoid rounding errors
-			Vector2<float> newPosition = lerp(startPosition, targetPosition, movementInterpolator->getStep());
-			newPosition.x = std::round(newPosition.x);
-			newPosition.y = std::round(newPosition.y);
-			setPosition(newPosition);
+			setPosition(lerp(startPosition, targetPosition, movementInterpolator->getStep()));
 		}
 	}
 }
