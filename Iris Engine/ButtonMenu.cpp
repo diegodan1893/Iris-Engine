@@ -151,7 +151,7 @@ void ButtonMenu::show(const std::vector<std::string>& choices)
 			button = new ButtonObject(renderer, buttonBackground, getZindex(), choices[i], useVerticalLayout);
 			
 			//! @todo This doesn't work with negative numbers
-			button->setPosition(std::round(menuX + separation.x * i), std::round(menuY + separation.y * i));
+			button->setPosition(menuX + separation.x * i, menuY + separation.y * i);
 			button->setDisableInput(true);
 			button->setVisible(true);
 
