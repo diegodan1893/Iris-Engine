@@ -11,14 +11,12 @@ CharacterObject::CharacterObject(IRenderer* renderer, const std::string& baseFil
 	:Object(zindex),
 	 separator(Config::values().paths.separator),
 	 sizeWasSet(false),
-	 inDissolveBase(false),
-	 transitionTextureHasBeenUpdated(false),
 	 colorGradingEnabled(false),
 	 blendLUTs(false),
 	 renderer(renderer),
-	 transitionTexture(nullptr),
-	 dissolveBaseTransitionTexture(nullptr),
-	 dissolveBaseFinalTexture(nullptr)
+	composedCharacter(nullptr),
+	dissolveEndResult(nullptr),
+	dissolveComposed(nullptr)
 {
 	setUp(baseFile);
 	setCharacterPosition(position);
@@ -28,14 +26,12 @@ CharacterObject::CharacterObject(IRenderer* renderer, const std::string& baseFil
 	:Object(zindex),
 	 separator(Config::values().paths.separator),
 	 sizeWasSet(false),
-	 inDissolveBase(false),
-	 transitionTextureHasBeenUpdated(false),
 	 colorGradingEnabled(false),
 	 blendLUTs(false),
 	 renderer(renderer),
-	 transitionTexture(nullptr),
-	 dissolveBaseTransitionTexture(nullptr),
-	 dissolveBaseFinalTexture(nullptr)
+	composedCharacter(nullptr),
+	dissolveEndResult(nullptr),
+	dissolveComposed(nullptr)
 {
 	setUp(baseFile);
 	setPosition(position);
@@ -50,12 +46,7 @@ void CharacterObject::draw(IRenderer* renderer)
 {
 	if (valid() && visible())
 	{
-		if (inFade())
-		{
-			// Currently in the middle of a fade: draw transition texture
-			renderer->copy(transitionTexture, nullptr, &getRect());
-		}
-		else if (inDissolveBase)
+		if (inDissolve())
 		{
 			// Currently in the middle of a base dissolve
 			DissolveShader* dissolveShader = renderer->getDissolveShader();
@@ -63,7 +54,8 @@ void CharacterObject::draw(IRenderer* renderer)
 			
 			// Texture needs to be set every draw to allow multiple characters
 			// to fade at the same time
-			dissolveShader->setParameters(transitionTexture, getDissolveAlpha() / 255.0);
+			composedCharacter->setAlphaMod(255);
+			dissolveShader->setParameters(composedCharacter, getDissolveAlpha() / 255.0);
 
 			Rect<float> rect;
 			rect.x = 0;
@@ -72,9 +64,9 @@ void CharacterObject::draw(IRenderer* renderer)
 			rect.h = getRect().h;
 
 			// Draw character to intermediate texture
-			renderer->setRenderTarget(dissolveBaseFinalTexture);
+			renderer->setRenderTarget(dissolveComposed);
 			renderer->clear();
-			renderer->copy(dissolveBaseTransitionTexture, nullptr, &rect);
+			renderer->copy(dissolveEndResult, nullptr, &rect);
 			renderer->setRenderTarget(nullptr);
 
 			dissolveShader->unbind();
@@ -85,14 +77,16 @@ void CharacterObject::draw(IRenderer* renderer)
 			if (colorGradingEnabled)
 				setUpLutShader(colorGradingShader);
 
-			renderer->copy(dissolveBaseFinalTexture, nullptr, &getRect());
+			renderer->copy(dissolveComposed, nullptr, &getRect());
 
 			colorGradingShader->unbind();
 		}
 		else
 		{
-			// No transition or expression dissolve
-			drawCharacter(getRect(), false);
+			// Draw composed character
+			drawIntermediateTexture(composedCharacter);
+			composedCharacter->setAlphaMod(getAlpha());
+			renderer->copy(composedCharacter, nullptr, &getRect());
 		}
 	}
 }
@@ -101,45 +95,12 @@ void CharacterObject::update(float elapsedSeconds)
 {
 	if (valid())
 	{
-		// Update complete object transitions
+		// Update object transitions
 		if (inFade())
-		{
 			updateAlpha(elapsedSeconds);
 
-			// In order to fade in or out without weird artifacts caused by
-			// drawing several layers with the same alpha on top of each
-			// other, we need to prerender the character and its expression
-			// to a texture and fade that texture.
-			if (!transitionTextureHasBeenUpdated || lutTransition.inTransition())
-			{
-				redrawTransitionTexture(transitionTexture);
-				transitionTextureHasBeenUpdated = true;
-			}
-
-			transitionTexture->setAlphaMod(getAlpha());
-		}
-		else
-		{
-			if (transitionTextureHasBeenUpdated)
-			{
-				// Character just finished fading
-				transitionTextureHasBeenUpdated = false;
-			}
-		}
-
-		// Update dissolve transition for expressions
 		if (inDissolve())
-		{
 			updateDissolveAlpha(elapsedSeconds);
-		}
-		else
-		{
-			if (inDissolveBase)
-			{
-				// Base dissolve just finished
-				inDissolveBase = false;
-			}
-		}
 
 		// Update move transitions
 		if (inMovement())
@@ -203,17 +164,9 @@ void CharacterObject::setBase(const std::string& base, const std::string& expres
 
 void CharacterObject::startDissolveExpression(const std::string& expression, float time, bool canBeSkipped)
 {
-	if (inFade() || inDissolve())
-	{
-		skipTransition();
-		setVisible(true);
-	}
+	std::size_t rootLength = Config::values().paths.characters.length();
 
-	previousExpression = this->expression;
-	setExpression(expression);
-
-	startDissolve(time, canBeSkipped);
-	inDissolveBase = false;
+	startDissolveBase(basePath.substr(rootLength), expressionBase.substr(rootLength), expression, time, canBeSkipped);
 }
 
 void CharacterObject::startDissolveBase(
@@ -232,15 +185,14 @@ void CharacterObject::startDissolveBase(
 
 	// Create an intermediate texture with the current base and expression
 	// so that we can use alpha blending without weird artifacts
-	redrawTransitionTexture(transitionTexture, false);
+	drawIntermediateTexture(composedCharacter, false);
 
 	// Create an intermediate texture with the new base and expression
 	setBase(base, expressionBase);
 	setExpression(expression);
-	redrawTransitionTexture(dissolveBaseTransitionTexture, false);
+	drawIntermediateTexture(dissolveEndResult, false);
 
 	startDissolve(time, canBeSkipped);
-	inDissolveBase = true;
 }
 
 void CharacterObject::setColorLut(const std::string& colorLUT, float time)
@@ -257,7 +209,6 @@ void CharacterObject::setColorLut(const std::string& colorLUT, float time)
 
 	this->colorLUT = Config::values().paths.luts + colorLUT;
 	colorGradingEnabled = true;
-	transitionTextureHasBeenUpdated = false;
 
 	lutTransition.start(time, false);
 }
@@ -304,14 +255,14 @@ void CharacterObject::initializeSize(int w, int h)
 	// Create transition textures
 	freeTransitionTextures();
 
-	transitionTexture = renderer->createTexture(TextureFormat::RGBA8, TextureAccess::TARGET, w, h);
-	transitionTexture->setBlendMode(BlendMode::BLEND);
+	composedCharacter = renderer->createTexture(TextureFormat::RGBA8, TextureAccess::TARGET, w, h);
+	composedCharacter->setBlendMode(BlendMode::BLEND);
 
-	dissolveBaseTransitionTexture = renderer->createTexture(TextureFormat::RGBA8, TextureAccess::TARGET, w, h);
-	dissolveBaseTransitionTexture->setBlendMode(BlendMode::SET);
+	dissolveEndResult = renderer->createTexture(TextureFormat::RGBA8, TextureAccess::TARGET, w, h);
+	dissolveEndResult->setBlendMode(BlendMode::SET);
 
-	dissolveBaseFinalTexture = renderer->createTexture(TextureFormat::RGBA8, TextureAccess::TARGET, w, h);
-	dissolveBaseFinalTexture->setBlendMode(BlendMode::BLEND);
+	dissolveComposed = renderer->createTexture(TextureFormat::RGBA8, TextureAccess::TARGET, w, h);
+	dissolveComposed->setBlendMode(BlendMode::BLEND);
 }
 
 void CharacterObject::drawCharacter(Rect<float>& rect, bool drawWithoutBlending, bool applyColorGrading)
@@ -350,15 +301,7 @@ void CharacterObject::drawCharacter(Rect<float>& rect, bool drawWithoutBlending,
 		}
 
 		// Draw expression
-		if (inDissolve() && !inFade())
-		{
-			drawExpression(previousExpression, rect, 255);
-			drawExpression(expression, rect, getDissolveAlpha());
-		}
-		else
-		{
-			drawExpression(expression, rect, 255);
-		}
+		drawExpression(expression, rect, 255);
 	}
 	else
 	{
@@ -394,7 +337,7 @@ void CharacterObject::drawExpression(const std::string& expression, Rect<float>&
 	}
 }
 
-void CharacterObject::redrawTransitionTexture(ITexture* texture, bool applyColorGrading)
+void CharacterObject::drawIntermediateTexture(ITexture* texture, bool applyColorGrading)
 {
 	Sprite* baseSprite = Locator::getCache()->getSprite(basePath);
 
@@ -444,19 +387,22 @@ Vector2<float> CharacterObject::calculatePosition(Alignment position)
 		break;
 	}
 
+	// Align to the pixel grid
+	actualPosition.x = std::round(actualPosition.x);
+
 	return actualPosition;
 }
 
 void CharacterObject::freeTransitionTextures()
 {
-	if (transitionTexture)
-		delete transitionTexture;
+	if (composedCharacter)
+		delete composedCharacter;
 
-	if (dissolveBaseTransitionTexture)
-		delete dissolveBaseTransitionTexture;
+	if (dissolveEndResult)
+		delete dissolveEndResult;
 
-	if (dissolveBaseFinalTexture)
-		delete dissolveBaseFinalTexture;
+	if (dissolveComposed)
+		delete dissolveComposed;
 }
 
 void CharacterObject::setUpLutShader(ColorGradingShader* colorGradingShader)
