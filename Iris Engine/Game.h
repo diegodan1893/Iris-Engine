@@ -51,6 +51,7 @@ private:
 	// Functions	
 	bool inline isExiting();
 	void toggleFullscreen();
+	void createMainWindow();
 
 	// Game control	
 	void startGame();

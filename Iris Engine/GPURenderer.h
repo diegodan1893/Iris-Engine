@@ -51,6 +51,22 @@ public:
 	void setFullScreen(bool fullscreen) override;
 	
 	/// <summary>
+	/// Gets the scaling factor of the game.
+	/// 1.0 if the game is being rendered at native resolution.
+	/// </summary>
+	/// <returns>
+	/// The scaling factor.
+	/// </returns>
+	virtual float getScalingFactor() override;
+	
+	/// <summary>
+	/// Gets the offset of the game image caused
+	/// by letterboxing in fullscreen.
+	/// </summary>
+	/// <returns></returns>
+	virtual Vector2<int> getLetterboxingOffset() override;
+	
+	/// <summary>
 	/// Gets the resolution of the window.
 	/// </summary>
 	/// <returns></returns>

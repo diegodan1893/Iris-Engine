@@ -1,20 +1,24 @@
 #include "GPURenderer.h"
 #include "GPUTexture.h"
 #include "Locator.h"
+#include "Config.h"
 #include <SDL_gpu.h>
 #include <cmath>
 
 GPURenderer::GPURenderer(SDL_Window* window)
 	:scalingFactor(1.0f)
 {
-	int w, h;
+	int w = Config::values().screen.resolution.x;
+	int h = Config::values().screen.resolution.y;
+	int windowW, windowH;
+
 	Uint32 windowID;
 
-	SDL_GetWindowSize(window, &w, &h);
 	windowID = SDL_GetWindowID(window);
+	SDL_GetWindowSize(window, &windowW, &windowH);
 
 	GPU_SetInitWindow(windowID);
-	windowTarget = GPU_Init(w, h, GPU_INIT_ENABLE_VSYNC);
+	windowTarget = GPU_Init(windowW, windowH, GPU_INIT_ENABLE_VSYNC);
 
 	if (windowTarget)
 	{
@@ -23,8 +27,10 @@ GPURenderer::GPURenderer(SDL_Window* window)
 		// Create intermediate buffer
 		virtualScreen = (GPUTexture*)createTexture(TextureFormat::RGB, TextureAccess::TARGET, w, h);
 		currentTarget = screen = virtualScreen->getTarget();
-		screenPosition = Vector2<float>(w / 2.0f, h / 2.0f);
 		GPU_SetSnapMode(virtualScreen->getInternalTexture(), GPU_SNAP_POSITION_AND_DIMENSIONS);
+
+		screenPosition = Vector2<float>(windowW / 2.0f, windowH / 2.0f);
+		scalingFactor = (float)windowW / w;
 
 		// Load shaders
 		testShader.loadProgram();
@@ -82,10 +88,25 @@ void GPURenderer::setFullScreen(bool fullscreen)
 	{
 		GPU_SetFullscreen(false, true);
 		
-		scalingFactor = 1.0f;
+		scalingFactor = (float)windowTarget->base_w / screen->base_w;
 		screenPosition.x = windowTarget->base_w / 2.0f;
 		screenPosition.y = windowTarget->base_h / 2.0f;
 	}
+}
+
+float GPURenderer::getScalingFactor()
+{
+	return scalingFactor;
+}
+
+Vector2<int> GPURenderer::getLetterboxingOffset()
+{
+	Vector2<int> offset;
+
+	offset.x = std::abs(windowTarget->base_w - screen->base_w * scalingFactor) / 2.0f;
+	offset.y = std::abs(windowTarget->base_h - screen->base_h * scalingFactor) / 2.0f;
+
+	return offset;
 }
 
 Vector2<int> GPURenderer::getWindowResolution()

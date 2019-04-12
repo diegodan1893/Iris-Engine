@@ -74,19 +74,14 @@ public:
 	/// True if the user wants to toggle fullscreen mode.
 	/// </summary>
 	bool actionToggleFullscreen() const override;
-
-	// Fullscreen correction
-	/// <summary>
-	/// Corrects mouse coordinates for fullscreen.
-	/// </summary>
-	/// <param name="screenRes">The actual screen resolution.</param>
-	/// <param name="gameRes">The game virtual resolution.</param>
-	virtual void correctForFullscreen(const Vector2<int>& screenRes, const Vector2<int>& gameRes);
 	
 	/// <summary>
-	/// Disables the fullscreen correction.
+	/// Corrects mouse coordinates when the game is
+	/// not being rendered at native resolution.
 	/// </summary>
-	virtual void disableFullscreenCorrection();
+	/// <param name="scalingFactor">The scaling factor.</param>
+	/// <param name="letterboxingOffset">The letterboxing offset.</param>
+	virtual void correctMouseForWindowScaling(float scalingFactor, const Vector2<int>& letterboxingOffset) override;
 
 	// Mouse
 	/// <summary>
@@ -158,7 +153,7 @@ private:
 
 	// Fullscreen correction
 	float zoom;
-	Vector2<float> offset;
+	Vector2<int> offset;
 
 	// Mouse cursor
 	struct SDL_Cursor* defaultCursor;

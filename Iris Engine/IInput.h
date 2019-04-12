@@ -44,18 +44,13 @@ public:
 	/// </summary>
 	virtual bool actionToggleFullscreen() const = 0;
 
-	// Fullscreen correction	
-	/// <summary>
-	/// Corrects mouse coordinates for fullscreen.
+ 	/// <summary>
+	/// Corrects mouse coordinates when the game is
+	/// not being rendered at native resolution.
 	/// </summary>
-	/// <param name="screenRes">The actual screen resolution.</param>
-	/// <param name="gameRes">The game virtual resolution.</param>
-	virtual void correctForFullscreen(const Vector2<int>& screenRes, const Vector2<int>& gameRes) = 0;
-		
-	/// <summary>
-	/// Disables the fullscreen correction.
-	/// </summary>
-	virtual void disableFullscreenCorrection() = 0;
+	/// <param name="scalingFactor">The scaling factor.</param>
+	/// <param name="letterboxingOffset">The letterboxing offset.</param>
+	virtual void correctMouseForWindowScaling(float scalingFactor, const Vector2<int>& letterboxingOffset) = 0;
 
 	// Mouse	
 	/// <summary>
