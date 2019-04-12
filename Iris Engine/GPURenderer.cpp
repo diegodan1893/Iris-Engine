@@ -24,6 +24,7 @@ GPURenderer::GPURenderer(SDL_Window* window)
 		virtualScreen = (GPUTexture*)createTexture(TextureFormat::RGB, TextureAccess::TARGET, w, h);
 		currentTarget = screen = virtualScreen->getTarget();
 		screenPosition = Vector2<float>(w / 2.0f, h / 2.0f);
+		GPU_SetSnapMode(virtualScreen->getInternalTexture(), GPU_SNAP_POSITION_AND_DIMENSIONS);
 
 		// Load shaders
 		testShader.loadProgram();
@@ -68,16 +69,11 @@ void GPURenderer::setFullScreen(bool fullscreen)
 		int w = windowTarget->base_w;
 		int h = windowTarget->base_h;
 
-		if (virtualW > virtualH)
-		{
-			// Scale so that the width of the game is the same as the width of the screen
-			scalingFactor = (float)w / virtualW;
-		}
-		else
-		{
-			// Scale so that the height of the game is the same as the height of the screen
-			scalingFactor = (float)h / virtualH;
-		}
+		// Letterboxing
+		float ratioVirtual = (float)virtualW / virtualH;
+		float ratioScreen = (float)w / h;
+
+		scalingFactor = (ratioScreen < ratioVirtual) ? (float)w / virtualW : (float)h / virtualH;
 
 		screenPosition.x = w / 2.0f;
 		screenPosition.y = h / 2.0f;
