@@ -39,6 +39,12 @@
     <Filter Include="Source Files\Objects\Interpolators">
       <UniqueIdentifier>{07ba53e5-54e8-4f87-b141-4cab01b97262}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Video">
+      <UniqueIdentifier>{2adb8458-2067-4c35-b0e0-661b1728cb4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Video\Third Party">
+      <UniqueIdentifier>{b6cff201-874b-40cd-9a94-e95bed5ae0b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Config.cpp">
@@ -208,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="CPUImage.cpp">
       <Filter>Source Files\Cache</Filter>
+    </ClCompile>
+    <ClCompile Include="theoraplay.c">
+      <Filter>Source Files\Video\Third Party</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -418,6 +427,12 @@
     </ClInclude>
     <ClInclude Include="CPUImage.h">
       <Filter>Source Files\Cache</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay.h">
+      <Filter>Source Files\Video\Third Party</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay_cvtrgb.h">
+      <Filter>Source Files\Video\Third Party</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
