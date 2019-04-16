@@ -5,6 +5,7 @@
 #include "LuaSprite.h"
 #include "LuaButton.h"
 #include "LuaText.h"
+#include "LuaVideo.h"
 #include "LuaQuestion.h"
 #include "LuaCharacterSprite.h"
 #include "LuaClickableMap.h"
@@ -214,6 +215,10 @@ private:
 	// Text objects
 	typedef std::unique_ptr<LuaText> LuaTextPtr;
 	static LuaTextPtr createText(const sol::table& font, int zindex);
+
+	// Video objects
+	typedef std::unique_ptr<LuaVideo> LuaVideoPtr;
+	static LuaVideoPtr createVideo(const std::string& file, bool playAudio, int zindex);
 
 	// Character objects
 	typedef std::unique_ptr<LuaCharacterSprite> CharacterSpritePtr;

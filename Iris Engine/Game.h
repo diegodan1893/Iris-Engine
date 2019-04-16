@@ -3,6 +3,7 @@
 #include "GameInput.h"
 #include "GameObjectManager.h"
 #include "LuaEnvironment.h"
+#include "MixAudio.h"
 #include <string>
 
 /// <summary>
@@ -33,6 +34,8 @@ private:
 
 	struct SDL_Window* mainWindow;
 	class IRenderer* renderer;
+
+	MixAudio audioService;
 
 	GameObjectManager gameObjectManager;
 

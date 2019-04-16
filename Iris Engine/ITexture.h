@@ -49,4 +49,11 @@ public:
 	/// <param name="w">Filled with the width in pixels.</param>
 	/// <param name="h">Filled with the width in pixels.</param>
 	virtual void getSize(int* w, int* h) = 0;
+	
+	/// <summary>
+	/// Updates the texture from an array of pixel data.
+	/// </summary>
+	/// <param name="bytes">The pixel data.</param>
+	/// <param name="bytes_per_row">The bytes per row.</param>
+	virtual void updateTextureBytes(const unsigned char* bytes) = 0;
 };

@@ -179,3 +179,8 @@ Object* LuaObject::getObject()
 	return object;
 }
 
+LuaEnvironment* LuaObject::getLua()
+{
+	return lua;
+}
+

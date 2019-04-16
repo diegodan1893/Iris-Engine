@@ -218,6 +218,18 @@
     <ClCompile Include="theoraplay.c">
       <Filter>Source Files\Video\Third Party</Filter>
     </ClCompile>
+    <ClCompile Include="VideoObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaVideo.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitForVideo.cpp">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="TheoraDecoder.cpp">
+      <Filter>Source Files\Video</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector.h">
@@ -433,6 +445,21 @@
     </ClInclude>
     <ClInclude Include="theoraplay_cvtrgb.h">
       <Filter>Source Files\Video\Third Party</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoObject.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="IVideoDecoder.h">
+      <Filter>Source Files\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaVideo.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitForVideo.h">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="TheoraDecoder.h">
+      <Filter>Source Files\Video</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

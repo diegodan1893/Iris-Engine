@@ -170,6 +170,7 @@
     <ClCompile Include="LuaObject.cpp" />
     <ClCompile Include="LuaSprite.cpp" />
     <ClCompile Include="LuaText.cpp" />
+    <ClCompile Include="LuaVideo.cpp" />
     <ClCompile Include="MessageBoxLogger.cpp" />
     <ClCompile Include="MixAudio.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -181,13 +182,16 @@
     <ClCompile Include="TestShader.cpp" />
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="TextWindow.cpp" />
+    <ClCompile Include="TheoraDecoder.cpp" />
     <ClCompile Include="theoraplay.c" />
     <ClCompile Include="TransitionUtils.cpp" />
+    <ClCompile Include="VideoObject.cpp" />
     <ClCompile Include="WaitForChoice.cpp" />
     <ClCompile Include="WaitForFunction.cpp" />
     <ClCompile Include="WaitForText.cpp" />
     <ClCompile Include="WaitForTimer.cpp" />
     <ClCompile Include="WaitForTransition.cpp" />
+    <ClCompile Include="WaitForVideo.cpp" />
     <ClCompile Include="WaitForVisible.cpp" />
     <ClCompile Include="WaitQueue.cpp" />
   </ItemGroup>
@@ -216,6 +220,7 @@
     <ClInclude Include="GPURenderer.h" />
     <ClInclude Include="GPUShaderProgram.h" />
     <ClInclude Include="GPUTexture.h" />
+    <ClInclude Include="IVideoDecoder.h" />
     <ClInclude Include="LuaText.h" />
     <ClInclude Include="IAudio.h" />
     <ClInclude Include="IClickableObject.h" />
@@ -239,6 +244,7 @@
     <ClInclude Include="LuaQuestion.h" />
     <ClInclude Include="LuaObject.h" />
     <ClInclude Include="LuaSprite.h" />
+    <ClInclude Include="LuaVideo.h" />
     <ClInclude Include="MessageBoxLogger.h" />
     <ClInclude Include="MixAudio.h" />
     <ClInclude Include="Object.h" />
@@ -251,17 +257,20 @@
     <ClInclude Include="TestShader.h" />
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="TextWindow.h" />
+    <ClInclude Include="TheoraDecoder.h" />
     <ClInclude Include="theoraplay.h" />
     <ClInclude Include="theoraplay_cvtrgb.h" />
     <ClInclude Include="TransitionType.h" />
     <ClInclude Include="TransitionUtils.h" />
     <ClInclude Include="Vector.h" />
+    <ClInclude Include="VideoObject.h" />
     <ClInclude Include="WaitCommand.h" />
     <ClInclude Include="WaitForChoice.h" />
     <ClInclude Include="WaitForFunction.h" />
     <ClInclude Include="WaitForText.h" />
     <ClInclude Include="WaitForTimer.h" />
     <ClInclude Include="WaitForTransition.h" />
+    <ClInclude Include="WaitForVideo.h" />
     <ClInclude Include="WaitForVisible.h" />
     <ClInclude Include="WaitQueue.h" />
   </ItemGroup>

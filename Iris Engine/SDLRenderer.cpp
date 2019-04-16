@@ -107,7 +107,7 @@ ITexture* SDLRenderer::createTexture(TextureFormat format, TextureAccess access,
 	SDL_Texture* internalTexture = SDL_CreateTexture(renderer, textureFormat, textureAccess, w, h);
 
 	if (internalTexture)
-		return new SDLTexture(internalTexture);
+		return nullptr;//new SDLTexture(internalTexture);
 	else
 		return nullptr;
 }
@@ -117,7 +117,7 @@ ITexture* SDLRenderer::createTexture(SDL_Surface* surface)
 	SDL_Texture* internalTexture = SDL_CreateTextureFromSurface(renderer, surface);
 
 	if (internalTexture)
-		return new SDLTexture(internalTexture);
+		return nullptr;//new SDLTexture(internalTexture);
 	else
 		return nullptr;
 }

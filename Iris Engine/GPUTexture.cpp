@@ -86,6 +86,11 @@ void GPUTexture::getSize(int* w, int* h)
 	*h = texture->base_h;
 }
 
+void GPUTexture::updateTextureBytes(const unsigned char* bytes)
+{
+	GPU_UpdateImageBytes(texture, nullptr, bytes, texture->base_w * texture->bytes_per_pixel);
+}
+
 GPU_Image* GPUTexture::getInternalTexture()
 {
 	return texture;

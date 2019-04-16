@@ -10,7 +10,8 @@
 enum class TextureFormat
 {
 	RGB,
-	RGBA8
+	RGBA8,
+	YCbCr420p
 };
 
 /// <summary>

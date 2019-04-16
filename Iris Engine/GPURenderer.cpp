@@ -180,6 +180,10 @@ ITexture* GPURenderer::createTexture(TextureFormat format, TextureAccess access,
 		textureFormat = GPU_FORMAT_RGBA;
 		break;
 
+	case TextureFormat::YCbCr420p:
+		textureFormat = GPU_FORMAT_YCbCr420P;
+		break;
+
 	default:
 		textureFormat = GPU_FORMAT_RGBA;
 		break;

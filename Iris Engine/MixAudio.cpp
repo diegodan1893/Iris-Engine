@@ -58,6 +58,11 @@ void MixAudio::fadeOutMusic(float seconds)
 	Mix_FadeOutMusic((int)(seconds * 1000));
 }
 
+void MixAudio::hookMusicPlayer(void(*musicPlayer)(void* udata, uint8_t* stream, int len), void* arg)
+{
+	Mix_HookMusic(musicPlayer, arg);
+}
+
 void MixAudio::playSound(const std::string& filename)
 {
 	Sound* sound = Locator::getCache()->getSound(filename);
@@ -97,6 +102,50 @@ void MixAudio::stopSound(const std::string& filename)
 			Mix_HaltChannel(channel);
 		}
 	}
+}
+
+AudioFormat MixAudio::getAudioFormat()
+{
+	int frequency;
+	uint16_t format;
+	int channels;
+
+	Mix_QuerySpec(&frequency, &format, &channels);
+
+	AudioFormat audioFormat;
+
+	switch (format)
+	{
+	case AUDIO_U8:
+		audioFormat = AudioFormat::U8;
+		break;
+
+	case AUDIO_S8:
+		audioFormat = AudioFormat::S8;
+		break;
+
+	case AUDIO_U16LSB:
+		audioFormat = AudioFormat::U16LSB;
+		break;
+
+	case AUDIO_S16LSB:
+		audioFormat = AudioFormat::S16LSB;
+		break;
+
+	case AUDIO_U16MSB:
+		audioFormat = AudioFormat::U16MSB;
+		break;
+
+	case AUDIO_S16MSB:
+		audioFormat = AudioFormat::S16MSB;
+		break;
+
+	default:
+		audioFormat = AudioFormat::UNKNOWN;
+		break;
+	}
+
+	return audioFormat;
 }
 
 void MixAudio::stopAndFreeMusic()

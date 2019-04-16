@@ -36,6 +36,7 @@ public:
 
 protected:
 	Object* getObject();
+	class LuaEnvironment* getLua();
 
 private:
 	class GameObjectManager* gameObjectManager;

@@ -38,6 +38,13 @@ public:
 	void getSize(int* w, int* h) override;
 	
 	/// <summary>
+	/// Updates the texture from an array of pixel data.
+	/// </summary>
+	/// <param name="bytes">The pixel data.</param>
+	/// <param name="bytesPerRow"></param>
+	void updateTextureBytes(const unsigned char* bytes) override;
+	
+	/// <summary>
 	/// Gets the internal representation of
 	/// the texture.
 	/// </summary>

@@ -18,7 +18,8 @@
 bool Game::instantiated = false;
 
 Game::Game()
-	:CONFIG_FILE_PATH("config.lua")
+	:CONFIG_FILE_PATH("config.lua"),
+	 audioService(AUDIO_CHANNELS)
 {
 	// Ensure there is only one instance of this class
 	assert(!instantiated);
@@ -39,8 +40,7 @@ void Game::start()
 	Locator::provide(&gameInput);
 
 	// Initialize audio service
-	MixAudio mixAudio(AUDIO_CHANNELS);
-	Locator::provide(&mixAudio);
+	Locator::provide(&audioService);
 
 	ILogger* logger = Locator::getLogger();
 
