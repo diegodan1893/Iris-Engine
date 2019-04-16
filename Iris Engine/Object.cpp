@@ -94,6 +94,14 @@ void Object::startFadeOut(float time, bool canBeSkipped)
 	}
 }
 
+void Object::setAlpha(uint8_t alpha)
+{
+	fade.skip();
+
+	this->alpha = alpha;
+	isVisible = alpha > 0;
+}
+
 void Object::move(float x, float y, float time, bool canBeSkipped, Interpolator* interpolator)
 {
 	// Complete previous movement before starting a new one

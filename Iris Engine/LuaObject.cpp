@@ -124,6 +124,11 @@ void LuaObject::hideTransition(const sol::table & transition, sol::this_state s)
 	}
 }
 
+void LuaObject::setAlpha(uint8_t alpha)
+{
+	object->setAlpha(alpha);
+}
+
 void LuaObject::skipTransition()
 {
 	object->skipTransition();

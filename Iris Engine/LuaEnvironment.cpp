@@ -106,6 +106,7 @@ void LuaEnvironment::setUp(
 			&LuaObject::hide,
 			&LuaObject::hideTransition
 		),
+		"setAlpha", &LuaObject::setAlpha,
 		"skipTransition", &LuaObject::skipTransition,
 		"setPosition", &LuaObject::setPosition,
 		"getPosition", &LuaObject::getPosition,
