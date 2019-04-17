@@ -918,9 +918,9 @@ LuaEnvironment::LuaTextPtr LuaEnvironment::createText(const sol::table& font, in
 	return LuaTextPtr(new LuaText(gameObjectManager, thisEnvironment, new TextObject(fontProperties, zindex)));
 }
 
-LuaEnvironment::LuaVideoPtr LuaEnvironment::createVideo(const std::string& file, bool playAudio, int zindex)
+LuaEnvironment::LuaVideoPtr LuaEnvironment::createVideo(const std::string& file, bool playAudio, bool shouldLoop, int zindex)
 {
-	return LuaVideoPtr(new LuaVideo(gameObjectManager, thisEnvironment, new VideoObject(renderer, file, playAudio, zindex)));
+	return LuaVideoPtr(new LuaVideo(gameObjectManager, thisEnvironment, new VideoObject(renderer, file, playAudio, shouldLoop, zindex)));
 }
 
 LuaEnvironment::CharacterSpritePtr LuaEnvironment::createCharacterSpriteSimple(const std::string& file)

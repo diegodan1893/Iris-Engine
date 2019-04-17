@@ -21,6 +21,7 @@ public:
 		class IRenderer* renderer,
 		const std::string& file,
 		bool playAudio,
+		bool shouldLoop,
 		int zindex
 	);
 
@@ -42,7 +43,7 @@ public:
 	/// Starts playing the video.
 	/// </summary>
 	/// <param name="loop">if set to <c>true</c> the video will loop after it finishes playing.</param>
-	void play(bool loop);
+	void play();
 	
 	/// <summary>
 	/// Stops playing the video.
@@ -59,10 +60,8 @@ public:
 
 private:
 	// Video
-	std::string file;
 	bool playAudio;
 	bool playing;
-	bool shouldLoop;
 	class IVideoDecoder* decoder;
 
 	// Rendering

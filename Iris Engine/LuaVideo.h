@@ -12,7 +12,7 @@ public:
 	);
 	virtual ~LuaVideo();
 
-	void play(bool loop, bool shouldBlock, sol::this_state s);
+	void play(bool shouldBlock, sol::this_state s);
 	void stop();
 	void waitUntilFinished(sol::this_state s);
 };

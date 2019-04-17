@@ -12,10 +12,10 @@ LuaVideo::~LuaVideo()
 {
 }
 
-void LuaVideo::play(bool loop, bool shouldBlock, sol::this_state s)
+void LuaVideo::play(bool shouldBlock, sol::this_state s)
 {
 	VideoObject* video = (VideoObject*)getObject();
-	video->play(loop);
+	video->play();
 
 	if (shouldBlock)
 	{

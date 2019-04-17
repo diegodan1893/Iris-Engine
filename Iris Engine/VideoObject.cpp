@@ -3,18 +3,17 @@
 #include "ITexture.h"
 #include "TheoraDecoder.h"
 #include "Locator.h"
-#include "Sprite.h"
+#include "Config.h"
 
-VideoObject::VideoObject(IRenderer* renderer, const std::string& file, bool playAudio, int zindex)
+VideoObject::VideoObject(IRenderer* renderer, const std::string& file, bool playAudio, bool shouldLoop, int zindex)
 	:renderer(renderer),
-	 file(file),
 	 playAudio(playAudio),
 	 playing(false),
 	 decoder(nullptr),
 	 videoTexture(nullptr),
 	 Object(zindex)
 {
-	decoder = new TheoraDecoder(file);
+	decoder = new TheoraDecoder(Config::values().paths.videos + file);
 
 	// Start buffering the video
 	bool success = decoder->startDecoding(playAudio);
@@ -56,10 +55,7 @@ void VideoObject::update(float elapsedSeconds)
 		if (!decoder->hasVideo())
 		{
 			// The video has ended
-			if (shouldLoop)
-				decoder->rewind();
-			else
-				stop();
+			stop();
 		}
 		else
 		{
@@ -76,11 +72,10 @@ void VideoObject::update(float elapsedSeconds)
 		updateMovement(elapsedSeconds);
 }
 
-void VideoObject::play(bool loop)
+void VideoObject::play()
 {
 	if (!playing && valid())
 	{
-		shouldLoop = loop;
 		playing = true;
 
 		if (!videoTexture)

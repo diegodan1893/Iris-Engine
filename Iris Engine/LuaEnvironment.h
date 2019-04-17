@@ -218,7 +218,7 @@ private:
 
 	// Video objects
 	typedef std::unique_ptr<LuaVideo> LuaVideoPtr;
-	static LuaVideoPtr createVideo(const std::string& file, bool playAudio, int zindex);
+	static LuaVideoPtr createVideo(const std::string& file, bool playAudio, bool shouldLoop, int zindex);
 
 	// Character objects
 	typedef std::unique_ptr<LuaCharacterSprite> CharacterSpritePtr;
