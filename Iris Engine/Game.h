@@ -49,7 +49,7 @@ private:
 	GameInput gameInput;
 
 	const std::string CONFIG_FILE_PATH;
-	const int AUDIO_CHANNELS = 16;
+	static const int AUDIO_CHANNELS = 16;
 
 	// Functions	
 	bool inline isExiting();
