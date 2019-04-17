@@ -16,7 +16,7 @@ TheoraDecoder::~TheoraDecoder()
 	stopDecoding();
 }
 
-bool TheoraDecoder::startDecoding(bool decodeAudio)
+bool TheoraDecoder::startDecoding(bool decodeAudio, bool shouldLoop)
 {
 	const int MAX_FRAMES = 30;
 
@@ -73,12 +73,6 @@ TextureFormat TheoraDecoder::getPixelFormat()
 bool TheoraDecoder::hasVideo()
 {
 	return decoder && THEORAPLAY_isDecoding(decoder);
-}
-
-void TheoraDecoder::rewind()
-{
-	stopDecoding();
-	startDecoding(decodeAudio);
 }
 
 void TheoraDecoder::getNextFrame(ITexture* texture)

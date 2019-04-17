@@ -5,6 +5,7 @@
 #include "Locator.h"
 #include "Config.h"
 
+
 VideoObject::VideoObject(IRenderer* renderer, const std::string& file, bool playAudio, bool shouldLoop, int zindex)
 	:renderer(renderer),
 	 playAudio(playAudio),
@@ -16,7 +17,7 @@ VideoObject::VideoObject(IRenderer* renderer, const std::string& file, bool play
 	decoder = new TheoraDecoder(Config::values().paths.videos + file);
 
 	// Start buffering the video
-	bool success = decoder->startDecoding(playAudio);
+	bool success = decoder->startDecoding(playAudio, shouldLoop);
 
 	if (!success)
 	{
@@ -71,6 +72,7 @@ void VideoObject::update(float elapsedSeconds)
 	if (inMovement())
 		updateMovement(elapsedSeconds);
 }
+
 
 void VideoObject::play()
 {

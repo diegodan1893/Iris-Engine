@@ -11,11 +11,12 @@ class VideoObject : public Object
 {
 public:	
 	/// <summary>
-	/// Initializes a new instance of the <see cref="VideoObject"/> class.
+	/// Initializes a new instance of the <see cref="VideoObject" /> class.
 	/// </summary>
 	/// <param name="renderer">The renderer.</param>
 	/// <param name="file">The file containing the video.</param>
 	/// <param name="playAudio">if set to <c>true</c> the audio of the video will be played.</param>
+	/// <param name="shouldLoop">if set to <c>true</c> the video will loop.</param>
 	/// <param name="zindex">The zindex.</param>
 	VideoObject(
 		class IRenderer* renderer,
@@ -42,7 +43,6 @@ public:
 	/// <summary>
 	/// Starts playing the video.
 	/// </summary>
-	/// <param name="loop">if set to <c>true</c> the video will loop after it finishes playing.</param>
 	void play();
 	
 	/// <summary>

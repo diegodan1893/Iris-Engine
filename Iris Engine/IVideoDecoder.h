@@ -15,10 +15,11 @@ public:
 	/// Starts decoding the video file.
 	/// </summary>
 	/// <param name="decodeAudio">if set to <c>true</c> audio will be decoded and played.</param>
+	/// <param name="shouldLoop">if set to <c>true</c> the video will loop.</param>
 	/// <returns>
 	///   <c>true</c> if successful.
 	/// </returns>
-	virtual bool startDecoding(bool decodeAudio) = 0;
+	virtual bool startDecoding(bool decodeAudio, bool shouldLoop) = 0;
 	
 	/// <summary>
 	/// Stops the decoding of the video file.
@@ -48,12 +49,6 @@ public:
 	///   <c>true</c> if there is more video to play; <c>false</c> if the video has ended.
 	/// </returns>
 	virtual bool hasVideo() = 0;
-	
-	/// <summary>
-	/// Seeks to the beginning of the video and
-	/// starts decoding from there.
-	/// </summary>
-	virtual void rewind() = 0;
 	
 	/// <summary>
 	/// Renders the next frame of the video to the
