@@ -18,6 +18,8 @@ struct THEORAPLAY_Io
 {
     long (*read)(THEORAPLAY_Io *io, void *buf, long buflen);
     void (*close)(THEORAPLAY_Io *io);
+	void (*seek)(THEORAPLAY_Io * io, long offset);
+	long (*getPosition)(THEORAPLAY_Io * io);
     void *userdata;
 };
 
@@ -55,10 +57,12 @@ typedef struct THEORAPLAY_AudioPacket
 
 THEORAPLAY_Decoder *THEORAPLAY_startDecodeFile(const char *fname,
                                                const unsigned int maxframes,
-                                               THEORAPLAY_VideoFormat vidfmt);
+                                               THEORAPLAY_VideoFormat vidfmt,
+                                               int loopVideo);
 THEORAPLAY_Decoder *THEORAPLAY_startDecode(THEORAPLAY_Io *io,
                                            const unsigned int maxframes,
-                                           THEORAPLAY_VideoFormat vidfmt);
+                                           THEORAPLAY_VideoFormat vidfmt,
+	                                       int loopVideo);
 void THEORAPLAY_stopDecode(THEORAPLAY_Decoder *decoder);
 
 int THEORAPLAY_isDecoding(THEORAPLAY_Decoder *decoder);

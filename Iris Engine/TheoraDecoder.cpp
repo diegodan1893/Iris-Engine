@@ -4,24 +4,24 @@
 #include "ITexture.h"
 #include <SDL.h>
 
-TheoraDecoder::TheoraDecoder(const std::string& file)
+TheoraVideoDecoder::TheoraVideoDecoder(const std::string& file)
 	:file(file),
 	 video(nullptr),
 	 initialized(false)
 {
 }
 
-TheoraDecoder::~TheoraDecoder()
+TheoraVideoDecoder::~TheoraVideoDecoder()
 {
 	stopDecoding();
 }
 
-bool TheoraDecoder::startDecoding(bool decodeAudio, bool shouldLoop)
+bool TheoraVideoDecoder::startDecoding(bool decodeAudio, bool shouldLoop)
 {
 	const int MAX_FRAMES = 30;
 
 	this->decodeAudio = decodeAudio;
-	decoder = THEORAPLAY_startDecodeFile(file.c_str(), MAX_FRAMES, THEORAPLAY_VIDFMT_RGB);
+	decoder = THEORAPLAY_startDecodeFile(file.c_str(), MAX_FRAMES, THEORAPLAY_VIDFMT_RGB, shouldLoop);
 
 	if (decoder)
 		return true;
@@ -29,7 +29,7 @@ bool TheoraDecoder::startDecoding(bool decodeAudio, bool shouldLoop)
 		return false;
 }
 
-void TheoraDecoder::stopDecoding()
+void TheoraVideoDecoder::stopDecoding()
 {
 	if (video)
 	{
@@ -57,7 +57,7 @@ void TheoraDecoder::stopDecoding()
 	initialized = false;
 }
 
-Vector2<int> TheoraDecoder::getVideoSize()
+Vector2<int> TheoraVideoDecoder::getVideoSize()
 {
 	if (!initialized)
 		initialize();
@@ -65,17 +65,17 @@ Vector2<int> TheoraDecoder::getVideoSize()
 	return size;
 }
 
-TextureFormat TheoraDecoder::getPixelFormat()
+TextureFormat TheoraVideoDecoder::getPixelFormat()
 {
 	return TextureFormat::RGB;
 }
 
-bool TheoraDecoder::hasVideo()
+bool TheoraVideoDecoder::hasVideo()
 {
 	return decoder && THEORAPLAY_isDecoding(decoder);
 }
 
-void TheoraDecoder::getNextFrame(ITexture* texture)
+void TheoraVideoDecoder::getNextFrame(ITexture* texture)
 {
 	if (!initialized)
 		initialize();
@@ -119,7 +119,7 @@ void TheoraDecoder::getNextFrame(ITexture* texture)
 					THEORAPLAY_freeVideo(last);
 					last = video;
 
-					if (now - video->playms < frameMS)
+					if (now - video->playms < frameMS || video->playms > now)
 						stopSkipping = true;
 				}
 
@@ -153,7 +153,7 @@ void TheoraDecoder::getNextFrame(ITexture* texture)
 	}
 }
 
-void TheoraDecoder::initialize()
+void TheoraVideoDecoder::initialize()
 {
 	// Wait until the decoder has parsed out video properties
 	while (!THEORAPLAY_isInitialized(decoder))
@@ -204,12 +204,12 @@ void TheoraDecoder::initialize()
 	audioPlayMS = 0;
 }
 
-void TheoraDecoder::musicPlayer(void* udata, uint8_t* stream, int len)
+void TheoraVideoDecoder::musicPlayer(void* udata, uint8_t* stream, int len)
 {
-	((TheoraDecoder*)udata)->playAudio(stream, len);
+	((TheoraVideoDecoder*)udata)->playAudio(stream, len);
 }
 
-void TheoraDecoder::playAudio(uint8_t* stream, int len)
+void TheoraVideoDecoder::playAudio(uint8_t* stream, int len)
 {
 	const Sint16 SINT_MIN = -32768;
 	const Sint16 SINT_MAX = 32767;
@@ -264,7 +264,7 @@ void TheoraDecoder::playAudio(uint8_t* stream, int len)
 		memset(dst, '\0', len);
 }
 
-void TheoraDecoder::queueAudio(const THEORAPLAY_AudioPacket* audio)
+void TheoraVideoDecoder::queueAudio(const THEORAPLAY_AudioPacket* audio)
 {
 	AudioItem item;
 

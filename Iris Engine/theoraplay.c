@@ -121,6 +121,7 @@ typedef struct TheoraDecoder
     volatile int hasvideo;
     volatile int hasaudio;
     volatile int decode_error;
+	volatile int loop;
 
     THEORAPLAY_VideoFormat vidfmt;
     ConvertVideoFrameFn vidcvt;
@@ -250,6 +251,13 @@ static void WorkerThread(TheoraDecoder *ctx)
     vorbis_comment_init(&vcomment);
     th_comment_init(&tcomment);
     th_info_init(&tinfo);
+
+	// Allow for video looping
+	long fileBeginning = ctx->io->getPosition(ctx->io);
+	unsigned int videoPlaymsOffset = 0;
+	unsigned int audioPlaymsOffset = 0;
+	unsigned int frameMS = (fps == 0.0) ? 0 : ((UINT32)(1000.0f / fps));
+	unsigned int lastFrameTime;
 
     int bos = 1;
     while (!ctx->halt && bos)
@@ -399,7 +407,7 @@ static void WorkerThread(TheoraDecoder *ctx)
                 float *samples;
                 AudioPacket *item = (AudioPacket *) malloc(sizeof (AudioPacket));
                 if (item == NULL) goto cleanup;
-                item->playms = (unsigned long) ((((double) audioframes) / ((double) vinfo.rate)) * 1000.0);
+                item->playms = (unsigned long) ((((double) audioframes) / ((double) vinfo.rate)) * 1000.0) + audioPlaymsOffset;
                 item->channels = channels;
                 item->freq = vinfo.rate;
                 item->frames = frames;
@@ -479,13 +487,15 @@ static void WorkerThread(TheoraDecoder *ctx)
                         const double videotime = th_granule_time(tdec, granulepos);
                         VideoFrame *item = (VideoFrame *) malloc(sizeof (VideoFrame));
                         if (item == NULL) goto cleanup;
-                        item->playms = (unsigned int) (videotime * 1000.0);
+                        item->playms = (unsigned int) (videotime * 1000.0) + videoPlaymsOffset;
                         item->fps = fps;
                         item->width = tinfo.pic_width;
                         item->height = tinfo.pic_height;
                         item->format = ctx->vidfmt;
                         item->pixels = ctx->vidcvt(&tinfo, ycbcr);
                         item->next = NULL;
+
+						lastFrameTime = item->playms;
 
                         if (item->pixels == NULL)
                         {
@@ -518,8 +528,22 @@ static void WorkerThread(TheoraDecoder *ctx)
         if (!ctx->halt && need_pages)
         {
             const int rc = FeedMoreOggData(ctx->io, &sync);
-            if (rc == 0)
-                eos = 1;  // end of stream
+			if (rc == 0)
+			{
+				// End of stream
+				if (ctx->loop)
+				{
+					// Seek to the beginning
+					ctx->io->seek(ctx->io, fileBeginning);
+					videoPlaymsOffset = lastFrameTime;
+					audioPlaymsOffset = videoPlaymsOffset;
+				}
+				else
+				{
+					// Finish decoding
+					eos = 1;
+				}
+			}
             else if (rc < 0)
                 goto cleanup;  // i/o error, etc.
             else
@@ -593,10 +617,23 @@ static void IoFopenClose(THEORAPLAY_Io *io)
     free(io);
 } // IoFopenClose
 
+static void IoFopenSeek(THEORAPLAY_Io *io, long offset)
+{
+	FILE *f = (FILE *)io->userdata;
+	fseek(f, offset, SEEK_SET);
+}
+
+static long IoFopenGetPosition(THEORAPLAY_Io *io)
+{
+	FILE *f = (FILE *)io->userdata;
+	return ftell(f);
+}
+
 
 THEORAPLAY_Decoder *THEORAPLAY_startDecodeFile(const char *fname,
                                                const unsigned int maxframes,
-                                               THEORAPLAY_VideoFormat vidfmt)
+                                               THEORAPLAY_VideoFormat vidfmt,
+	                                           int loopVideo)
 {
     THEORAPLAY_Io *io = (THEORAPLAY_Io *) malloc(sizeof (THEORAPLAY_Io));
     if (io == NULL)
@@ -612,14 +649,17 @@ THEORAPLAY_Decoder *THEORAPLAY_startDecodeFile(const char *fname,
 
     io->read = IoFopenRead;
     io->close = IoFopenClose;
+	io->seek = IoFopenSeek;
+	io->getPosition = IoFopenGetPosition;
     io->userdata = f;
-    return THEORAPLAY_startDecode(io, maxframes, vidfmt);
+    return THEORAPLAY_startDecode(io, maxframes, vidfmt, loopVideo);
 } // THEORAPLAY_startDecodeFile
 
 
 THEORAPLAY_Decoder *THEORAPLAY_startDecode(THEORAPLAY_Io *io,
                                            const unsigned int maxframes,
-                                           THEORAPLAY_VideoFormat vidfmt)
+                                           THEORAPLAY_VideoFormat vidfmt,
+	                                       int loopVideo)
 {
     TheoraDecoder *ctx = NULL;
     ConvertVideoFrameFn vidcvt = NULL;
@@ -645,6 +685,7 @@ THEORAPLAY_Decoder *THEORAPLAY_startDecode(THEORAPLAY_Io *io,
     ctx->vidfmt = vidfmt;
     ctx->vidcvt = vidcvt;
     ctx->io = io;
+	ctx->loop = loopVideo;
 
     if (Mutex_Create(ctx) == 0)
     {

@@ -14,7 +14,7 @@ VideoObject::VideoObject(IRenderer* renderer, const std::string& file, bool play
 	 videoTexture(nullptr),
 	 Object(zindex)
 {
-	decoder = new TheoraDecoder(Config::values().paths.videos + file);
+	decoder = new TheoraVideoDecoder(Config::values().paths.videos + file);
 
 	// Start buffering the video
 	bool success = decoder->startDecoding(playAudio, shouldLoop);

@@ -9,16 +9,16 @@
 /// 
 /// </summary>
 /// <seealso cref="IVideoDecoder" />
-class TheoraDecoder : public IVideoDecoder
+class TheoraVideoDecoder : public IVideoDecoder
 {
 public:	
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TheoraDecoder"/> class.
 	/// </summary>
 	/// <param name="file">Path to the video file.</param>
-	TheoraDecoder(const std::string& file);
+	TheoraVideoDecoder(const std::string& file);
 
-	~TheoraDecoder();
+	~TheoraVideoDecoder();
 	
 	/// <summary>
 	/// Starts decoding the video file.
