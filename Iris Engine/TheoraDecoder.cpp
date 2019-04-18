@@ -144,7 +144,8 @@ void TheoraVideoDecoder::getNextFrame(ITexture* texture)
 			}
 
 			// Draw the frame
-			texture->updateTextureBytes(video->pixels);
+			if (texture)
+				texture->updateTextureBytes(video->pixels);
 
 			// Free frame
 			THEORAPLAY_freeVideo(video);
