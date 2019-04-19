@@ -62,7 +62,7 @@ void VideoObject::update(float elapsedSeconds)
 		{
 			// There is video to play
 			// Decode it, but don't draw it if we are not going to render it
-			decoder->getNextFrame((visible()) ? videoTexture : nullptr);
+			decoder->getNextFrame(elapsedSeconds, (visible()) ? videoTexture : nullptr);
 		}
 	}
 

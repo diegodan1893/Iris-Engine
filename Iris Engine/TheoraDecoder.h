@@ -65,8 +65,9 @@ public:
 	/// Renders the next frame of the video to the
 	/// provided texture and queues audio to be played.
 	/// </summary>
+	/// <param name="elapsedSeconds">The elapsed seconds.</param>
 	/// <param name="texture">The texture.</param>
-	void getNextFrame(class ITexture* texture) override;
+	void getNextFrame(float elapsedSeconds, class ITexture* texture) override;
 
 private:
 	// Video properties
@@ -80,7 +81,7 @@ private:
 	struct THEORAPLAY_Decoder* decoder;
 	const struct THEORAPLAY_VideoFrame* video;
 	bool initialized;
-	uint32_t baseTicks;
+	float playtime;
 
 	// Audio
 	struct AudioItem
@@ -93,7 +94,7 @@ private:
 	std::queue<AudioItem> audioQueue;
 	uint16_t audioPlayMS;
 
-	// Initialization
+	// Functions
 	void initialize();
 
 	// Music player

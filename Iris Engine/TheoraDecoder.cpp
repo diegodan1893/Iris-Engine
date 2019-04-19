@@ -75,12 +75,13 @@ bool TheoraVideoDecoder::hasVideo()
 	return decoder && THEORAPLAY_isDecoding(decoder);
 }
 
-void TheoraVideoDecoder::getNextFrame(ITexture* texture)
+void TheoraVideoDecoder::getNextFrame(float elapsedSeconds, ITexture* texture)
 {
 	if (!initialized)
 		initialize();
 
-	uint32_t now = SDL_GetTicks() - baseTicks + frameMS;
+	playtime += elapsedSeconds;
+	uint32_t now = std::round(playtime * 1000.0f) + frameMS;
 
 	// Queue audio
 	const THEORAPLAY_AudioPacket* audio;
@@ -138,7 +139,7 @@ void TheoraVideoDecoder::getNextFrame(ITexture* texture)
 					if (decodeAudio)
 					{
 						// Rewind the video so that it syncs with audio playback
-						baseTicks += now - audioPlayMS;
+						playtime = audioPlayMS / 1000.0f;
 					}
 				}
 			}
@@ -201,7 +202,8 @@ void TheoraVideoDecoder::initialize()
 	}
 
 	initialized = true;
-	baseTicks = SDL_GetTicks();
+
+	playtime = 0;
 	audioPlayMS = 0;
 }
 

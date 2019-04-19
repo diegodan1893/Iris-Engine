@@ -54,6 +54,7 @@ public:
 	/// Renders the next frame of the video to the
 	/// provided texture and queues audio to be played.
 	/// </summary>
+	/// <param name="elapsedSeconds">The elapsed seconds.</param>
 	/// <param name="texture">The texture.</param>
-	virtual void getNextFrame(class ITexture* texture) = 0;
+	virtual void getNextFrame(float elapsedSeconds, class ITexture* texture) = 0;
 };
