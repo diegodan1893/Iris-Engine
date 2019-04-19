@@ -536,7 +536,7 @@ static void WorkerThread(TheoraDecoder *ctx)
 					// Seek to the beginning
 					ctx->io->seek(ctx->io, fileBeginning);
 					videoPlaymsOffset = lastFrameTime;
-					audioPlaymsOffset = videoPlaymsOffset;
+					//audioPlaymsOffset = videoPlaymsOffset;
 				}
 				else
 				{

@@ -92,7 +92,7 @@ private:
 
 	std::mutex audioLock;
 	std::queue<AudioItem> audioQueue;
-	uint16_t audioPlayMS;
+	uint32_t audioPlayMS;
 
 	// Functions
 	void initialize();
