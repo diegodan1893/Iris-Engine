@@ -96,9 +96,12 @@ void VideoObject::play()
 
 void VideoObject::stop()
 {
-	decoder->stopDecoding();
-	playing = false;
-	setVisible(false);
+	if (playing)
+	{
+		decoder->stopDecoding();
+		playing = false;
+		setVisible(false);
+	}
 }
 
 bool VideoObject::isPlaying()
