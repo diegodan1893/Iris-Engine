@@ -255,8 +255,6 @@ static void WorkerThread(TheoraDecoder *ctx)
 	// Allow for video looping
 	long fileBeginning = ctx->io->getPosition(ctx->io);
 	unsigned int videoPlaymsOffset = 0;
-	unsigned int audioPlaymsOffset = 0;
-	unsigned int frameMS = (fps == 0.0) ? 0 : ((UINT32)(1000.0f / fps));
 	unsigned int lastFrameTime;
 
     int bos = 1;
@@ -407,7 +405,7 @@ static void WorkerThread(TheoraDecoder *ctx)
                 float *samples;
                 AudioPacket *item = (AudioPacket *) malloc(sizeof (AudioPacket));
                 if (item == NULL) goto cleanup;
-                item->playms = (unsigned long) ((((double) audioframes) / ((double) vinfo.rate)) * 1000.0) + audioPlaymsOffset;
+                item->playms = (unsigned long) ((((double) audioframes) / ((double) vinfo.rate)) * 1000.0);
                 item->channels = channels;
                 item->freq = vinfo.rate;
                 item->frames = frames;
@@ -536,7 +534,7 @@ static void WorkerThread(TheoraDecoder *ctx)
 					// Seek to the beginning
 					ctx->io->seek(ctx->io, fileBeginning);
 					videoPlaymsOffset = lastFrameTime;
-					//audioPlaymsOffset = videoPlaymsOffset;
+					//audioframes = (unsigned long)((double)lastFrameTime / 1000.0 * vinfo.rate);
 				}
 				else
 				{
