@@ -18,7 +18,7 @@ TheoraVideoDecoder::~TheoraVideoDecoder()
 
 bool TheoraVideoDecoder::startDecoding(bool decodeAudio, bool shouldLoop)
 {
-	const int MAX_FRAMES = 30;
+	const int MAX_FRAMES = 45;
 
 	this->decodeAudio = decodeAudio;
 	decoder = THEORAPLAY_startDecodeFile(file.c_str(), MAX_FRAMES, THEORAPLAY_VIDFMT_RGB, shouldLoop);
@@ -77,6 +77,8 @@ bool TheoraVideoDecoder::hasVideo()
 
 void TheoraVideoDecoder::getNextFrame(float elapsedSeconds, ITexture* texture)
 {
+	const int MAX_AUDIO_DELAY_FRAMES = 5;
+
 	if (!initialized)
 		initialize();
 
@@ -94,7 +96,7 @@ void TheoraVideoDecoder::getNextFrame(float elapsedSeconds, ITexture* texture)
 			keepDecoding = false;
 
 		// We have audio to decode
-		if (decodeAudio && audio->playms > now - frameMS)
+		if (decodeAudio && audio->playms > (double)now - frameMS * MAX_AUDIO_DELAY_FRAMES)
 			queueAudio(audio);
 		else
 			THEORAPLAY_freeAudio(audio);
