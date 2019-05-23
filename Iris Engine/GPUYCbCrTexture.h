@@ -32,4 +32,6 @@ public:
 private:
 	class GPURenderer* renderer;
 	class ITexture* chroma;
+	unsigned char* lumaBytes;
+	unsigned char* chromaBytes;
 };

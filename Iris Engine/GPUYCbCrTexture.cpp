@@ -11,12 +11,23 @@ GPUYCbCrTexture::GPUYCbCrTexture(GPURenderer* renderer, int w, int h)
 
 	// Create a texture for chroma components
 	chroma = renderer->createTexture(TextureFormat::RGB, TextureAccess::STATIC, w / 2, h / 2);
+
+	// Create temporal buffers
+	// We do it here to avoid allocating new memory every frame
+	int lumaSize = w * h * 3;
+	int chromaSize = w * h / 2 * 3;
+
+	lumaBytes = new unsigned char[lumaSize];
+	chromaBytes = new unsigned char[chromaSize];
 }
 
 GPUYCbCrTexture::~GPUYCbCrTexture()
 {
 	if (chroma)
 		delete chroma;
+
+	delete[] lumaBytes;
+	delete[] chromaBytes;
 }
 
 void GPUYCbCrTexture::updateTextureBytes(const unsigned char* bytes)
@@ -25,11 +36,25 @@ void GPUYCbCrTexture::updateTextureBytes(const unsigned char* bytes)
 	int h = getInternalTexture()->base_h;
 
 	// Update luminance
-	GPUTexture::updateTextureBytes(bytes);
+	unsigned char* dst = lumaBytes;
+
+	for (int i = 0; i < w * h; ++i, dst += 3)
+		*dst = bytes[i];
+
+	GPUTexture::updateTextureBytes(lumaBytes);
 
 	// Update chroma
-	int chromaOffset = w * h * 3;
-	chroma->updateTextureBytes(bytes + chromaOffset);
+	unsigned int cb = w * h;
+	unsigned int cr = cb + w / 2 * h / 2;
+	dst = chromaBytes;
+
+	for (int i = 0; i < w / 2 * h / 2; ++i, dst += 3)
+	{
+		dst[0] = bytes[cb++];
+		dst[1] = bytes[cr++];
+	}
+
+	chroma->updateTextureBytes(chromaBytes);
 
 	// Convert to RGB
 	Rect<float> rect;

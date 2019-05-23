@@ -21,7 +21,7 @@ bool TheoraVideoDecoder::startDecoding(bool decodeAudio, bool shouldLoop)
 	const int MAX_FRAMES = 45;
 
 	this->decodeAudio = decodeAudio;
-	decoder = THEORAPLAY_startDecodeFile(file.c_str(), MAX_FRAMES, THEORAPLAY_VIDFMT_IrisOptimizedYCbCr, shouldLoop);
+	decoder = THEORAPLAY_startDecodeFile(file.c_str(), MAX_FRAMES, THEORAPLAY_VIDFMT_IYUV, shouldLoop);
 
 	if (decoder)
 		return true;
