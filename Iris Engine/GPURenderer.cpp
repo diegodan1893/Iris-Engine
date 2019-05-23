@@ -1,5 +1,6 @@
 #include "GPURenderer.h"
 #include "GPUTexture.h"
+#include "GPUYCbCrTexture.h"
 #include "Locator.h"
 #include "Config.h"
 #include <SDL_gpu.h>
@@ -37,6 +38,7 @@ GPURenderer::GPURenderer(SDL_Window* window)
 		dissolveShader.loadProgram();
 		imageDissolveShader.loadProgram();
 		colorGradingShader.loadProgram();
+		YCbCrShader.loadProgram();
 	}
 	else
 	{
@@ -167,45 +169,48 @@ void GPURenderer::copy(ITexture* texture, const Rect<float>* srcrect, const Rect
 
 ITexture* GPURenderer::createTexture(TextureFormat format, TextureAccess access, int w, int h)
 {
-	// @todo This seems to have a greater impact in performance that creating a texture with SDL
-	GPU_FormatEnum textureFormat;
-
-	switch (format)
+	if (format == TextureFormat::YCbCr420p)
 	{
-	case TextureFormat::RGB:
-		textureFormat = GPU_FORMAT_RGB;
-		break;
-
-	case TextureFormat::RGBA8:
-		textureFormat = GPU_FORMAT_RGBA;
-		break;
-
-	case TextureFormat::YCbCr420p:
-		textureFormat = GPU_FORMAT_YCbCr420P;
-		break;
-
-	default:
-		textureFormat = GPU_FORMAT_RGBA;
-		break;
-	}
-
-	GPU_Image* internalTexture = GPU_CreateImage(w, h, textureFormat);
-
-	if (internalTexture)
-	{
-		GPUTexture* texture = new GPUTexture(internalTexture);
-
-		if (access == TextureAccess::TARGET)
-		{
-			// Create a render target for this texture
-			texture->createRenderTarget();
-		}
-
-		return texture;
+		// Add support for YCbCr textures
+		return new GPUYCbCrTexture(this, w, h);
 	}
 	else
 	{
-		return nullptr;
+		GPU_FormatEnum textureFormat;
+
+		switch (format)
+		{
+		case TextureFormat::RGB:
+			textureFormat = GPU_FORMAT_RGB;
+			break;
+
+		case TextureFormat::RGBA8:
+			textureFormat = GPU_FORMAT_RGBA;
+			break;
+
+		default:
+			textureFormat = GPU_FORMAT_RGBA;
+			break;
+		}
+
+		GPU_Image* internalTexture = GPU_CreateImage(w, h, textureFormat);
+
+		if (internalTexture)
+		{
+			GPUTexture* texture = new GPUTexture(internalTexture);
+
+			if (access == TextureAccess::TARGET)
+			{
+				// Create a render target for this texture
+				texture->createRenderTarget();
+			}
+
+			return texture;
+		}
+		else
+		{
+			return nullptr;
+		}
 	}
 }
 
@@ -277,4 +282,9 @@ ImageDissolveShader* GPURenderer::getImageDissolveShader()
 ColorGradingShader* GPURenderer::getColorGradingShader()
 {
 	return &colorGradingShader;
+}
+
+YCbCrShader* GPURenderer::getYCbCrShader()
+{
+	return &YCbCrShader;
 }

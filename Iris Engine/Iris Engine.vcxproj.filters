@@ -230,6 +230,12 @@
     <ClCompile Include="TheoraDecoder.cpp">
       <Filter>Source Files\Video</Filter>
     </ClCompile>
+    <ClCompile Include="GPUYCbCrTexture.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="YCbCrShader.cpp">
+      <Filter>Source Files\Render\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector.h">
@@ -460,6 +466,12 @@
     </ClInclude>
     <ClInclude Include="TheoraDecoder.h">
       <Filter>Source Files\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="GPUYCbCrTexture.h">
+      <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="YCbCrShader.h">
+      <Filter>Source Files\Render\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

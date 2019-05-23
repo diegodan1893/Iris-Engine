@@ -87,6 +87,56 @@ static unsigned char *ConvertVideoFrame420ToIYUV(const th_info *tinfo,
     return ConvertVideoFrame420ToYUVPlanar(tinfo, ycbcr, 0, 1, 2);
 } // ConvertVideoFrame420ToIYUV
 
+static unsigned char *ConvertVideoFrame420ToIrisOptimizedYCbCr(const th_info *tinfo,
+                                                               const th_ycbcr_buffer ycbcr)
+{
+	// Doing it here avoids redundant copies
+	// However, it also uses more than 3x the ammount of RAM,
+	// so it might not be worth it
+	int i, j;
+	const int w = tinfo->pic_width;
+	const int h = tinfo->pic_height;
+	const int yoff = (tinfo->pic_x & ~1) + ycbcr[0].stride * (tinfo->pic_y & ~1);
+	const int uvoff = (tinfo->pic_x / 2) + (ycbcr[1].stride) * (tinfo->pic_y / 2);
+	unsigned char *yuv = (unsigned char *)malloc(w * h * 3 + w * h / 2 * 3);
+	const unsigned char *p0data = ycbcr[0].data + yoff;
+	const int p0stride = ycbcr[0].stride;
+	const unsigned char *p1data = ycbcr[1].data + uvoff;
+	const int p1stride = ycbcr[1].stride;
+	const unsigned char *p2data = ycbcr[2].data + uvoff;
+	const int p2stride = ycbcr[2].stride;
+
+	if (yuv)
+	{
+		unsigned char *dst = yuv;
+
+		// Prepare Y channel to store it in a RGB image
+		for (i = 0; i < h; i++)
+		{
+			for (j = 0; j < w; ++j)
+			{
+				dst[0] = dst[1] = dst[2] = *(p0data + (p0stride * i) + j);
+				dst += 3;
+			}
+		}
+
+		// Prepare Cb and Cr channels to store them as R and G channels of an RGB image
+		for (i = 0; i < (h / 2); i++)
+		{
+			for (j = 0; j < w / 2; ++j)
+			{
+				dst[0] = *(p1data + (p1stride * i) + j);
+				dst[1] = *(p2data + (p2stride * i) + j);
+				dst[2] = 0;
+				
+				dst += 3;
+			}
+		}
+	} // if
+
+	return yuv;
+} // ConvertVideoFrame420ToIrisOptimizedYCbCr
+
 
 // RGB
 #define THEORAPLAY_CVT_FNNAME_420 ConvertVideoFrame420ToRGB
@@ -670,6 +720,7 @@ THEORAPLAY_Decoder *THEORAPLAY_startDecode(THEORAPLAY_Io *io,
         VIDCVT(IYUV)
         VIDCVT(RGB)
         VIDCVT(RGBA)
+		VIDCVT(IrisOptimizedYCbCr)
         #undef VIDCVT
         default: goto startdecode_failed;  // invalid/unsupported format.
     } // switch

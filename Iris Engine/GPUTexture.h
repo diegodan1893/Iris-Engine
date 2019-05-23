@@ -15,7 +15,7 @@ public:
 	/// </summary>
 	/// <param name="texture">The GPU_Image that contains the data of the texture.</param>
 	GPUTexture(struct GPU_Image* texture);
-	~GPUTexture();
+	virtual ~GPUTexture();
 	
 	/// <summary>
 	/// Sets the blend mode of the texture.
@@ -42,7 +42,7 @@ public:
 	/// </summary>
 	/// <param name="bytes">The pixel data.</param>
 	/// <param name="bytesPerRow"></param>
-	void updateTextureBytes(const unsigned char* bytes) override;
+	virtual void updateTextureBytes(const unsigned char* bytes) override;
 	
 	/// <summary>
 	/// Gets the internal representation of

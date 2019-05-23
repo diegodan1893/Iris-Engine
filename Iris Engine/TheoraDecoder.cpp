@@ -21,7 +21,7 @@ bool TheoraVideoDecoder::startDecoding(bool decodeAudio, bool shouldLoop)
 	const int MAX_FRAMES = 45;
 
 	this->decodeAudio = decodeAudio;
-	decoder = THEORAPLAY_startDecodeFile(file.c_str(), MAX_FRAMES, THEORAPLAY_VIDFMT_RGB, shouldLoop);
+	decoder = THEORAPLAY_startDecodeFile(file.c_str(), MAX_FRAMES, THEORAPLAY_VIDFMT_IrisOptimizedYCbCr, shouldLoop);
 
 	if (decoder)
 		return true;
@@ -67,7 +67,7 @@ Vector2<int> TheoraVideoDecoder::getVideoSize()
 
 TextureFormat TheoraVideoDecoder::getPixelFormat()
 {
-	return TextureFormat::RGB;
+	return TextureFormat::YCbCr420p;
 }
 
 bool TheoraVideoDecoder::hasVideo()

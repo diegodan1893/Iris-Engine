@@ -28,10 +28,11 @@ typedef struct THEORAPLAY_Decoder THEORAPLAY_Decoder;
 /* YV12 is YCrCb, not YCbCr; that's what SDL uses for YV12 overlays. */
 typedef enum THEORAPLAY_VideoFormat
 {
-    THEORAPLAY_VIDFMT_YV12,  /* NTSC colorspace, planar YCrCb 4:2:0 */
-    THEORAPLAY_VIDFMT_IYUV,  /* NTSC colorspace, planar YCbCr 4:2:0 */
-    THEORAPLAY_VIDFMT_RGB,   /* 24 bits packed pixel RGB */
-    THEORAPLAY_VIDFMT_RGBA   /* 32 bits packed pixel RGBA (full alpha). */
+    THEORAPLAY_VIDFMT_YV12,               /* NTSC colorspace, planar YCrCb 4:2:0 */
+    THEORAPLAY_VIDFMT_IYUV,               /* NTSC colorspace, planar YCbCr 4:2:0 */
+    THEORAPLAY_VIDFMT_RGB,                /* 24 bits packed pixel RGB */
+    THEORAPLAY_VIDFMT_RGBA,               /* 32 bits packed pixel RGBA (full alpha). */
+	THEORAPLAY_VIDFMT_IrisOptimizedYCbCr  /* YCbCr 4:2:0, optimized for Iris Engine */
 } THEORAPLAY_VideoFormat;
 
 typedef struct THEORAPLAY_VideoFrame

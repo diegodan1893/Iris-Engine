@@ -5,6 +5,7 @@
 #include "DissolveShader.h"
 #include "ImageDissolveShader.h"
 #include "ColorGradingShader.h"
+#include "YCbCrShader.h"
 
 /// <summary>
 /// A renderer context that uses
@@ -141,6 +142,7 @@ public:
 	DissolveShader* getDissolveShader() override;
 	ImageDissolveShader* getImageDissolveShader() override;
 	ColorGradingShader* getColorGradingShader() override;
+	YCbCrShader* getYCbCrShader();
 
 private:
 	// Targets
@@ -163,4 +165,5 @@ private:
 	DissolveShader dissolveShader;
 	ImageDissolveShader imageDissolveShader;
 	ColorGradingShader colorGradingShader;
+	YCbCrShader YCbCrShader;
 };
