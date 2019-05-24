@@ -77,8 +77,6 @@ bool TheoraVideoDecoder::hasVideo()
 
 void TheoraVideoDecoder::getNextFrame(float elapsedSeconds, ITexture* texture)
 {
-	const int MAX_AUDIO_DELAY_FRAMES = 5;
-
 	if (!initialized)
 		initialize();
 
@@ -96,7 +94,7 @@ void TheoraVideoDecoder::getNextFrame(float elapsedSeconds, ITexture* texture)
 			keepDecoding = false;
 
 		// We have audio to decode
-		if (decodeAudio && audio->playms > (double)now - frameMS * MAX_AUDIO_DELAY_FRAMES)
+		if (decodeAudio)
 			queueAudio(audio);
 		else
 			THEORAPLAY_freeAudio(audio);
@@ -220,6 +218,9 @@ void TheoraVideoDecoder::playAudio(uint8_t* stream, int len)
 	const Sint16 SINT_MAX = 32767;
 	const float CONVERSION_FACTOR = 32767.0f;
 
+	const uint32_t MAX_AUDIO_DELAY_MS = 100;
+	uint32_t now = std::round(playtime * 1000.0f) + frameMS;
+
 	Sint16* dst = (Sint16*)stream;
 
 	audioLock.lock();
@@ -228,31 +229,38 @@ void TheoraVideoDecoder::playAudio(uint8_t* stream, int len)
 		// Get next item in the queue
 		AudioItem& item = audioQueue.front();
 
-		int channels = item.audio->channels;
-
-		const float* src = item.audio->samples + (item.offset * channels);
-		int cpy = (item.audio->frames - item.offset) * channels;
-
-		// Copy only the bytes that will fit in the buffer
-		if (cpy > len / sizeof(Sint16))
-			cpy = len / sizeof(Sint16);
-
-		// Copy bytes
-		for (int i = 0; i < cpy; ++i)
+		if (item.audio->playms > (double)now - MAX_AUDIO_DELAY_MS)
 		{
-			float val = *(src++);
+			int channels = item.audio->channels;
 
-			// Format conversion
-			if (val < -1.0f)
-				*(dst++) = SINT_MIN;
-			else if (val > 1.0f)
-				*(dst++) = SINT_MAX;
-			else
-				*(dst++) = (Sint16)(val * CONVERSION_FACTOR);
+			const float* src = item.audio->samples + (item.offset * channels);
+			int cpy = (item.audio->frames - item.offset) * channels;
+
+			// Copy only the bytes that will fit in the buffer
+			if (cpy > len / sizeof(Sint16))
+				cpy = len / sizeof(Sint16);
+
+			// Copy bytes
+			for (int i = 0; i < cpy; ++i)
+			{
+				float val = *(src++);
+
+				// Format conversion
+				if (val < -1.0f)
+					*(dst++) = SINT_MIN;
+				else if (val > 1.0f)
+					*(dst++) = SINT_MAX;
+				else
+					*(dst++) = (Sint16)(val * CONVERSION_FACTOR);
+			}
+
+			item.offset += cpy / channels;
+			len -= cpy * sizeof(Sint16);
 		}
-
-		item.offset += cpy / channels;
-		len -= cpy * sizeof(Sint16);
+		else
+		{
+			item.offset += item.audio->frames;
+		}
 
 		// If there is no more data to copy from this sample, free it
 		if (item.offset >= item.audio->frames)

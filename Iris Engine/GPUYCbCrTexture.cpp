@@ -69,7 +69,6 @@ void GPUYCbCrTexture::updateTextureBytes(const unsigned char* bytes)
 
 	renderer->setRenderTarget(this);
 	renderer->copy(this, nullptr, &rect);
-	renderer->present();
 	renderer->setRenderTarget(nullptr);
 
 	shader->unbind();
