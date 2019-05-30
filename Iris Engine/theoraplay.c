@@ -575,7 +575,7 @@ static void WorkerThread(TheoraDecoder *ctx)
 
         if (!ctx->halt && need_pages)
         {
-            const int rc = FeedMoreOggData(ctx->io, &sync);
+            int rc = FeedMoreOggData(ctx->io, &sync);
 			if (rc == 0)
 			{
 				// End of stream
@@ -584,7 +584,9 @@ static void WorkerThread(TheoraDecoder *ctx)
 					// Seek to the beginning
 					ctx->io->seek(ctx->io, fileBeginning);
 					videoPlaymsOffset = lastFrameTime;
-					//audioframes = (unsigned long)((double)lastFrameTime / 1000.0 * vinfo.rate);
+					audioframes = (unsigned long)((double)lastFrameTime / 1000.0 * vinfo.rate);
+
+					rc = FeedMoreOggData(ctx->io, &sync);
 				}
 				else
 				{
@@ -592,9 +594,10 @@ static void WorkerThread(TheoraDecoder *ctx)
 					eos = 1;
 				}
 			}
-            else if (rc < 0)
+            
+			if (rc < 0)
                 goto cleanup;  // i/o error, etc.
-            else
+            else if (rc > 0)
             {
                 while (!ctx->halt && (ogg_sync_pageout(&sync, &page) > 0))
                     queue_ogg_page(ctx);

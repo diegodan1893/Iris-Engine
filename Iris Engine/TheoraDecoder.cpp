@@ -259,6 +259,7 @@ void TheoraVideoDecoder::playAudio(uint8_t* stream, int len)
 		}
 		else
 		{
+			// Locator::getLogger()->log(LogCategory::TEST, LogPriority::INFO, std::to_string(item.audio->playms) + " " + std::to_string(now));
 			item.offset += item.audio->frames;
 		}
 
