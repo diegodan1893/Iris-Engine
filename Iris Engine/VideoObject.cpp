@@ -9,6 +9,7 @@
 VideoObject::VideoObject(IRenderer* renderer, const std::string& file, bool playAudio, bool shouldLoop, int zindex)
 	:renderer(renderer),
 	 playAudio(playAudio),
+	 shouldLoop(shouldLoop),
 	 playing(false),
 	 decoder(nullptr),
 	 videoTexture(nullptr),
@@ -79,6 +80,9 @@ void VideoObject::play()
 {
 	if (!playing && valid())
 	{
+		if (!decoder->hasVideo())
+			decoder->startDecoding(playAudio, shouldLoop);
+
 		playing = true;
 
 		if (!videoTexture)

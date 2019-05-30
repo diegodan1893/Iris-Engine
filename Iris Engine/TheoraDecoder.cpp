@@ -7,6 +7,7 @@
 TheoraVideoDecoder::TheoraVideoDecoder(const std::string& file)
 	:file(file),
 	 video(nullptr),
+	 decoder(nullptr),
 	 initialized(false)
 {
 }
@@ -18,10 +19,13 @@ TheoraVideoDecoder::~TheoraVideoDecoder()
 
 bool TheoraVideoDecoder::startDecoding(bool decodeAudio, bool shouldLoop)
 {
-	const int MAX_FRAMES = 60;
+	if (!decoder)
+	{
+		const int MAX_FRAMES = 60;
 
-	this->decodeAudio = decodeAudio;
-	decoder = THEORAPLAY_startDecodeFile(file.c_str(), MAX_FRAMES, THEORAPLAY_VIDFMT_IYUV, shouldLoop);
+		this->decodeAudio = decodeAudio;
+		decoder = THEORAPLAY_startDecodeFile(file.c_str(), MAX_FRAMES, THEORAPLAY_VIDFMT_IYUV, shouldLoop);
+	}
 
 	if (decoder)
 		return true;

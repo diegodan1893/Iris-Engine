@@ -61,6 +61,7 @@ public:
 private:
 	// Video
 	bool playAudio;
+	bool shouldLoop;
 	bool playing;
 	class IVideoDecoder* decoder;
 
