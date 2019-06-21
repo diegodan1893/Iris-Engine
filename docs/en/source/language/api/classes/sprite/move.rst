@@ -33,6 +33,14 @@ Parameters
 +----------------+--------------+---------------------------------------------------------------+
 
 
+Remarks
+^^^^^^^
+
+.. warning::
+    While this method allows you to use non-integer coordinates, keep in mind that if
+    a sprite is not aligned with the pixel grid it will look blurry due to anti-aliasing.
+
+
 Examples
 ^^^^^^^^
 
