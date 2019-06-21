@@ -69,10 +69,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Dev\sdl-gpu-master\build\lib\include;C:\Dev\SDL2_mixer-2.0.1\include;C:\Dev\SDL2_ttf-2.0.14\include;C:\Dev\sol;C:\Dev\SDL2-2.0.5\include;C:\Dev\SDL2_image-2.0.1\include;C:\Dev\eris-1.1.2-lua5.3\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Dev\libogg-1.3.1\include;C:\Dev\libvorbis-1.3.6\include;C:\Dev\libtheora-1.1.1\include;C:\Dev\sdl-gpu-master\build\lib\include;C:\Dev\SDL2_mixer-2.0.1\include;C:\Dev\SDL2_ttf-2.0.14\include;C:\Dev\sol;C:\Dev\SDL2-2.0.5\include;C:\Dev\SDL2_image-2.0.1\include;C:\Dev\eris-1.1.2-lua5.3\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Dev\sdl-gpu-master\build\lib\include;C:\Dev\SDL2_mixer-2.0.1\include;C:\Dev\SDL2_ttf-2.0.14\include;C:\Dev\sol;C:\Dev\SDL2-2.0.5\include;C:\Dev\SDL2_image-2.0.1\include;C:\Dev\eris-1.1.2-lua5.3\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Dev\libogg-1.3.1\include;C:\Dev\libvorbis-1.3.6\include;C:\Dev\libtheora-1.1.1\include;C:\Dev\sdl-gpu-master\build\lib\include;C:\Dev\SDL2_mixer-2.0.1\include;C:\Dev\SDL2_ttf-2.0.14\include;C:\Dev\sol;C:\Dev\SDL2-2.0.5\include;C:\Dev\SDL2_image-2.0.1\include;C:\Dev\eris-1.1.2-lua5.3\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -82,7 +82,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>C:\Dev\SDL2-2.0.5\lib\x86\SDL2.lib C:\Dev\SDL2-2.0.5\lib\x86\SDL2main.lib C:\Dev\eris-1.1.2-lua5.3\lib\lua5.3.0.lib C:\Dev\SDL2_image-2.0.1\lib\x86\SDL2_image.lib C:\Dev\SDL2_ttf-2.0.14\lib\x86\SDL2_ttf.lib C:\Dev\SDL2_mixer-2.0.1\lib\x86\SDL2_mixer.lib C:\Dev\sdl-gpu-master\build\lib\Release\SDL2_gpu.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>C:\Dev\SDL2-2.0.5\lib\x86\SDL2.lib C:\Dev\SDL2-2.0.5\lib\x86\SDL2main.lib C:\Dev\eris-1.1.2-lua5.3\lib\lua5.3.0.lib C:\Dev\SDL2_image-2.0.1\lib\x86\SDL2_image.lib C:\Dev\SDL2_ttf-2.0.14\lib\x86\SDL2_ttf.lib C:\Dev\SDL2_mixer-2.0.1\lib\x86\SDL2_mixer.lib C:\Dev\sdl-gpu-master\build\lib\Release\SDL2_gpu.lib C:\Dev\libtheora-1.1.1\win32\VS2008\Win32\Release\libtheora.lib C:\Dev\libvorbis-1.3.6\win32\VS2010\Win32\Release\libvorbis.lib C:\Dev\libogg-1.3.1\win32\VS2010\Win32\Release\libogg.lib %(AdditionalOptions)</AdditionalOptions>
       <SubSystem>Console</SubSystem>
     </Link>
     <Manifest>
@@ -111,7 +111,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalOptions>C:\Dev\SDL2-2.0.5\lib\x86\SDL2.lib C:\Dev\SDL2-2.0.5\lib\x86\SDL2main.lib C:\Dev\eris-1.1.2-lua5.3\lib\lua5.3.0.lib C:\Dev\SDL2_image-2.0.1\lib\x86\SDL2_image.lib C:\Dev\SDL2_ttf-2.0.14\lib\x86\SDL2_ttf.lib C:\Dev\SDL2_mixer-2.0.1\lib\x86\SDL2_mixer.lib C:\Dev\sdl-gpu-master\build\lib\Release\SDL2_gpu.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>C:\Dev\SDL2-2.0.5\lib\x86\SDL2.lib C:\Dev\SDL2-2.0.5\lib\x86\SDL2main.lib C:\Dev\eris-1.1.2-lua5.3\lib\lua5.3.0.lib C:\Dev\SDL2_image-2.0.1\lib\x86\SDL2_image.lib C:\Dev\SDL2_ttf-2.0.14\lib\x86\SDL2_ttf.lib C:\Dev\SDL2_mixer-2.0.1\lib\x86\SDL2_mixer.lib C:\Dev\sdl-gpu-master\build\lib\Release\SDL2_gpu.lib C:\Dev\libtheora-1.1.1\win32\VS2008\Win32\Release\libtheora.lib C:\Dev\libvorbis-1.3.6\win32\VS2010\Win32\Release\libvorbis.lib C:\Dev\libogg-1.3.1\win32\VS2010\Win32\Release\libogg.lib %(AdditionalOptions)</AdditionalOptions>
       <SubSystem>Windows</SubSystem>
     </Link>
     <Manifest>
@@ -155,6 +155,7 @@
     <ClCompile Include="GPURenderer.cpp" />
     <ClCompile Include="GPUShaderProgram.cpp" />
     <ClCompile Include="GPUTexture.cpp" />
+    <ClCompile Include="GPUYCbCrTexture.cpp" />
     <ClCompile Include="ImageDissolveShader.cpp" />
     <ClCompile Include="Interpolator.cpp" />
     <ClCompile Include="Iris.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="LuaObject.cpp" />
     <ClCompile Include="LuaSprite.cpp" />
     <ClCompile Include="LuaText.cpp" />
+    <ClCompile Include="LuaVideo.cpp" />
     <ClCompile Include="MessageBoxLogger.cpp" />
     <ClCompile Include="MixAudio.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -181,14 +183,19 @@
     <ClCompile Include="TestShader.cpp" />
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="TextWindow.cpp" />
+    <ClCompile Include="TheoraDecoder.cpp" />
+    <ClCompile Include="theoraplay.c" />
     <ClCompile Include="TransitionUtils.cpp" />
+    <ClCompile Include="VideoObject.cpp" />
     <ClCompile Include="WaitForChoice.cpp" />
     <ClCompile Include="WaitForFunction.cpp" />
     <ClCompile Include="WaitForText.cpp" />
     <ClCompile Include="WaitForTimer.cpp" />
     <ClCompile Include="WaitForTransition.cpp" />
+    <ClCompile Include="WaitForVideo.cpp" />
     <ClCompile Include="WaitForVisible.cpp" />
     <ClCompile Include="WaitQueue.cpp" />
+    <ClCompile Include="YCbCrShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackgroundObject.h" />
@@ -215,6 +222,8 @@
     <ClInclude Include="GPURenderer.h" />
     <ClInclude Include="GPUShaderProgram.h" />
     <ClInclude Include="GPUTexture.h" />
+    <ClInclude Include="GPUYCbCrTexture.h" />
+    <ClInclude Include="IVideoDecoder.h" />
     <ClInclude Include="LuaText.h" />
     <ClInclude Include="IAudio.h" />
     <ClInclude Include="IClickableObject.h" />
@@ -238,6 +247,7 @@
     <ClInclude Include="LuaQuestion.h" />
     <ClInclude Include="LuaObject.h" />
     <ClInclude Include="LuaSprite.h" />
+    <ClInclude Include="LuaVideo.h" />
     <ClInclude Include="MessageBoxLogger.h" />
     <ClInclude Include="MixAudio.h" />
     <ClInclude Include="Object.h" />
@@ -250,17 +260,23 @@
     <ClInclude Include="TestShader.h" />
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="TextWindow.h" />
+    <ClInclude Include="TheoraDecoder.h" />
+    <ClInclude Include="theoraplay.h" />
+    <ClInclude Include="theoraplay_cvtrgb.h" />
     <ClInclude Include="TransitionType.h" />
     <ClInclude Include="TransitionUtils.h" />
     <ClInclude Include="Vector.h" />
+    <ClInclude Include="VideoObject.h" />
     <ClInclude Include="WaitCommand.h" />
     <ClInclude Include="WaitForChoice.h" />
     <ClInclude Include="WaitForFunction.h" />
     <ClInclude Include="WaitForText.h" />
     <ClInclude Include="WaitForTimer.h" />
     <ClInclude Include="WaitForTransition.h" />
+    <ClInclude Include="WaitForVideo.h" />
     <ClInclude Include="WaitForVisible.h" />
     <ClInclude Include="WaitQueue.h" />
+    <ClInclude Include="YCbCrShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Iris Engine.rc" />

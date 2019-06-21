@@ -3,6 +3,7 @@
 #include "GameInput.h"
 #include "GameObjectManager.h"
 #include "LuaEnvironment.h"
+#include "MixAudio.h"
 #include <string>
 
 /// <summary>
@@ -34,6 +35,8 @@ private:
 	struct SDL_Window* mainWindow;
 	class IRenderer* renderer;
 
+	MixAudio audioService;
+
 	GameObjectManager gameObjectManager;
 
 	class TextWindow* textWindow;
@@ -46,11 +49,12 @@ private:
 	GameInput gameInput;
 
 	const std::string CONFIG_FILE_PATH;
-	const int AUDIO_CHANNELS = 16;
+	static const int AUDIO_CHANNELS = 16;
 
 	// Functions	
 	bool inline isExiting();
 	void toggleFullscreen();
+	void createMainWindow();
 
 	// Game control	
 	void startGame();

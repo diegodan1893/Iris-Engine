@@ -11,6 +11,7 @@
 #include "SpriteObject.h"
 #include "ButtonObject.h"
 #include "TextObject.h"
+#include "VideoObject.h"
 #include "Locator.h"
 #include "TransitionUtils.h"
 #include "InterpolatorType.h"
@@ -105,6 +106,7 @@ void LuaEnvironment::setUp(
 			&LuaObject::hide,
 			&LuaObject::hideTransition
 		),
+		"setAlpha", &LuaObject::setAlpha,
 		"skipTransition", &LuaObject::skipTransition,
 		"setPosition", &LuaObject::setPosition,
 		"getPosition", &LuaObject::getPosition,
@@ -162,6 +164,22 @@ void LuaEnvironment::setUp(
 
 		// Functions
 		"setText", &LuaText::setText,
+
+		// Base class
+		sol::base_classes, sol::bases<LuaObject>()
+	);
+
+	// Register Video class
+	lua.new_usertype<LuaVideo>("Video",
+		// Constructor
+		"new", sol::factories(createVideo),
+
+		// Properties
+
+		// Functions
+		"play", &LuaVideo::play,
+		"stop", &LuaVideo::stop,
+		"waitUntilFinished", &LuaVideo::waitUntilFinished,
 
 		// Base class
 		sol::base_classes, sol::bases<LuaObject>()
@@ -898,6 +916,11 @@ LuaEnvironment::LuaTextPtr LuaEnvironment::createText(const sol::table& font, in
 	fontProperties.shadowColor = Color(font["shadowColor"]["r"], font["shadowColor"]["g"], font["shadowColor"]["b"], font["shadowColor"]["a"]);
 
 	return LuaTextPtr(new LuaText(gameObjectManager, thisEnvironment, new TextObject(fontProperties, zindex)));
+}
+
+LuaEnvironment::LuaVideoPtr LuaEnvironment::createVideo(const std::string& file, bool playAudio, bool shouldLoop, int zindex)
+{
+	return LuaVideoPtr(new LuaVideo(gameObjectManager, thisEnvironment, new VideoObject(renderer, file, playAudio, shouldLoop, zindex)));
 }
 
 LuaEnvironment::CharacterSpritePtr LuaEnvironment::createCharacterSpriteSimple(const std::string& file)

@@ -18,7 +18,8 @@
 bool Game::instantiated = false;
 
 Game::Game()
-	:CONFIG_FILE_PATH("config.lua")
+	:CONFIG_FILE_PATH("config.lua"),
+	 audioService(AUDIO_CHANNELS)
 {
 	// Ensure there is only one instance of this class
 	assert(!instantiated);
@@ -39,8 +40,7 @@ void Game::start()
 	Locator::provide(&gameInput);
 
 	// Initialize audio service
-	MixAudio mixAudio(AUDIO_CHANNELS);
-	Locator::provide(&mixAudio);
+	Locator::provide(&audioService);
 
 	ILogger* logger = Locator::getLogger();
 
@@ -88,26 +88,10 @@ void Game::start()
 	if (Config::load(CONFIG_FILE_PATH))
 	{
 		// Create main window
-		int windowFlags = SDL_WINDOW_OPENGL;
-
-		mainWindow = SDL_CreateWindow(
-			Config::values().game.name.c_str(),
-			SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED,
-			Config::values().screen.resolution.x,
-			Config::values().screen.resolution.y,
-			windowFlags
-		);
+		createMainWindow();
 
 		if (mainWindow)
 		{
-			// Make sure the window is inside the screen
-			int x, y;
-			SDL_GetWindowPosition(mainWindow, &x, &y);
-
-			if (y < 50)
-				SDL_SetWindowPosition(mainWindow, x, 50);
-
 			// Set the icon of the window
 			SDL_Surface* icon = IMG_Load(Config::values().game.iconFile.c_str());
 
@@ -129,6 +113,8 @@ void Game::start()
 				// Set the game to fullscreen if necessary
 				if (Config::values().screen.fullscreen)
 					toggleFullscreen();
+				else
+					gameInput.correctMouseForWindowScaling(renderer->getScalingFactor(), renderer->getLetterboxingOffset());
 
 				// Create cache service
 				LRUCache lruCache(renderer);
@@ -164,11 +150,45 @@ void Game::toggleFullscreen()
 	Vector2<int> res(Config::values().screen.resolution.x, Config::values().screen.resolution.y);
 
 	renderer->setFullScreen(!renderer->getFullscreen());
-	
-	if (renderer->getFullscreen())
-		gameInput.correctForFullscreen(renderer->getWindowResolution(), res);
-	else
-		gameInput.disableFullscreenCorrection();
+	gameInput.correctMouseForWindowScaling(renderer->getScalingFactor(), renderer->getLetterboxingOffset());
+}
+
+void Game::createMainWindow()
+{
+	// Get screen size
+	SDL_Rect display;
+
+	if (SDL_GetDisplayBounds(0, &display) == 0)
+	{
+		int desiredW = Config::values().screen.resolution.x;
+		int desiredH = Config::values().screen.resolution.y;
+
+		// If the game window doesn't fit the screen, scale it
+		display.w *= 0.9f;
+		display.h *= 0.9f;
+
+		if (desiredW > display.w || desiredH > display.h)
+		{
+			float ratioWindow = (float)desiredW / desiredH;
+			float ratioScreen = (float)display.w / display.h;
+
+			float scalingFactor = (ratioScreen < ratioWindow) ? (float)display.w / desiredW : (float)display.h / desiredH;
+
+			desiredW *= scalingFactor;
+			desiredH *= scalingFactor;
+		}
+
+		int windowFlags = SDL_WINDOW_OPENGL;
+
+		mainWindow = SDL_CreateWindow(
+			Config::values().game.name.c_str(),
+			SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED,
+			desiredW,
+			desiredH,
+			windowFlags
+		);
+	}
 }
 
 void Game::startGame()

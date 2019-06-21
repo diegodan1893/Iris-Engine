@@ -1,20 +1,25 @@
 #include "GPURenderer.h"
 #include "GPUTexture.h"
+#include "GPUYCbCrTexture.h"
 #include "Locator.h"
+#include "Config.h"
 #include <SDL_gpu.h>
 #include <cmath>
 
 GPURenderer::GPURenderer(SDL_Window* window)
 	:scalingFactor(1.0f)
 {
-	int w, h;
+	int w = Config::values().screen.resolution.x;
+	int h = Config::values().screen.resolution.y;
+	int windowW, windowH;
+
 	Uint32 windowID;
 
-	SDL_GetWindowSize(window, &w, &h);
 	windowID = SDL_GetWindowID(window);
+	SDL_GetWindowSize(window, &windowW, &windowH);
 
 	GPU_SetInitWindow(windowID);
-	windowTarget = GPU_Init(w, h, GPU_INIT_ENABLE_VSYNC);
+	windowTarget = GPU_Init(windowW, windowH, GPU_INIT_ENABLE_VSYNC);
 
 	if (windowTarget)
 	{
@@ -23,13 +28,17 @@ GPURenderer::GPURenderer(SDL_Window* window)
 		// Create intermediate buffer
 		virtualScreen = (GPUTexture*)createTexture(TextureFormat::RGB, TextureAccess::TARGET, w, h);
 		currentTarget = screen = virtualScreen->getTarget();
-		screenPosition = Vector2<float>(w / 2.0f, h / 2.0f);
+		GPU_SetSnapMode(virtualScreen->getInternalTexture(), GPU_SNAP_POSITION_AND_DIMENSIONS);
+
+		screenPosition = Vector2<float>(windowW / 2.0f, windowH / 2.0f);
+		scalingFactor = (float)windowW / w;
 
 		// Load shaders
 		testShader.loadProgram();
 		dissolveShader.loadProgram();
 		imageDissolveShader.loadProgram();
 		colorGradingShader.loadProgram();
+		YCbCrShader.loadProgram();
 	}
 	else
 	{
@@ -68,16 +77,11 @@ void GPURenderer::setFullScreen(bool fullscreen)
 		int w = windowTarget->base_w;
 		int h = windowTarget->base_h;
 
-		if (virtualW > virtualH)
-		{
-			// Scale so that the width of the game is the same as the width of the screen
-			scalingFactor = (float)w / virtualW;
-		}
-		else
-		{
-			// Scale so that the height of the game is the same as the height of the screen
-			scalingFactor = (float)h / virtualH;
-		}
+		// Letterboxing
+		float ratioVirtual = (float)virtualW / virtualH;
+		float ratioScreen = (float)w / h;
+
+		scalingFactor = (ratioScreen < ratioVirtual) ? (float)w / virtualW : (float)h / virtualH;
 
 		screenPosition.x = w / 2.0f;
 		screenPosition.y = h / 2.0f;
@@ -86,10 +90,25 @@ void GPURenderer::setFullScreen(bool fullscreen)
 	{
 		GPU_SetFullscreen(false, true);
 		
-		scalingFactor = 1.0f;
+		scalingFactor = (float)windowTarget->base_w / screen->base_w;
 		screenPosition.x = windowTarget->base_w / 2.0f;
 		screenPosition.y = windowTarget->base_h / 2.0f;
 	}
+}
+
+float GPURenderer::getScalingFactor()
+{
+	return scalingFactor;
+}
+
+Vector2<int> GPURenderer::getLetterboxingOffset()
+{
+	Vector2<int> offset;
+
+	offset.x = std::abs(windowTarget->base_w - screen->base_w * scalingFactor) / 2.0f;
+	offset.y = std::abs(windowTarget->base_h - screen->base_h * scalingFactor) / 2.0f;
+
+	return offset;
 }
 
 Vector2<int> GPURenderer::getWindowResolution()
@@ -150,41 +169,48 @@ void GPURenderer::copy(ITexture* texture, const Rect<float>* srcrect, const Rect
 
 ITexture* GPURenderer::createTexture(TextureFormat format, TextureAccess access, int w, int h)
 {
-	// @todo This seems to have a greater impact in performance that creating a texture with SDL
-	GPU_FormatEnum textureFormat;
-
-	switch (format)
+	if (format == TextureFormat::YCbCr420p)
 	{
-	case TextureFormat::RGB:
-		textureFormat = GPU_FORMAT_RGB;
-		break;
-
-	case TextureFormat::RGBA8:
-		textureFormat = GPU_FORMAT_RGBA;
-		break;
-
-	default:
-		textureFormat = GPU_FORMAT_RGBA;
-		break;
-	}
-
-	GPU_Image* internalTexture = GPU_CreateImage(w, h, textureFormat);
-
-	if (internalTexture)
-	{
-		GPUTexture* texture = new GPUTexture(internalTexture);
-
-		if (access == TextureAccess::TARGET)
-		{
-			// Create a render target for this texture
-			texture->createRenderTarget();
-		}
-
-		return texture;
+		// Add support for YCbCr textures
+		return new GPUYCbCrTexture(this, w, h);
 	}
 	else
 	{
-		return nullptr;
+		GPU_FormatEnum textureFormat;
+
+		switch (format)
+		{
+		case TextureFormat::RGB:
+			textureFormat = GPU_FORMAT_RGB;
+			break;
+
+		case TextureFormat::RGBA8:
+			textureFormat = GPU_FORMAT_RGBA;
+			break;
+
+		default:
+			textureFormat = GPU_FORMAT_RGBA;
+			break;
+		}
+
+		GPU_Image* internalTexture = GPU_CreateImage(w, h, textureFormat);
+
+		if (internalTexture)
+		{
+			GPUTexture* texture = new GPUTexture(internalTexture);
+
+			if (access == TextureAccess::TARGET)
+			{
+				// Create a render target for this texture
+				texture->createRenderTarget();
+			}
+
+			return texture;
+		}
+		else
+		{
+			return nullptr;
+		}
 	}
 }
 
@@ -256,4 +282,9 @@ ImageDissolveShader* GPURenderer::getImageDissolveShader()
 ColorGradingShader* GPURenderer::getColorGradingShader()
 {
 	return &colorGradingShader;
+}
+
+YCbCrShader* GPURenderer::getYCbCrShader()
+{
+	return &YCbCrShader;
 }

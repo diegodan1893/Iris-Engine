@@ -25,3 +25,9 @@ Font file formats
 
 * TTF
 * OTF
+  
+
+Video file formats
+^^^^^^^^^^^^^^^^^^
+
+* OGV (audio bitrate must be 44100 kHz)

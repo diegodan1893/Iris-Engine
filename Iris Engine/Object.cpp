@@ -94,6 +94,14 @@ void Object::startFadeOut(float time, bool canBeSkipped)
 	}
 }
 
+void Object::setAlpha(uint8_t alpha)
+{
+	fade.skip();
+
+	this->alpha = alpha;
+	isVisible = alpha > 0;
+}
+
 void Object::move(float x, float y, float time, bool canBeSkipped, Interpolator* interpolator)
 {
 	// Complete previous movement before starting a new one
@@ -298,12 +306,7 @@ void Object::updateMovement(float elapsedSeconds)
 		if (movementInterpolator)
 		{
 			movementInterpolator->update(elapsedSeconds);
-
-			// Avoid rounding errors
-			Vector2<float> newPosition = lerp(startPosition, targetPosition, movementInterpolator->getStep());
-			newPosition.x = std::round(newPosition.x);
-			newPosition.y = std::round(newPosition.y);
-			setPosition(newPosition);
+			setPosition(lerp(startPosition, targetPosition, movementInterpolator->getStep()));
 		}
 	}
 }

@@ -77,6 +77,12 @@ public:
 	void startFadeOut(float time, bool canBeSkipped);
 	
 	/// <summary>
+	/// Sets the alpha of the object.
+	/// </summary>
+	/// <param name="alpha">The alpha.</param>
+	void setAlpha(uint8_t alpha);
+	
+	/// <summary>
 	/// Starts a move transition with the specified interpolator.
 	/// </summary>
 	/// <param name="x">The x position the object will move to.</param>

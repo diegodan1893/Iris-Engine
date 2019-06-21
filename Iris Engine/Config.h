@@ -80,6 +80,7 @@ private:
 		std::string luts;
 		std::string music;
 		std::string sounds;
+		std::string videos;
 		std::string separator;
 	};
 

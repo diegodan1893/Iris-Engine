@@ -1,10 +1,21 @@
 #include "GPUTexture.h"
+#include "Locator.h"
 #include <SDL_gpu.h>
 
 GPUTexture::GPUTexture(GPU_Image* texture)
 	:texture(texture),
 	 target(nullptr)
 {
+	if (texture)
+		GPU_SetSnapMode(texture, GPU_SNAP_NONE);
+	else
+	{
+		Locator::getLogger()->log(
+			LogCategory::RENDER,
+			LogPriority::ERROR,
+			u8"Trying to create a GPUTexture but the internal texture could not be created (was null)."
+		);
+	}
 }
 
 GPUTexture::~GPUTexture()
@@ -83,6 +94,11 @@ void GPUTexture::getSize(int* w, int* h)
 {
 	*w = texture->base_w;
 	*h = texture->base_h;
+}
+
+void GPUTexture::updateTextureBytes(const unsigned char* bytes)
+{
+	GPU_UpdateImageBytes(texture, nullptr, bytes, texture->base_w * texture->bytes_per_pixel);
 }
 
 GPU_Image* GPUTexture::getInternalTexture()

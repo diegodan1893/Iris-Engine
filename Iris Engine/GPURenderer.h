@@ -5,6 +5,7 @@
 #include "DissolveShader.h"
 #include "ImageDissolveShader.h"
 #include "ColorGradingShader.h"
+#include "YCbCrShader.h"
 
 /// <summary>
 /// A renderer context that uses
@@ -49,6 +50,22 @@ public:
 	/// <param name="virtualW">The width of the logical resolution.</param>
 	/// <param name="virtualH">The height of the logical resolution.</param>
 	void setFullScreen(bool fullscreen) override;
+	
+	/// <summary>
+	/// Gets the scaling factor of the game.
+	/// 1.0 if the game is being rendered at native resolution.
+	/// </summary>
+	/// <returns>
+	/// The scaling factor.
+	/// </returns>
+	virtual float getScalingFactor() override;
+	
+	/// <summary>
+	/// Gets the offset of the game image caused
+	/// by letterboxing in fullscreen.
+	/// </summary>
+	/// <returns></returns>
+	virtual Vector2<int> getLetterboxingOffset() override;
 	
 	/// <summary>
 	/// Gets the resolution of the window.
@@ -125,6 +142,7 @@ public:
 	DissolveShader* getDissolveShader() override;
 	ImageDissolveShader* getImageDissolveShader() override;
 	ColorGradingShader* getColorGradingShader() override;
+	YCbCrShader* getYCbCrShader();
 
 private:
 	// Targets
@@ -147,4 +165,5 @@ private:
 	DissolveShader dissolveShader;
 	ImageDissolveShader imageDissolveShader;
 	ColorGradingShader colorGradingShader;
+	YCbCrShader YCbCrShader;
 };

@@ -13,8 +13,6 @@ GameInput::GameInput()
 	inputNow.mouseLeft = inputNow.mouseMiddle = inputNow.mouseRight = false;
 	inputNow.mouseWheelDown = inputNow.enterKey = inputNow.altEnterKeys = false;
 	inputBefore = inputNow;
-
-	disableFullscreenCorrection();
 }
 
 GameInput::~GameInput()
@@ -180,24 +178,10 @@ bool GameInput::actionToggleFullscreen() const
 	return inputNow.altEnterKeys && !inputBefore.altEnterKeys;
 }
 
-void GameInput::correctForFullscreen(const Vector2<int>& screenRes, const Vector2<int>& gameRes)
+void GameInput::correctMouseForWindowScaling(float scalingFactor, const Vector2<int>& letterboxingOffset)
 {
-	if (gameRes.x > gameRes.y)
-	{
-		zoom = (float)screenRes.x / gameRes.x;
-		offset.y = std::abs(screenRes.y - gameRes.y * zoom) / 2.0f;
-	}
-	else
-	{
-		zoom = (float)screenRes.y / gameRes.y;
-		offset.x = std::abs(screenRes.x - gameRes.x * zoom) / 2.0f;
-	}
-}
-
-void GameInput::disableFullscreenCorrection()
-{
-	zoom = 1;
-	offset.x = offset.y = 0;
+	zoom = scalingFactor;
+	offset = letterboxingOffset;
 }
 
 void GameInput::setMouseInputEnabled(bool enabled)

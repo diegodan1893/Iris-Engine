@@ -137,11 +137,6 @@ private:
 	const std::string& separator;
 	bool sizeWasSet;
 
-	// Transitions
-	std::string previousExpression;
-	bool inDissolveBase;
-	bool transitionTextureHasBeenUpdated;
-
 	// LUTs
 	std::string colorLUT, previousColorLUT;
 	bool colorGradingEnabled;
@@ -150,9 +145,9 @@ private:
 
 	// Rendering
 	class IRenderer* renderer;
-	class ITexture* transitionTexture;
-	class ITexture* dissolveBaseTransitionTexture;
-	class ITexture* dissolveBaseFinalTexture;
+	class ITexture* composedCharacter;
+	class ITexture* dissolveEndResult;
+	class ITexture* dissolveComposed;
 
 	void setUp(const std::string& baseFile);
 	void centerOrigin();
@@ -161,7 +156,7 @@ private:
 	void drawCharacter(Rect<float>& rect, bool drawWithoutBlending, bool applyColorGrading = true);
 	void drawExpression(const std::string& expression, Rect<float>& rect, Uint8 alpha);
 	
-	void redrawTransitionTexture(class ITexture* texture, bool applyColorGrading = true);
+	void drawIntermediateTexture(class ITexture* texture, bool applyColorGrading = true);
 	Vector2<float> calculatePosition(Alignment position);
 	void freeTransitionTextures();
 

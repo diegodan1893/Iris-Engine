@@ -39,6 +39,12 @@
     <Filter Include="Source Files\Objects\Interpolators">
       <UniqueIdentifier>{07ba53e5-54e8-4f87-b141-4cab01b97262}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Video">
+      <UniqueIdentifier>{2adb8458-2067-4c35-b0e0-661b1728cb4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Video\Third Party">
+      <UniqueIdentifier>{b6cff201-874b-40cd-9a94-e95bed5ae0b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Config.cpp">
@@ -208,6 +214,27 @@
     </ClCompile>
     <ClCompile Include="CPUImage.cpp">
       <Filter>Source Files\Cache</Filter>
+    </ClCompile>
+    <ClCompile Include="theoraplay.c">
+      <Filter>Source Files\Video\Third Party</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaVideo.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitForVideo.cpp">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="TheoraDecoder.cpp">
+      <Filter>Source Files\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="GPUYCbCrTexture.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="YCbCrShader.cpp">
+      <Filter>Source Files\Render\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -418,6 +445,33 @@
     </ClInclude>
     <ClInclude Include="CPUImage.h">
       <Filter>Source Files\Cache</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay.h">
+      <Filter>Source Files\Video\Third Party</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay_cvtrgb.h">
+      <Filter>Source Files\Video\Third Party</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoObject.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="IVideoDecoder.h">
+      <Filter>Source Files\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaVideo.h">
+      <Filter>Source Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="WaitForVideo.h">
+      <Filter>Source Files\Lua\WaitCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="TheoraDecoder.h">
+      <Filter>Source Files\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="GPUYCbCrTexture.h">
+      <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="YCbCrShader.h">
+      <Filter>Source Files\Render\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

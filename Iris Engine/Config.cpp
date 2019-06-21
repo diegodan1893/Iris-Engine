@@ -125,6 +125,7 @@ bool Config::load(const std::string& file)
 			configValues.paths.luts = config["paths"]["luts"];
 			configValues.paths.music = config["paths"]["music"];
 			configValues.paths.sounds = config["paths"]["sounds"];
+			configValues.paths.videos = config["paths"]["videos"];
 			configValues.paths.separator = config["paths"]["separator"];
 
 			// Sounds settings

@@ -15,7 +15,7 @@ public:
 	/// </summary>
 	/// <param name="texture">The GPU_Image that contains the data of the texture.</param>
 	GPUTexture(struct GPU_Image* texture);
-	~GPUTexture();
+	virtual ~GPUTexture();
 	
 	/// <summary>
 	/// Sets the blend mode of the texture.
@@ -36,6 +36,13 @@ public:
 	/// <param name="w">Filled with the width in pixels.</param>
 	/// <param name="h">Filled with the width in pixels.</param>
 	void getSize(int* w, int* h) override;
+	
+	/// <summary>
+	/// Updates the texture from an array of pixel data.
+	/// </summary>
+	/// <param name="bytes">The pixel data.</param>
+	/// <param name="bytesPerRow"></param>
+	virtual void updateTextureBytes(const unsigned char* bytes) override;
 	
 	/// <summary>
 	/// Gets the internal representation of

@@ -26,6 +26,10 @@ The exact pixel of the image that lands in the provided position is called the
 **origin**. You can change the origin of a sprite with
 :doc:`the setOrigin method<setOrigin>`.
 
+.. warning::
+	While this method allows you to use non-integer coordinates, keep in mind that if
+	a sprite is not aligned with the pixel grid it will look blurry due to anti-aliasing.
+
 
 Examples
 ^^^^^^^^
