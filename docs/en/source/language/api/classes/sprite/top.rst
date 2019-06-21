@@ -33,6 +33,7 @@ Member functions
     constructor
     show
     hide
+    setAlpha
     skipTransition
     setPosition
     getPosition
@@ -52,6 +53,8 @@ Member functions
     | :doc:`show<show>`                           | Make the sprite visible                                      |
     +---------------------------------------------+--------------------------------------------------------------+
     | :doc:`hide<hide>`                           | Make the sprite invisible                                    |
+    +---------------------------------------------+--------------------------------------------------------------+
+    | :doc:`setAlpha<setAlpha>`                   | Set the opacity of the sprite                                |
     +---------------------------------------------+--------------------------------------------------------------+
     | :doc:`skipTransition<skipTransition>`       | Instantly finish any transition affecting this object        |
     +---------------------------------------------+--------------------------------------------------------------+
