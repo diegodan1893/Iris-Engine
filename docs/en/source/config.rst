@@ -249,6 +249,9 @@ They can all point to the same folder if you want to.
 ``sounds``
 	Path to the folder where the sounds of your game are located.
 
+``videos``
+	Path to the folder where video files are located.
+
 ``separator``
 	String used as a separator when constructing the filenames of expression images.
 

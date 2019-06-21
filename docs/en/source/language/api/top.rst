@@ -167,6 +167,7 @@ Classes
     classes/sprite/top
     classes/button/top
     classes/text/top
+    classes/video/top
     classes/characterSprite/top
     classes/cursor/top
     classes/clickableMap/top
@@ -186,6 +187,8 @@ Classes
     | :doc:`Button<classes/button/top>`                   | A button the user can click                        |
     +-----------------------------------------------------+----------------------------------------------------+
     | :doc:`Text<classes/text/top>`                       | Used to draw text on the screen                    |
+    +-----------------------------------------------------+----------------------------------------------------+
+    | :doc:`Video<classes/video/top>`                     | A video player                                     |
     +-----------------------------------------------------+----------------------------------------------------+
     | :doc:`CharacterSprite<classes/characterSprite/top>` | An image that represents a character               |
     +-----------------------------------------------------+----------------------------------------------------+
