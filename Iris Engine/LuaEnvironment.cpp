@@ -164,6 +164,7 @@ void LuaEnvironment::setUp(
 
 		// Functions
 		"setText", &LuaText::setText,
+		"getWidth", &LuaText::getWidth,
 
 		// Base class
 		sol::base_classes, sol::bases<LuaObject>()

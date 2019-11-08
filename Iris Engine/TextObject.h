@@ -38,6 +38,13 @@ public:
 	/// </summary>
 	/// <param name="text">The text.</param>
 	void setText(const std::string& text);
+	
+	/// <summary>
+	/// Returns the width in pixels of the text
+	/// to display
+	/// </summary>
+	/// <returns>The width in pixels of the text to display.</returns>
+	int getWidth();
 
 private:
 	FontComponent font;

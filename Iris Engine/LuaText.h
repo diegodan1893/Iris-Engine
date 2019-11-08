@@ -14,4 +14,5 @@ public:
 	virtual ~LuaText() {}
 
 	void setText(const std::string& text);
+	int getWidth();
 };

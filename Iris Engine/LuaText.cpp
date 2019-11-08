@@ -10,3 +10,8 @@ void LuaText::setText(const std::string& text)
 {
 	((TextObject*)getObject())->setText(text);
 }
+
+int LuaText::getWidth()
+{
+	return ((TextObject*)getObject())->getWidth();
+}

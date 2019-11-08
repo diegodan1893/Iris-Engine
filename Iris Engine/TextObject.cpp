@@ -28,3 +28,12 @@ void TextObject::setText(const std::string& text)
 {
 	this->text = text;
 }
+
+int TextObject::getWidth()
+{
+	int x, y;
+
+	font.size(text, &x, &y);
+
+	return x;
+}
