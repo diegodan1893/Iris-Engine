@@ -3,6 +3,7 @@
 #include "Locator.h"
 #include "IRenderer.h"
 #include "ITexture.h"
+#include "StringConverter.h"
 #include <SDL_image.h>
 #include <codecvt>
 
@@ -167,7 +168,7 @@ void TextWindow::update(float elapsedSeconds)
 void TextWindow::setText(const std::string& dialogueText)
 {
 	// Convert string to utf-16 so that it can be easily drawn character by character
-	std::u16string text = convertToUTF16(dialogueText);
+	std::u16string text = StringConverter::convertToUTF16(dialogueText);
 
 	// Clear current text
 	clearText();
@@ -187,7 +188,7 @@ void TextWindow::setText(const std::string& dialogueText)
 void TextWindow::setText(const std::string& name, const std::string& dialogueText)
 {
 	setText(dialogueText);
-	this->name = convertToUTF16(name);
+	this->name = StringConverter::convertToUTF16(name);
 }
 
 void TextWindow::append(const std::string& dialogueText)
@@ -195,7 +196,7 @@ void TextWindow::append(const std::string& dialogueText)
 	if (!dialogueText.empty())
 	{
 		// Convert string to utf-16 so that it can be easily drawn character by character
-		std::u16string text = convertToUTF16(dialogueText);
+		std::u16string text = StringConverter::convertToUTF16(dialogueText);
 
 		// New text is being drawn, update transition texture
 		transitionTextureHasBeenUpdated = false;
@@ -606,14 +607,4 @@ void TextWindow::splitInLinesWithoutWordWrap(const std::u16string& text, bool st
 		lines.push_back(line);
 
 	lastLineWasIndented = indent;
-}
-
-std::u16string TextWindow::convertToUTF16(const std::string& string)
-{
-	//std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> convert;
-
-	// Workaround for VS 2015 bug https://goo.gl/WZ7YQp
-	std::wstring_convert<std::codecvt_utf8_utf16<uint16_t>, uint16_t> convert;
-
-	return (char16_t*)convert.from_bytes(string).c_str();
 }

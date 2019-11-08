@@ -180,6 +180,7 @@
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteObject.cpp" />
+    <ClCompile Include="StringConverter.cpp" />
     <ClCompile Include="TestShader.cpp" />
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="TextWindow.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteObject.h" />
+    <ClInclude Include="StringConverter.h" />
     <ClInclude Include="TestShader.h" />
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="TextWindow.h" />

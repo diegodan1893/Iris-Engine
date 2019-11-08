@@ -236,6 +236,9 @@
     <ClCompile Include="YCbCrShader.cpp">
       <Filter>Source Files\Render\Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="StringConverter.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector.h">
@@ -472,6 +475,9 @@
     </ClInclude>
     <ClInclude Include="YCbCrShader.h">
       <Filter>Source Files\Render\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="StringConverter.h">
+      <Filter>Source Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

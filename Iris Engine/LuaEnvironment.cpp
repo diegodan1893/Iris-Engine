@@ -164,6 +164,7 @@ void LuaEnvironment::setUp(
 
 		// Functions
 		"setText", &LuaText::setText,
+		"setMaxWidth", &LuaText::setMaxWidth,
 		"getWidth", &LuaText::getWidth,
 
 		// Base class

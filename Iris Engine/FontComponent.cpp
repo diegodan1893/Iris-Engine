@@ -3,6 +3,7 @@
 #include "Config.h"
 #include "IRenderer.h"
 #include "ITexture.h"
+#include "StringConverter.h"
 #include <codecvt>
 
 FontComponent::FontComponent(const FontProperties& fontProperties)
@@ -48,7 +49,7 @@ int FontComponent::size(const std::u16string& line, int* outWidth, int* outHeigh
 
 int FontComponent::size(const std::string& line, int* outWidth, int* outHeight)
 {
-	return size(convertToUTF16(line), outWidth, outHeight);
+	return size(StringConverter::convertToUTF16(line), outWidth, outHeight);
 }
 
 int FontComponent::getLineSkip()
@@ -71,7 +72,7 @@ void FontComponent::drawLine(IRenderer* renderer, int x, int y, const std::u16st
 
 void FontComponent::drawLine(IRenderer* renderer, int x, int y, const std::string& line)
 {
-	drawLine(renderer, x, y, convertToUTF16(line));
+	drawLine(renderer, x, y, StringConverter::convertToUTF16(line));
 }
 
 void FontComponent::setColor(const Color& color)
@@ -97,17 +98,6 @@ void FontComponent::setShadowColor(const Color& color)
 void FontComponent::setAlphaMod(uint8_t alpha)
 {
 	alphaModulation = alpha / 255.0f;
-}
-
-std::u16string FontComponent::convertToUTF16(const std::string& string)
-{
-	// Convert string to utf-16 so that it can be redered with the same function
-	//std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> convert;
-
-	// Workaround for VS 2015 bug https://goo.gl/WZ7YQp
-	std::wstring_convert<std::codecvt_utf8_utf16<uint16_t>, uint16_t> convert;
-	
-	return (char16_t*)convert.from_bytes(string).c_str();
 }
 
 void FontComponent::drawLine(IRenderer* renderer, int x, int y, const std::u16string& line, SDL_Color color)

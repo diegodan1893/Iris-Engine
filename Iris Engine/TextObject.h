@@ -40,6 +40,12 @@ public:
 	void setText(const std::string& text);
 	
 	/// <summary>
+	/// Sets the maximum width.
+	/// </summary>
+	/// <param name="maxWidth">The maximum width.</param>
+	void setMaxWidth(int maxWidth, const std::string& ellipsis);
+	
+	/// <summary>
 	/// Returns the width in pixels of the text
 	/// to display
 	/// </summary>
@@ -47,6 +53,11 @@ public:
 	int getWidth();
 
 private:
+	void updateText();
+
 	FontComponent font;
-	std::string text;
+	std::u16string text;
+	std::u16string truncatedText;
+	std::u16string ellipsis;
+	int maxWidth;
 };

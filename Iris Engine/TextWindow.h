@@ -164,6 +164,4 @@ private:
 
 	void wordWrap(const std::u16string& text);
 	void splitInLinesWithoutWordWrap(const std::u16string& text, bool startInNewLine);
-
-	std::u16string convertToUTF16(const std::string& string);
 };

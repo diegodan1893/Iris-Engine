@@ -92,6 +92,5 @@ private:
 	SDL_Color shadowColor;
 	float alphaModulation;
 
-	std::u16string convertToUTF16(const std::string& string);
 	void drawLine(class IRenderer* renderer, int x, int y, const std::u16string& line, SDL_Color color);
 };
