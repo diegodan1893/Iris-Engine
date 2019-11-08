@@ -286,6 +286,7 @@ void LuaEnvironment::setUp(
 	lua.set_function("enableSkip", &LuaEnvironment::enableSkip, this);
 	lua.set_function("disableMouseInput", &LuaEnvironment::disableMouseInput, this);
 	lua.set_function("enableMouseInput", &LuaEnvironment::enableMouseInput, this);
+	lua.set_function("getMousePosition", &LuaEnvironment::getMousePosition, this);
 	lua.set_function("playMusic", &LuaEnvironment::playMusic, this);
 	lua.set_function("fadeInMusic", &LuaEnvironment::fadeInMusic, this);
 	lua.set_function("stopMusic", &LuaEnvironment::stopMusic, this);
@@ -727,6 +728,15 @@ void LuaEnvironment::enableMouseInput()
 {
 	Locator::getInput()->setMouseInputEnabled(true);
 	Locator::getInput()->disableMouseInputBelow(INT_MIN);
+}
+
+std::tuple<int, int> LuaEnvironment::getMousePosition()
+{
+	int x, y;
+
+	Locator::getInput()->getMouseCoordinates(x, y);
+
+	return std::tuple<int, int>(x, y);
 }
 
 void LuaEnvironment::playMusic(const std::string& file)

@@ -168,6 +168,7 @@ private:
 	void enableSkip();
 	void disableMouseInput(sol::object zindex);
 	void enableMouseInput();
+	std::tuple<int, int> getMousePosition();
 	void playMusic(const std::string& file);
 	void fadeInMusic(const std::string& file, float seconds);
 	void stopMusic();
