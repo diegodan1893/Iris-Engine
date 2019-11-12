@@ -217,6 +217,10 @@ void CharacterObject::disableColorGrading(float time)
 {
 	blendLUTs = false;
 	lutTransition.start(time, true);
+
+	// Disable color grading immediately if time == 0
+	if (!lutTransition.inTransition())
+		colorGradingEnabled = false;
 }
 
 void CharacterObject::setUp(const std::string& baseFile)
