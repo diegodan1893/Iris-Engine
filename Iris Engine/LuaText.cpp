@@ -11,12 +11,17 @@ void LuaText::setText(const std::string& text)
 	((TextObject*)getObject())->setText(text);
 }
 
-void LuaText::setMaxWidth(int width, const std::string& ellipsis)
+void LuaText::setMaxSize(int width, int height)
 {
-	((TextObject*)getObject())->setMaxWidth(width, ellipsis);
+	((TextObject*)getObject())->setMaxSize(width, height);
 }
 
-int LuaText::getWidth()
+void LuaText::setEllipsis(const std::string& ellipsis)
 {
-	return ((TextObject*)getObject())->getWidth();
+	((TextObject*)getObject())->setEllipsis(ellipsis);
+}
+
+void LuaText::setSpacing(int spacing)
+{
+	((TextObject*)getObject())->setSpacing(spacing);
 }

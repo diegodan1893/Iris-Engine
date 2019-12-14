@@ -14,6 +14,7 @@ public:
 	virtual ~LuaText() {}
 
 	void setText(const std::string& text);
-	void setMaxWidth(int width, const std::string& ellipsis);
-	int getWidth();
+	void setMaxSize(int width, int height);
+	void setEllipsis(const std::string& ellipsis);
+	void setSpacing(int spacing);
 };

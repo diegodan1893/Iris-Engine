@@ -267,7 +267,7 @@ void TextWindow::updateTextPositionsAndSizes()
 	// Save the text position in a vector so that it can be read easily
 	textPosition = Vector2<int>(margin.left, margin.top);
 
-	// Calculate the width of the lnes
+	// Calculate the width of the lines
 	lineWidth = getSize().x - (margin.left + margin.right);
 
 	// Calculate the number of lines that fit in one page

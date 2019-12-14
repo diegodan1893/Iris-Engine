@@ -161,11 +161,12 @@ void LuaEnvironment::setUp(
 		"new", sol::factories(createText),
 
 		// Properties
+		"ellipsis", sol::property(&LuaText::setEllipsis),
+		"spacing", sol::property(&LuaText::setSpacing),
 
 		// Functions
 		"setText", &LuaText::setText,
-		"setMaxWidth", &LuaText::setMaxWidth,
-		"getWidth", &LuaText::getWidth,
+		"setMaxSize", &LuaText::setMaxSize,
 
 		// Base class
 		sol::base_classes, sol::bases<LuaObject>()

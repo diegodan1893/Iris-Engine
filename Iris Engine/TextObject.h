@@ -4,6 +4,7 @@
 #include "FontProperties.h"
 #include "FontComponent.h"
 #include <string>
+#include <vector>
 
 /// <summary>
 /// An object that can render a line of text
@@ -39,25 +40,38 @@ public:
 	/// <param name="text">The text.</param>
 	void setText(const std::string& text);
 	
-	/// <summary>
-	/// Sets the maximum width.
+ 	/// <summary>
+	/// Sets the maximum size.
 	/// </summary>
 	/// <param name="maxWidth">The maximum width.</param>
-	void setMaxWidth(int maxWidth, const std::string& ellipsis);
+	/// <param name="maxHeight">The maximum height.</param>
+	void setMaxSize(int maxWidth, int maxHeight);
 	
 	/// <summary>
-	/// Returns the width in pixels of the text
-	/// to display
+	/// Sets what string to append to the end of the text
+	/// when it is too long to fit within the text box.
+	/// For example, "..." results in "Long text...".
 	/// </summary>
-	/// <returns>The width in pixels of the text to display.</returns>
-	int getWidth();
+	/// <param name="ellipsis">The ellipsis string.</param>
+	void setEllipsis(const std::string& ellipsis);
+	
+	/// <summary>
+	/// Sets the spacing of the lines.
+	/// 0 is the recommended spacing for the font.
+	/// </summary>
+	/// <param name="spacing">The spacing.</param>
+	void setSpacing(int spacing);
 
 private:
 	void updateText();
 
 	FontComponent font;
 	std::u16string text;
-	std::u16string truncatedText;
 	std::u16string ellipsis;
+	std::vector<std::u16string> lines;
+
 	int maxWidth;
+	int maxHeight;
+	
+	int lineSpacing;
 };
