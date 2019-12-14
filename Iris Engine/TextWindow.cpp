@@ -14,7 +14,6 @@ TextWindow::TextWindow(IRenderer* renderer)
 	 transitionTexture(nullptr),
 	 textFont(Config::values().textWindow.fontProperties),
 	 nameFont(Config::values().textWindow.nameFontProperties),
-	 lastLineWasIndented(false),
 	 textAlign(Alignment::LEFT),
 	 animate(false),
 	 time(0),
@@ -175,9 +174,9 @@ void TextWindow::setText(const std::string& dialogueText)
 
 	// Word wrap
 	if (enableWordWrapping)
-		wordWrap(text);
+		textFont.wordWrap(text, lineWidth, lines);
 	else
-		splitInLinesWithoutWordWrap(text, true);
+		textFont.splitInLinesNoWordWrap(text, lineWidth, lines);
 
 	// Prepare typewriter effect
 	startAnimation(0);
@@ -203,9 +202,9 @@ void TextWindow::append(const std::string& dialogueText)
 
 		// Word wrap
 		if (enableWordWrapping)
-			wordWrap(text);
+			textFont.wordWrap(text, lineWidth, lines);
 		else
-			splitInLinesWithoutWordWrap(text, false);
+			textFont.splitInLinesNoWordWrap(text, lineWidth, lines);
 
 		// Continue typewriter effect
 		continueAnimation();
@@ -470,141 +469,4 @@ void TextWindow::redrawTransitionTexture()
 
 	// Stop rendering to texture
 	renderer->setRenderTarget(nullptr);
-}
-
-void TextWindow::wordWrap(const std::u16string& text)
-{
-	// Word wrap (this can probably be optimized)
-	const std::u16string breakingChars = u" -\t\n";
-	std::u16string line, word;
-
-	std::size_t pos = 0;
-	std::size_t wordEnd;
-	char16_t breakChar;
-
-	int width;
-	int accumulatedWidth = 0;
-
-	// Check if there is already text
-	if (!lines.empty())
-	{
-		// We want to append the new text to the previous one
-		// Continue word wrapping from the last line
-		line = lines.back();
-		lines.pop_back();
-
-		textFont.size(line, &accumulatedWidth, nullptr);
-	}
-
-	while (pos < text.length())
-	{
-		wordEnd = text.find_first_of(breakingChars, pos);
-
-		if (wordEnd == std::u16string::npos)
-			wordEnd = text.size() - 1;
-
-		breakChar = text[wordEnd];
-
-		if (breakChar != L'\n')
-			++wordEnd;
-
-		word = text.substr(pos, wordEnd - pos);
-		textFont.size(word, &width, nullptr);
-
-		if (accumulatedWidth + width <= lineWidth)
-		{
-			// The word fits in the line
-			line += word;
-			accumulatedWidth += width;
-		}
-		else
-		{
-			// Word doesn't fit in the line
-			// Insert it in the next line unless it's already the first
-			// word in the line.
-			if (!line.empty())
-			{
-				lines.push_back(line);
-				line.clear();
-			}
-
-			if (width < lineWidth)
-			{
-				line += word;
-				accumulatedWidth = width;
-			}
-			else
-			{
-				splitInLinesWithoutWordWrap(word, true);
-				line = lines.back();
-				lines.pop_back();
-
-				textFont.size(line, &accumulatedWidth, nullptr);
-			}
-		}
-
-		pos = wordEnd;
-
-		if (breakChar == L'\n')
-		{
-			++pos;
-
-			// Line break
-			lines.push_back(line);
-			line.clear();
-			accumulatedWidth = 0;
-		}
-	}
-
-	if (!line.empty())
-		lines.push_back(line);
-}
-
-void TextWindow::splitInLinesWithoutWordWrap(const std::u16string& text, bool startInNewLine)
-{
-	std::u16string line;
-	std::size_t pos = 0;
-
-	int width;
-	
-	const std::u16string openingQuotationMarks = u"「『（";
-	const std::u16string closingQuotationMarks = u"」』）";
-	const std::u16string japanesePunctuation = u"。、";
-	bool indent = formatJapaneseText && openingQuotationMarks.find(text.at(pos)) != std::u16string::npos;
-
-	if (!startInNewLine && !lines.empty())
-	{
-		// We want to append the new text to the previous one
-		line = lines.back();
-		lines.pop_back();
-
-		indent = lastLineWasIndented;
-	}
-
-	while (pos < text.length())
-	{
-		// We have to get the size of the entire line to account for kerning
-		textFont.size(line + text.at(pos), &width, nullptr);
-
-		if (indent && closingQuotationMarks.find(text.at(pos)) != std::u16string::npos)
-			indent = false;
-
-		if (width > lineWidth && (!formatJapaneseText || japanesePunctuation.find(text.at(pos)) == std::u16string::npos))
-		{
-			// The new character doesn't fit in the line: create new line
-			lines.push_back(line);
-			line.clear();
-
-			if (indent)
-				line += u"　";
-		}
-
-		line += text.at(pos);
-		++pos;
-	}
-
-	if (!line.empty())
-		lines.push_back(line);
-
-	lastLineWasIndented = indent;
 }
