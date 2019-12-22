@@ -168,7 +168,7 @@ void LuaEnvironment::setUp(
 		// Functions
 		"setText", &LuaText::setText,
 		"setMaxSize", &LuaText::setMaxSize,
-		"getHeight", &LuaText::getHeight,
+		"getCurrentTextSize", &LuaText::getCurrentTextSize,
 
 		// Base class
 		sol::base_classes, sol::bases<LuaObject>()

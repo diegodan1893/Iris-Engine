@@ -26,7 +26,9 @@ void LuaText::setSpacing(int spacing)
 	((TextObject*)getObject())->setSpacing(spacing);
 }
 
-int LuaText::getHeight()
+std::tuple<int, int> LuaText::getCurrentTextSize()
 {
-	return ((TextObject*)getObject())->getTextHeight();
+	Vector2<int> size = ((TextObject*)getObject())->getCurrentTextSize();
+
+	return std::tuple<int, int>(size.x, size.y);
 }

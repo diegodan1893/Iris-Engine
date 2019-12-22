@@ -75,9 +75,31 @@ void TextObject::setSpacing(int spacing)
 	updateText();
 }
 
-int TextObject::getTextHeight()
+Vector2<int> TextObject::getCurrentTextSize()
 {
-	return lines.empty() ? font.getLineSkip() : (font.getLineSkip() + lineSpacing) * lines.size();
+	Vector2<int> size(0, 0);
+
+	if (lines.empty() && !text.empty())
+	{
+		font.size(text, &size.x, &size.y);
+	}
+	else
+	{
+		int w, h;
+
+		// Return the width of the longest line
+		for (int i = 0; i < lines.size(); ++i)
+		{
+			font.size(lines[i], &w, &h);
+
+			if (w > size.x)
+				size.x = w;
+		}
+
+		size.y = (font.getLineSkip() + lineSpacing) * lines.size();
+	}
+
+	return size;
 }
 
 void TextObject::updateText()

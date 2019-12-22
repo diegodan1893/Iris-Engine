@@ -17,5 +17,5 @@ public:
 	void setMaxSize(int width, int height);
 	void setEllipsis(const std::string& ellipsis);
 	void setSpacing(int spacing);
-	int getHeight();
+	std::tuple<int, int> getCurrentTextSize();
 };
