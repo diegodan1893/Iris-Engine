@@ -75,6 +75,11 @@ void TextObject::setSpacing(int spacing)
 	updateText();
 }
 
+int TextObject::getTextHeight()
+{
+	return lines.empty() ? font.getLineSkip() : (font.getLineSkip() + lineSpacing) * lines.size();
+}
+
 void TextObject::updateText()
 {
 	bool addEllipsis = false;

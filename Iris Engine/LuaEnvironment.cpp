@@ -11,6 +11,7 @@
 #include "SpriteObject.h"
 #include "ButtonObject.h"
 #include "TextObject.h"
+#include "RectangleObject.h"
 #include "VideoObject.h"
 #include "Locator.h"
 #include "TransitionUtils.h"
@@ -167,10 +168,26 @@ void LuaEnvironment::setUp(
 		// Functions
 		"setText", &LuaText::setText,
 		"setMaxSize", &LuaText::setMaxSize,
+		"getHeight", &LuaText::getHeight,
 
 		// Base class
 		sol::base_classes, sol::bases<LuaObject>()
 	);
+
+	// Register Rectangle class
+	lua.new_usertype<LuaRectangle>("Rectangle",
+		// Constructor
+		"new", sol::factories(createRectangle),
+
+		// Properties
+
+		// Functions
+		"setSize", &LuaRectangle::setSize,
+		"setColor", &LuaRectangle::setColor,
+
+		// Base class
+		sol::base_classes, sol::bases<LuaObject>()
+		);
 
 	// Register Video class
 	lua.new_usertype<LuaVideo>("Video",
@@ -929,6 +946,11 @@ LuaEnvironment::LuaTextPtr LuaEnvironment::createText(const sol::table& font, in
 	fontProperties.shadowColor = Color(font["shadowColor"]["r"], font["shadowColor"]["g"], font["shadowColor"]["b"], font["shadowColor"]["a"]);
 
 	return LuaTextPtr(new LuaText(gameObjectManager, thisEnvironment, new TextObject(fontProperties, zindex)));
+}
+
+LuaEnvironment::LuaRectanglePtr LuaEnvironment::createRectangle(int zindex)
+{
+	return LuaRectanglePtr(new LuaRectangle(gameObjectManager, thisEnvironment, new RectangleObject(zindex)));
 }
 
 LuaEnvironment::LuaVideoPtr LuaEnvironment::createVideo(const std::string& file, bool playAudio, bool shouldLoop, int zindex)

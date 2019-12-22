@@ -61,6 +61,12 @@ public:
 	/// </summary>
 	/// <param name="spacing">The spacing.</param>
 	void setSpacing(int spacing);
+	
+	/// <summary>
+	/// Gets the height of the text.
+	/// </summary>
+	/// <returns>The height in pixels</returns>
+	int getTextHeight();
 
 private:
 	void updateText();

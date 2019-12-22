@@ -25,3 +25,8 @@ void LuaText::setSpacing(int spacing)
 {
 	((TextObject*)getObject())->setSpacing(spacing);
 }
+
+int LuaText::getHeight()
+{
+	return ((TextObject*)getObject())->getTextHeight();
+}

@@ -239,6 +239,12 @@
     <ClCompile Include="StringConverter.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="RectangleObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaRectangle.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector.h">
@@ -478,6 +484,12 @@
     </ClInclude>
     <ClInclude Include="StringConverter.h">
       <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="RectangleObject.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaRectangle.h">
+      <Filter>Source Files\Lua</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

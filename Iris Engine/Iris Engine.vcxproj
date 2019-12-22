@@ -169,12 +169,14 @@
     <ClCompile Include="LuaEnvironment.cpp" />
     <ClCompile Include="LuaQuestion.cpp" />
     <ClCompile Include="LuaObject.cpp" />
+    <ClCompile Include="LuaRectangle.cpp" />
     <ClCompile Include="LuaSprite.cpp" />
     <ClCompile Include="LuaText.cpp" />
     <ClCompile Include="LuaVideo.cpp" />
     <ClCompile Include="MessageBoxLogger.cpp" />
     <ClCompile Include="MixAudio.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="RectangleObject.cpp" />
     <ClCompile Include="SDLRenderer.cpp" />
     <ClCompile Include="SDLTexture.cpp" />
     <ClCompile Include="Sound.cpp" />
@@ -225,6 +227,7 @@
     <ClInclude Include="GPUTexture.h" />
     <ClInclude Include="GPUYCbCrTexture.h" />
     <ClInclude Include="IVideoDecoder.h" />
+    <ClInclude Include="LuaRectangle.h" />
     <ClInclude Include="LuaText.h" />
     <ClInclude Include="IAudio.h" />
     <ClInclude Include="IClickableObject.h" />
@@ -252,6 +255,7 @@
     <ClInclude Include="MessageBoxLogger.h" />
     <ClInclude Include="MixAudio.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="RectangleObject.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SDLRenderer.h" />
     <ClInclude Include="SDLTexture.h" />
