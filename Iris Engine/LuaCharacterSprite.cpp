@@ -265,6 +265,78 @@ void LuaCharacterSprite::setBaseTransition(
 	}
 }
 
+void LuaCharacterSprite::setBaseSimple(const std::string& base, const std::string& expression)
+{
+	if (!character->visible())
+	{
+		character->setBase(base);
+		character->setExpression(expression);
+	}
+	else
+	{
+		// By default, character sprites change base with a non-blocking 0.3 seconds dissolve
+		character->startDissolveBase(base, expression, 0.3f, false);
+	}
+}
+
+void LuaCharacterSprite::setBaseSimpleTransition(
+	const std::string& base,
+	const std::string& expression,
+	const sol::table& transition,
+	sol::this_state s)
+{
+	TransitionType transitionType;
+
+	if (TransitionUtils::getTransitionType(transition, transitionType))
+	{
+		switch (transitionType)
+		{
+		case TransitionType::NONE:
+			character->setBase(base);
+			character->setExpression(expression);
+			break;
+
+		case TransitionType::DISSOLVE:
+			if (character->visible())
+			{
+				float transitionTime;
+				bool shouldBlock;
+
+				if (TransitionUtils::getTransitionTime(transition, transitionTime) &&
+					TransitionUtils::getTransitionBlocking(transition, shouldBlock))
+				{
+					character->startDissolveBase(base, expression, transitionTime, shouldBlock);
+
+					if (shouldBlock)
+					{
+						lua->waitFor(new WaitForTransition(character));
+						lua_yield(s, 0);
+					}
+				}
+			}
+			else
+			{
+				Locator::getLogger()->log(
+					LogCategory::LUA,
+					LogPriority::ERROR,
+					u8"Dissolve transition can only be used if the sprite was already visible"
+				);
+			}
+
+			break;
+
+		default:
+			Locator::getLogger()->log(
+				LogCategory::LUA,
+				LogPriority::ERROR,
+				u8"Invalid transition type for method 'setBase' of CharacterSprite"
+			);
+
+			break;
+		}
+	}
+}
+
 void LuaCharacterSprite::setColorLut(const std::string& colorLUT, float time)
 {
 	character->setColorLut(colorLUT, time);
