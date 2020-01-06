@@ -22,6 +22,7 @@ Functions
     globals/enableSkip
     globals/disableMouseInput
     globals/enableMouseInput
+    globals/getMousePosition
     globals/setCursor
     globals/setOnRightClick
     globals/playMusic
@@ -90,6 +91,8 @@ Functions
     +-----------------------------------------------------+--------------------------------+
     | :doc:`enableMouseInput<globals/enableMouseInput>`   | Enable elements that accept    |
     |                                                     | mouse input such as buttions   |
+    +-----------------------------------------------------+--------------------------------+
+    | :doc:`getMousePosition<globals/getMousePosition>`   | Get the position of the mouse  |
     +-----------------------------------------------------+--------------------------------+
     | :doc:`setCursor<globals/setCursor>`                 | Change the cursor icon         |
     +-----------------------------------------------------+--------------------------------+
