@@ -30,7 +30,9 @@ void TextObject::draw(IRenderer* renderer)
 
 			for (int i = 0; i < lines.size(); ++i)
 			{
-				font.drawLine(renderer, getPosition().x, y, lines[i]);
+				if (!lines[i].empty())
+					font.drawLine(renderer, getPosition().x, y, lines[i]);
+				
 				y += font.getLineSkip() + lineSpacing;
 			}
 		}
