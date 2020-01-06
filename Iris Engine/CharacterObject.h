@@ -82,6 +82,12 @@ public:
 	void setExpressionBase(const std::string& expressionBase);
 	
 	/// <summary>
+	/// Sets the image to use as a base. Exrpession base will remain unchanged.
+	/// </summary>
+	/// <param name="base">Path to the image that will be drawn as the base of the character sprite.</param>
+	void setBase(const std::string& base);
+	
+	/// <summary>
 	/// Sets the image to use as a base and the path to use as the expresion base.
 	/// </summary>
 	/// <param name="base">Path to the image that will be drawn as the base of the character sprite.</param>
@@ -98,7 +104,23 @@ public:
 	/// <param name="time">The duration of the transition.</param>
 	/// <param name="canBeSkipped">Whether or not this transition can be skipped by the player.</param>
 	void startDissolveExpression(const std::string& expression, float time, bool canBeSkipped);
-	
+		
+	/// <summary>
+	/// Change the expression and the base of the character with
+	/// a dissolve transition.
+	/// Expression base will remain unchanged
+	/// </summary>
+	/// <param name="base">Path to the image to draw as the new base.</param>
+	/// <param name="expression">The new expression.</param>
+	/// <param name="time">The duration of the transition.</param>
+	/// <param name="canBeSkipped">Whether or not this transition can be skipped by the player.</param>
+	void startDissolveBase(
+		const std::string& base,
+		const std::string& expression,
+		float time,
+		bool canBeSkipped
+	);
+
 	/// <summary>
 	/// Change the expression and the base of the character with
 	/// a dissolve transition.

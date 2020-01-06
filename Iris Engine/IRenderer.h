@@ -112,6 +112,13 @@ public:
 		const Rect<float>* srcrect,
 		const Rect<float>* dstrect
 	) = 0;
+	
+	/// <summary>
+	/// Draws a rectangle.
+	/// </summary>
+	/// <param name="rectangle">The rectangle.</param>
+	/// <param name="color">The color.</param>
+	virtual void rectangle(const Rect<float>& rectangle, const Color& color) = 0;
 
 	// Textures	
 	/// <summary>

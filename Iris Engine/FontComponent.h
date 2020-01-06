@@ -2,6 +2,7 @@
 
 #include "FontProperties.h"
 #include <SDL_ttf.h>
+#include <vector>
 
 /// <summary>
 /// Component that can render text to a
@@ -84,6 +85,28 @@ public:
 	/// </summary>
 	/// <param name="alpha">The alpha multiplied into render operations.</param>
 	void setAlphaMod(uint8_t alpha);
+	
+	/// <summary>
+	/// Perform word wrapping to a string.
+	/// </summary>
+	/// <param name="text">The text.</param>
+	/// <param name="lineWidth">Width of the lines in pixels.</param>
+	/// <param name="inOutLines">
+	/// A vector of lines where the wrapped text will be stored.
+	/// If not empty, the text will be apended to the last line.
+	/// </param>
+	void wordWrap(const std::u16string& text, int lineWidth, std::vector<std::u16string>& inOutLines);
+	
+	/// <summary>
+	/// Split a string in lines of certain length with no word wrap.
+	/// </summary>
+	/// <param name="text">The text.</param>
+	/// <param name="lineWidth">Width of the lines in pixels.</param>
+	/// <param name="inOutLines">
+	/// A vector of lines where the result will be stored.
+	/// If not empty, the text will be apended to the last line.
+	/// </param>
+	void splitInLinesNoWordWrap(const std::u16string& text, int lineWidth, std::vector<std::u16string>& inOutLines);
 
 private:
 	TTF_Font* font;
@@ -92,6 +115,5 @@ private:
 	SDL_Color shadowColor;
 	float alphaModulation;
 
-	std::u16string convertToUTF16(const std::string& string);
 	void drawLine(class IRenderer* renderer, int x, int y, const std::u16string& line, SDL_Color color);
 };

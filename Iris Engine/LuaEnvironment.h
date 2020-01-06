@@ -5,6 +5,7 @@
 #include "LuaSprite.h"
 #include "LuaButton.h"
 #include "LuaText.h"
+#include "LuaRectangle.h"
 #include "LuaVideo.h"
 #include "LuaQuestion.h"
 #include "LuaCharacterSprite.h"
@@ -168,6 +169,7 @@ private:
 	void enableSkip();
 	void disableMouseInput(sol::object zindex);
 	void enableMouseInput();
+	std::tuple<int, int> getMousePosition();
 	void playMusic(const std::string& file);
 	void fadeInMusic(const std::string& file, float seconds);
 	void stopMusic();
@@ -215,6 +217,10 @@ private:
 	// Text objects
 	typedef std::unique_ptr<LuaText> LuaTextPtr;
 	static LuaTextPtr createText(const sol::table& font, int zindex);
+
+	// Rectangle objects
+	typedef std::unique_ptr<LuaRectangle> LuaRectanglePtr;
+	static LuaRectanglePtr createRectangle(int zindex);
 
 	// Video objects
 	typedef std::unique_ptr<LuaVideo> LuaVideoPtr;

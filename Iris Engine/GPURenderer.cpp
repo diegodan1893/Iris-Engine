@@ -167,6 +167,24 @@ void GPURenderer::copy(ITexture* texture, const Rect<float>* srcrect, const Rect
 	GPU_BlitRect(gpuTexture->getInternalTexture(), (GPU_Rect*)srcrect, currentTarget, (GPU_Rect*)dstrect);
 }
 
+void GPURenderer::rectangle(const Rect<float>& rectangle, const Color& color)
+{
+	SDL_Color sdlColor = {
+		color.r,
+		color.g,
+		color.b,
+		color.a
+	};
+
+	GPU_Rect rect;
+	rect.h = rectangle.h;
+	rect.w = rectangle.w;
+	rect.x = rectangle.x;
+	rect.y = rectangle.y;
+
+	GPU_RectangleFilled2(currentTarget, rect, sdlColor);
+}
+
 ITexture* GPURenderer::createTexture(TextureFormat format, TextureAccess access, int w, int h)
 {
 	if (format == TextureFormat::YCbCr420p)

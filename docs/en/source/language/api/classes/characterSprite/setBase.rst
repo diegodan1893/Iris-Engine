@@ -8,6 +8,11 @@ The setBase method
     |       *string* expression
     |       [, *TransitionObject* transition]
     |   )
+    |   setBase(
+    |       *string* baseImage,
+    |       *string* expression
+    |       [, *TransitionObject* transition]
+    |   )
 :Returns: *nil*
 
 This methods allows you to change the base image of a character sprite at any time,
@@ -53,6 +58,10 @@ In this example, the name of the base and the name of the expression have been
 connected using a space character to form the final filename of the expression
 image. This behavior can be altered in the :doc:`config file<../../../../config>`.
 
+The version of this method that does not take a *expressionBase* parameter will not
+change the expression base of the character sprite. That means that the previous
+expression base will be used when constructing filenames.
+
 If no *transition* is given, this one will be used by default:
 
 .. code-block:: lua
@@ -73,17 +82,20 @@ Examples
 
 .. code-block:: lua
 
-    -- Define a character sprite that uses sakura2.png as the base image
-    sakura = CharacterSprite.new("sakura2.png")
+    -- Define a character sprite that uses sakura1.png as the base image
+    sakura = CharacterSprite.new("sakura1.png")
     sakura:show("smiling")
 
     ...
 
+    -- Change the base to sakura2.png and use the set of expressions of sakura2.png
+    sakura:setBase("sakura2.png", "sakura2.png", "smiling")
+
     -- Change the base to sakura3.png but keep using the set of expressions of sakura2.png
-    sakura:setBase("sakura3.png", "sakura2.png", "smiling")
+    sakura:setBase("sakura3.png", "smiling")
 
     -- Do the same using a blocking dissolve transition
-    sakura:setBase("sakura3.png", "sakura2.png", "smiling", {type=Transition.dissolve, time=0.3, block=true})
+    sakura:setBase("sakura3.png", "smiling", {type=Transition.dissolve, time=0.3, block=true})
 
 
 See also

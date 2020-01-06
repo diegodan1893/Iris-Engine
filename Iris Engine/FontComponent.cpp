@@ -3,6 +3,7 @@
 #include "Config.h"
 #include "IRenderer.h"
 #include "ITexture.h"
+#include "StringConverter.h"
 #include <codecvt>
 
 FontComponent::FontComponent(const FontProperties& fontProperties)
@@ -48,7 +49,7 @@ int FontComponent::size(const std::u16string& line, int* outWidth, int* outHeigh
 
 int FontComponent::size(const std::string& line, int* outWidth, int* outHeight)
 {
-	return size(convertToUTF16(line), outWidth, outHeight);
+	return size(StringConverter::convertToUTF16(line), outWidth, outHeight);
 }
 
 int FontComponent::getLineSkip()
@@ -71,7 +72,7 @@ void FontComponent::drawLine(IRenderer* renderer, int x, int y, const std::u16st
 
 void FontComponent::drawLine(IRenderer* renderer, int x, int y, const std::string& line)
 {
-	drawLine(renderer, x, y, convertToUTF16(line));
+	drawLine(renderer, x, y, StringConverter::convertToUTF16(line));
 }
 
 void FontComponent::setColor(const Color& color)
@@ -99,15 +100,145 @@ void FontComponent::setAlphaMod(uint8_t alpha)
 	alphaModulation = alpha / 255.0f;
 }
 
-std::u16string FontComponent::convertToUTF16(const std::string& string)
+void FontComponent::wordWrap(const std::u16string& text, int lineWidth, std::vector<std::u16string>& inOutLines)
 {
-	// Convert string to utf-16 so that it can be redered with the same function
-	//std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> convert;
+	// Word wrap (this can probably be optimized)
+	const std::u16string breakingChars = u" -\t\n";
+	std::u16string line, word;
 
-	// Workaround for VS 2015 bug https://goo.gl/WZ7YQp
-	std::wstring_convert<std::codecvt_utf8_utf16<uint16_t>, uint16_t> convert;
-	
-	return (char16_t*)convert.from_bytes(string).c_str();
+	std::size_t pos = 0;
+	std::size_t wordEnd;
+	char16_t breakChar;
+
+	int width;
+	int accumulatedWidth = 0;
+
+	// Check if there is already text
+	if (!inOutLines.empty())
+	{
+		// We want to append the new text to the previous one
+		// Continue word wrapping from the last line
+		line = inOutLines.back();
+		inOutLines.pop_back();
+
+		size(line, &accumulatedWidth, nullptr);
+	}
+
+	while (pos < text.length())
+	{
+		wordEnd = text.find_first_of(breakingChars, pos);
+
+		if (wordEnd == std::u16string::npos)
+			wordEnd = text.size() - 1;
+
+		breakChar = text[wordEnd];
+
+		if (breakChar != L'\n')
+			++wordEnd;
+
+		word = text.substr(pos, wordEnd - pos);
+		size(word, &width, nullptr);
+
+		if (accumulatedWidth + width <= lineWidth)
+		{
+			// The word fits in the line
+			line += word;
+			accumulatedWidth += width;
+		}
+		else
+		{
+			// Word doesn't fit in the line
+			// Insert it in the next line unless it's already the first
+			// word in the line.
+			if (!line.empty())
+			{
+				inOutLines.push_back(line);
+				line.clear();
+			}
+
+			if (width < lineWidth)
+			{
+				line += word;
+				accumulatedWidth = width;
+			}
+			else
+			{
+				// The world is longer than an entire line
+				inOutLines.push_back(std::u16string());
+				splitInLinesNoWordWrap(word, lineWidth, inOutLines);
+				line = inOutLines.back();
+				inOutLines.pop_back();
+
+				size(line, &accumulatedWidth, nullptr);
+			}
+		}
+
+		pos = wordEnd;
+
+		if (breakChar == L'\n')
+		{
+			++pos;
+
+			// Line break
+			inOutLines.push_back(line);
+			line.clear();
+			accumulatedWidth = 0;
+		}
+	}
+
+	if (!line.empty())
+		inOutLines.push_back(line);
+}
+
+void FontComponent::splitInLinesNoWordWrap(const std::u16string& text, int lineWidth, std::vector<std::u16string>& inOutLines)
+{
+	std::u16string line;
+	std::size_t pos = 0;
+
+	int width;
+
+	const std::u16string openingQuotationMarks = u"「『（";
+	const std::u16string closingQuotationMarks = u"」』）";
+	const std::u16string japanesePunctuation = u"。、";
+	const char16_t japaneseSpace = L'　';
+
+	bool formatJapaneseText = Config::values().textWindow.formatJapaneseText;
+	bool indent = formatJapaneseText && openingQuotationMarks.find(text.at(pos)) != std::u16string::npos;
+
+	if (!inOutLines.empty())
+	{
+		// We want to append the new text to the previous one
+		line = inOutLines.back();
+		inOutLines.pop_back();
+
+		if (!line.empty())
+			indent = line.at(0) == japaneseSpace;
+	}
+
+	while (pos < text.length())
+	{
+		// We have to get the size of the entire line to account for kerning
+		size(line + text.at(pos), &width, nullptr);
+
+		if (indent && closingQuotationMarks.find(text.at(pos)) != std::u16string::npos)
+			indent = false;
+
+		if (width > lineWidth && (!formatJapaneseText || japanesePunctuation.find(text.at(pos)) == std::u16string::npos))
+		{
+			// The new character doesn't fit in the line: create new line
+			inOutLines.push_back(line);
+			line.clear();
+
+			if (indent)
+				line += u"　";
+		}
+
+		line += text.at(pos);
+		++pos;
+	}
+
+	if (!line.empty())
+		inOutLines.push_back(line);
 }
 
 void FontComponent::drawLine(IRenderer* renderer, int x, int y, const std::u16string& line, SDL_Color color)

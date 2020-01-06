@@ -128,7 +128,6 @@ private:
 	int lineSpacing;
 	bool enableWordWrapping;
 	bool formatJapaneseText;
-	bool lastLineWasIndented;
 	Alignment textAlign;
 
 	// Name
@@ -161,9 +160,4 @@ private:
 	bool animationFinished();
 	class ITexture* createTexture(const std::string& file, uint8_t alpha = 255);
 	void redrawTransitionTexture();
-
-	void wordWrap(const std::u16string& text);
-	void splitInLinesWithoutWordWrap(const std::u16string& text, bool startInNewLine);
-
-	std::u16string convertToUTF16(const std::string& string);
 };

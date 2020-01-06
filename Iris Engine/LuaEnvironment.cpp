@@ -11,6 +11,7 @@
 #include "SpriteObject.h"
 #include "ButtonObject.h"
 #include "TextObject.h"
+#include "RectangleObject.h"
 #include "VideoObject.h"
 #include "Locator.h"
 #include "TransitionUtils.h"
@@ -161,13 +162,32 @@ void LuaEnvironment::setUp(
 		"new", sol::factories(createText),
 
 		// Properties
+		"ellipsis", sol::property(&LuaText::setEllipsis),
+		"spacing", sol::property(&LuaText::setSpacing),
 
 		// Functions
 		"setText", &LuaText::setText,
+		"setMaxSize", &LuaText::setMaxSize,
+		"getCurrentTextSize", &LuaText::getCurrentTextSize,
 
 		// Base class
 		sol::base_classes, sol::bases<LuaObject>()
 	);
+
+	// Register Rectangle class
+	lua.new_usertype<LuaRectangle>("Rectangle",
+		// Constructor
+		"new", sol::factories(createRectangle),
+
+		// Properties
+
+		// Functions
+		"setSize", &LuaRectangle::setSize,
+		"setColor", &LuaRectangle::setColor,
+
+		// Base class
+		sol::base_classes, sol::bases<LuaObject>()
+		);
 
 	// Register Video class
 	lua.new_usertype<LuaVideo>("Video",
@@ -207,7 +227,9 @@ void LuaEnvironment::setUp(
 		),
 		"setBase", sol::overload(
 			&LuaCharacterSprite::setBase,
-			&LuaCharacterSprite::setBaseTransition
+			&LuaCharacterSprite::setBaseTransition,
+			&LuaCharacterSprite::setBaseSimple,
+			&LuaCharacterSprite::setBaseSimpleTransition
 		),
 		"setColorLUT", &LuaCharacterSprite::setColorLut,
 		"disableColorGrading", &LuaCharacterSprite::disableColorGrading,
@@ -285,6 +307,7 @@ void LuaEnvironment::setUp(
 	lua.set_function("enableSkip", &LuaEnvironment::enableSkip, this);
 	lua.set_function("disableMouseInput", &LuaEnvironment::disableMouseInput, this);
 	lua.set_function("enableMouseInput", &LuaEnvironment::enableMouseInput, this);
+	lua.set_function("getMousePosition", &LuaEnvironment::getMousePosition, this);
 	lua.set_function("playMusic", &LuaEnvironment::playMusic, this);
 	lua.set_function("fadeInMusic", &LuaEnvironment::fadeInMusic, this);
 	lua.set_function("stopMusic", &LuaEnvironment::stopMusic, this);
@@ -728,6 +751,15 @@ void LuaEnvironment::enableMouseInput()
 	Locator::getInput()->disableMouseInputBelow(INT_MIN);
 }
 
+std::tuple<int, int> LuaEnvironment::getMousePosition()
+{
+	int x, y;
+
+	Locator::getInput()->getMouseCoordinates(x, y);
+
+	return std::tuple<int, int>(x, y);
+}
+
 void LuaEnvironment::playMusic(const std::string& file)
 {
 	Locator::getAudio()->playMusic(Config::values().paths.music + file);
@@ -916,6 +948,11 @@ LuaEnvironment::LuaTextPtr LuaEnvironment::createText(const sol::table& font, in
 	fontProperties.shadowColor = Color(font["shadowColor"]["r"], font["shadowColor"]["g"], font["shadowColor"]["b"], font["shadowColor"]["a"]);
 
 	return LuaTextPtr(new LuaText(gameObjectManager, thisEnvironment, new TextObject(fontProperties, zindex)));
+}
+
+LuaEnvironment::LuaRectanglePtr LuaEnvironment::createRectangle(int zindex)
+{
+	return LuaRectanglePtr(new LuaRectangle(gameObjectManager, thisEnvironment, new RectangleObject(zindex)));
 }
 
 LuaEnvironment::LuaVideoPtr LuaEnvironment::createVideo(const std::string& file, bool playAudio, bool shouldLoop, int zindex)

@@ -100,6 +100,13 @@ public:
 	/// <param name="srcrect">The portion of the texture to copy.</param>
 	/// <param name="dstrect">The portion of the target where the source texture will be drawn.</param>
 	void copy(ITexture* texture, const Rect<float>* srcrect, const Rect<float>* dstrect) override;
+	
+	/// <summary>
+	/// Draws a rectangle.
+	/// </summary>
+	/// <param name="rectangle">The rectangle.</param>
+	/// <param name="color">The color.</param>
+	void rectangle(const Rect<float>& rectangle, const Color& color) override;
 
 	// Textures	
 	/// <summary>

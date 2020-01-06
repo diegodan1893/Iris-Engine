@@ -156,9 +156,14 @@ void CharacterObject::setExpressionBase(const std::string& expressionBase)
 	}
 }
 
-void CharacterObject::setBase(const std::string& base, const std::string& expressionBase)
+void CharacterObject::setBase(const std::string & base)
 {
 	basePath = Config::values().paths.characters + base;
+}
+
+void CharacterObject::setBase(const std::string& base, const std::string& expressionBase)
+{
+	setBase(base);
 	setExpressionBase(expressionBase);
 }
 
@@ -167,6 +172,26 @@ void CharacterObject::startDissolveExpression(const std::string& expression, flo
 	std::size_t rootLength = Config::values().paths.characters.length();
 
 	startDissolveBase(basePath.substr(rootLength), expressionBase.substr(rootLength), expression, time, canBeSkipped);
+}
+
+void CharacterObject::startDissolveBase(const std::string & base, const std::string & expression, float time, bool canBeSkipped)
+{
+	if (inFade() || inDissolve())
+	{
+		skipTransition();
+		setVisible(true);
+	}
+
+	// Create an intermediate texture with the current base and expression
+	// so that we can use alpha blending without weird artifacts
+	drawIntermediateTexture(composedCharacter, false);
+
+	// Create an intermediate texture with the new base and expression
+	setBase(base);
+	setExpression(expression);
+	drawIntermediateTexture(dissolveEndResult, false);
+
+	startDissolve(time, canBeSkipped);
 }
 
 void CharacterObject::startDissolveBase(
@@ -217,6 +242,10 @@ void CharacterObject::disableColorGrading(float time)
 {
 	blendLUTs = false;
 	lutTransition.start(time, true);
+
+	// Disable color grading immediately if time == 0
+	if (!lutTransition.inTransition())
+		colorGradingEnabled = false;
 }
 
 void CharacterObject::setUp(const std::string& baseFile)

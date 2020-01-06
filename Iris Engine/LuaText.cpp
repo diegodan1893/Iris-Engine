@@ -10,3 +10,25 @@ void LuaText::setText(const std::string& text)
 {
 	((TextObject*)getObject())->setText(text);
 }
+
+void LuaText::setMaxSize(int width, int height)
+{
+	((TextObject*)getObject())->setMaxSize(width, height);
+}
+
+void LuaText::setEllipsis(const std::string& ellipsis)
+{
+	((TextObject*)getObject())->setEllipsis(ellipsis);
+}
+
+void LuaText::setSpacing(int spacing)
+{
+	((TextObject*)getObject())->setSpacing(spacing);
+}
+
+std::tuple<int, int> LuaText::getCurrentTextSize()
+{
+	Vector2<int> size = ((TextObject*)getObject())->getCurrentTextSize();
+
+	return std::tuple<int, int>(size.x, size.y);
+}

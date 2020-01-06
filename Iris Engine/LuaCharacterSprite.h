@@ -40,6 +40,13 @@ public:
 		const sol::table& transition,
 		sol::this_state s
 	);
+	void setBaseSimple(const std::string& base, const std::string& expression);
+	void setBaseSimpleTransition(
+		const std::string& base,
+		const std::string& expression,
+		const sol::table& transition,
+		sol::this_state s
+	);
 	void setColorLut(const std::string& colorLUT, float time);
 	void disableColorGrading(float time);
 	void skipTransition();

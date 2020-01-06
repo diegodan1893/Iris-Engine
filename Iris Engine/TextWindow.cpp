@@ -3,6 +3,7 @@
 #include "Locator.h"
 #include "IRenderer.h"
 #include "ITexture.h"
+#include "StringConverter.h"
 #include <SDL_image.h>
 #include <codecvt>
 
@@ -13,7 +14,6 @@ TextWindow::TextWindow(IRenderer* renderer)
 	 transitionTexture(nullptr),
 	 textFont(Config::values().textWindow.fontProperties),
 	 nameFont(Config::values().textWindow.nameFontProperties),
-	 lastLineWasIndented(false),
 	 textAlign(Alignment::LEFT),
 	 animate(false),
 	 time(0),
@@ -167,16 +167,16 @@ void TextWindow::update(float elapsedSeconds)
 void TextWindow::setText(const std::string& dialogueText)
 {
 	// Convert string to utf-16 so that it can be easily drawn character by character
-	std::u16string text = convertToUTF16(dialogueText);
+	std::u16string text = StringConverter::convertToUTF16(dialogueText);
 
 	// Clear current text
 	clearText();
 
 	// Word wrap
 	if (enableWordWrapping)
-		wordWrap(text);
+		textFont.wordWrap(text, lineWidth, lines);
 	else
-		splitInLinesWithoutWordWrap(text, true);
+		textFont.splitInLinesNoWordWrap(text, lineWidth, lines);
 
 	// Prepare typewriter effect
 	startAnimation(0);
@@ -187,7 +187,7 @@ void TextWindow::setText(const std::string& dialogueText)
 void TextWindow::setText(const std::string& name, const std::string& dialogueText)
 {
 	setText(dialogueText);
-	this->name = convertToUTF16(name);
+	this->name = StringConverter::convertToUTF16(name);
 }
 
 void TextWindow::append(const std::string& dialogueText)
@@ -195,16 +195,16 @@ void TextWindow::append(const std::string& dialogueText)
 	if (!dialogueText.empty())
 	{
 		// Convert string to utf-16 so that it can be easily drawn character by character
-		std::u16string text = convertToUTF16(dialogueText);
+		std::u16string text = StringConverter::convertToUTF16(dialogueText);
 
 		// New text is being drawn, update transition texture
 		transitionTextureHasBeenUpdated = false;
 
 		// Word wrap
 		if (enableWordWrapping)
-			wordWrap(text);
+			textFont.wordWrap(text, lineWidth, lines);
 		else
-			splitInLinesWithoutWordWrap(text, false);
+			textFont.splitInLinesNoWordWrap(text, lineWidth, lines);
 
 		// Continue typewriter effect
 		continueAnimation();
@@ -267,7 +267,7 @@ void TextWindow::updateTextPositionsAndSizes()
 	// Save the text position in a vector so that it can be read easily
 	textPosition = Vector2<int>(margin.left, margin.top);
 
-	// Calculate the width of the lnes
+	// Calculate the width of the lines
 	lineWidth = getSize().x - (margin.left + margin.right);
 
 	// Calculate the number of lines that fit in one page
@@ -469,151 +469,4 @@ void TextWindow::redrawTransitionTexture()
 
 	// Stop rendering to texture
 	renderer->setRenderTarget(nullptr);
-}
-
-void TextWindow::wordWrap(const std::u16string& text)
-{
-	// Word wrap (this can probably be optimized)
-	const std::u16string breakingChars = u" -\t\n";
-	std::u16string line, word;
-
-	std::size_t pos = 0;
-	std::size_t wordEnd;
-	char16_t breakChar;
-
-	int width;
-	int accumulatedWidth = 0;
-
-	// Check if there is already text
-	if (!lines.empty())
-	{
-		// We want to append the new text to the previous one
-		// Continue word wrapping from the last line
-		line = lines.back();
-		lines.pop_back();
-
-		textFont.size(line, &accumulatedWidth, nullptr);
-	}
-
-	while (pos < text.length())
-	{
-		wordEnd = text.find_first_of(breakingChars, pos);
-
-		if (wordEnd == std::u16string::npos)
-			wordEnd = text.size() - 1;
-
-		breakChar = text[wordEnd];
-
-		if (breakChar != L'\n')
-			++wordEnd;
-
-		word = text.substr(pos, wordEnd - pos);
-		textFont.size(word, &width, nullptr);
-
-		if (accumulatedWidth + width <= lineWidth)
-		{
-			// The word fits in the line
-			line += word;
-			accumulatedWidth += width;
-		}
-		else
-		{
-			// Word doesn't fit in the line
-			// Insert it in the next line unless it's already the first
-			// word in the line.
-			if (!line.empty())
-			{
-				lines.push_back(line);
-				line.clear();
-			}
-
-			if (width < lineWidth)
-			{
-				line += word;
-				accumulatedWidth = width;
-			}
-			else
-			{
-				splitInLinesWithoutWordWrap(word, true);
-				line = lines.back();
-				lines.pop_back();
-
-				textFont.size(line, &accumulatedWidth, nullptr);
-			}
-		}
-
-		pos = wordEnd;
-
-		if (breakChar == L'\n')
-		{
-			++pos;
-
-			// Line break
-			lines.push_back(line);
-			line.clear();
-			accumulatedWidth = 0;
-		}
-	}
-
-	if (!line.empty())
-		lines.push_back(line);
-}
-
-void TextWindow::splitInLinesWithoutWordWrap(const std::u16string& text, bool startInNewLine)
-{
-	std::u16string line;
-	std::size_t pos = 0;
-
-	int width;
-	
-	const std::u16string openingQuotationMarks = u"「『（";
-	const std::u16string closingQuotationMarks = u"」』）";
-	const std::u16string japanesePunctuation = u"。、";
-	bool indent = formatJapaneseText && openingQuotationMarks.find(text.at(pos)) != std::u16string::npos;
-
-	if (!startInNewLine && !lines.empty())
-	{
-		// We want to append the new text to the previous one
-		line = lines.back();
-		lines.pop_back();
-
-		indent = lastLineWasIndented;
-	}
-
-	while (pos < text.length())
-	{
-		// We have to get the size of the entire line to account for kerning
-		textFont.size(line + text.at(pos), &width, nullptr);
-
-		if (indent && closingQuotationMarks.find(text.at(pos)) != std::u16string::npos)
-			indent = false;
-
-		if (width > lineWidth && (!formatJapaneseText || japanesePunctuation.find(text.at(pos)) == std::u16string::npos))
-		{
-			// The new character doesn't fit in the line: create new line
-			lines.push_back(line);
-			line.clear();
-
-			if (indent)
-				line += u"　";
-		}
-
-		line += text.at(pos);
-		++pos;
-	}
-
-	if (!line.empty())
-		lines.push_back(line);
-
-	lastLineWasIndented = indent;
-}
-
-std::u16string TextWindow::convertToUTF16(const std::string& string)
-{
-	//std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> convert;
-
-	// Workaround for VS 2015 bug https://goo.gl/WZ7YQp
-	std::wstring_convert<std::codecvt_utf8_utf16<uint16_t>, uint16_t> convert;
-
-	return (char16_t*)convert.from_bytes(string).c_str();
 }
