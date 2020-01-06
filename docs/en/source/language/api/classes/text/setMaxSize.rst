@@ -1,7 +1,7 @@
 The setMaxSize method
 =====================
 
-:Syntax: setText(*number* width, *number* height)
+:Syntax: setMaxSize(*number* width, *number* height)
 :Returns: *nil*
 
 Sets a maximum size in pixels for the text.

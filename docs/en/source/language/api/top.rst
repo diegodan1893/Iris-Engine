@@ -170,6 +170,7 @@ Classes
     classes/sprite/top
     classes/button/top
     classes/text/top
+    classes/rectangle/top
     classes/video/top
     classes/characterSprite/top
     classes/cursor/top
@@ -190,6 +191,8 @@ Classes
     | :doc:`Button<classes/button/top>`                   | A button the user can click                        |
     +-----------------------------------------------------+----------------------------------------------------+
     | :doc:`Text<classes/text/top>`                       | Used to draw text on the screen                    |
+    +-----------------------------------------------------+----------------------------------------------------+
+    | :doc:`Rectangle<classes/rectangle/top>`             | Used to draw a filled rectangle on the screen      |
     +-----------------------------------------------------+----------------------------------------------------+
     | :doc:`Video<classes/video/top>`                     | A video player                                     |
     +-----------------------------------------------------+----------------------------------------------------+
