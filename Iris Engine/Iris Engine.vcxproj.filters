@@ -158,9 +158,6 @@
     <ClCompile Include="GPUShaderProgram.cpp">
       <Filter>Source Files\Render\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="TestShader.cpp">
-      <Filter>Source Files\Render\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="DissolveShader.cpp">
       <Filter>Source Files\Render\Shaders</Filter>
     </ClCompile>
@@ -387,9 +384,6 @@
       <Filter>Source Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="GPUShaderProgram.h">
-      <Filter>Source Files\Render\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="TestShader.h">
       <Filter>Source Files\Render\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="IShaderProgram.h">
