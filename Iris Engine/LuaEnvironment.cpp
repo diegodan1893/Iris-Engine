@@ -57,7 +57,15 @@ void LuaEnvironment::setUp(
 	now = last = SDL_GetPerformanceCounter();
 
 	// Set up lua environment
-	lua.open_libraries(sol::lib::base, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::io, sol::lib::os);
+	lua.open_libraries(
+		sol::lib::base,
+		sol::lib::string,
+		sol::lib::math,
+		sol::lib::table,
+		sol::lib::io,
+		sol::lib::os,
+		sol::lib::package
+	);
 
 	// Set the random seed to the current time
 	lua["math"]["randomseed"](time(0));

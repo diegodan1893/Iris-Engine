@@ -153,7 +153,6 @@ public:
 	virtual void saveScreenshot(const std::string& path, int w, int h) = 0;
 
 	// Shaders
-	virtual class TestShader* getTestShader() = 0;
 	virtual class DissolveShader* getDissolveShader() = 0;
 	virtual class ImageDissolveShader* getImageDissolveShader() = 0;
 	virtual class ColorGradingShader* getColorGradingShader() = 0;

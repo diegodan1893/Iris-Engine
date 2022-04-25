@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IRenderer.h"
-#include "TestShader.h"
 #include "DissolveShader.h"
 #include "ImageDissolveShader.h"
 #include "ColorGradingShader.h"
@@ -145,7 +144,6 @@ public:
 	void saveScreenshot(const std::string& path, int w, int h);
 
 	// Shaders
-	TestShader* getTestShader() override;
 	DissolveShader* getDissolveShader() override;
 	ImageDissolveShader* getImageDissolveShader() override;
 	ColorGradingShader* getColorGradingShader() override;
@@ -168,7 +166,6 @@ private:
 	bool valid;
 
 	// Shaders
-	TestShader testShader;
 	DissolveShader dissolveShader;
 	ImageDissolveShader imageDissolveShader;
 	ColorGradingShader colorGradingShader;

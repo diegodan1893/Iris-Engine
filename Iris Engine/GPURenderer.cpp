@@ -34,7 +34,6 @@ GPURenderer::GPURenderer(SDL_Window* window)
 		scalingFactor = (float)windowW / w;
 
 		// Load shaders
-		testShader.loadProgram();
 		dissolveShader.loadProgram();
 		imageDissolveShader.loadProgram();
 		colorGradingShader.loadProgram();
@@ -280,11 +279,6 @@ void GPURenderer::saveScreenshot(const std::string& path, int w, int h)
 	
 	// Delete temporal textures
 	delete screenshotTexture;
-}
-
-TestShader* GPURenderer::getTestShader()
-{
-	return &testShader;
 }
 
 DissolveShader* GPURenderer::getDissolveShader()
