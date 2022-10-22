@@ -1,0 +1,8 @@
+{
+	"versions": [
+		{
+			"version": "0.12.0",
+			"path": "$/ports/sdl-gpu/0.12.0"
+		}
+	]
+}

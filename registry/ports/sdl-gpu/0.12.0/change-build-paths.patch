@@ -1,0 +1,115 @@
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 42b5818..991cb25 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -77,14 +77,6 @@ else(WIN32)
+     set (STATIC_OUTPUT ${LIBRARY_OUTPUT_NAME})
+ endif(WIN32)
+ 
+-if(MSVC)
+-    set(OUTPUT_DIR SDL_gpu-VS)
+-elseif(MINGW)
+-    set(OUTPUT_DIR SDL_gpu-MINGW)
+-else()
+-    set(OUTPUT_DIR SDL_gpu)
+-endif()
+-
+ if(APPLE)
+ 	set(CMAKE_MACOSX_RPATH 1)
+ 	# use, i.e. don't skip the full RPATH for the build tree
+@@ -100,18 +92,15 @@ if(APPLE)
+ endif()
+ 
+ 
+-# Copy includes to output ${OUTPUT_DIR}/include
+-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/${OUTPUT_DIR})
+-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/bin)
+-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/include)
+-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/lib)
++# Copy includes to output
+ foreach(INC_FILE ${SDL_gpu_public_HDRS})
+     get_filename_component(BASE ${INC_FILE} NAME)
+-    configure_file(${INC_FILE} ${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/include/${BASE} COPYONLY)
++	message("FILE: ${CMAKE_INSTALL_INCLUDEDIR}/${BASE}")
++    configure_file(${INC_FILE} ${CMAKE_INSTALL_INCLUDEDIR}/${BASE} COPYONLY)
+ endforeach(INC_FILE)
+ 
+-configure_file(../LICENSE.txt ${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/LICENSE.txt COPYONLY)
+-configure_file(../README.md ${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/README.md COPYONLY)
++configure_file(../LICENSE.txt ${CMAKE_BINARY_DIR}/LICENSE.txt COPYONLY)
++configure_file(../README.md ${CMAKE_BINARY_DIR}/README.md COPYONLY)
+ 
+ # Build the shared library (.so or .dll)
+ if(BUILD_SHARED)
+@@ -134,9 +123,9 @@ if(BUILD_SHARED)
+ 			VERSION ${SDL_GPU_VERSION}
+ 			SOVERSION ${SDL_GPU_VERSION}
+ 			OUTPUT_NAME ${SHARED_OUTPUT}
+-			ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/lib"
+-			LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/lib"
+-			RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/bin"
++			ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_INSTALL_LIBDIR}"
++			LIBRARY_OUTPUT_DIRECTORY "${CMAKE_INSTALL_LIBDIR}"
++			RUNTIME_OUTPUT_DIRECTORY "${CMAKE_INSTALL_BINDIR}"
+ 		)
+ 		# Short Version is the "marketing version". It is the version
+ 		# the user sees in an information panel.
+@@ -152,18 +141,18 @@ if(BUILD_SHARED)
+ 			set_target_properties(SDL_gpu_shared PROPERTIES
+ 				OUTPUT_NAME ${SHARED_OUTPUT}
+ 				CLEAN_DIRECT_OUTPUT 1
+-				ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/lib"
+-				LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/lib"
+-				RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/bin"
++				ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_INSTALL_LIBDIR}"
++				LIBRARY_OUTPUT_DIRECTORY "${CMAKE_INSTALL_LIBDIR}"
++				RUNTIME_OUTPUT_DIRECTORY "${CMAKE_INSTALL_BINDIR}"
+ 			)
+ 		else()
+ 			set_target_properties(SDL_gpu_shared PROPERTIES
+ 				OUTPUT_NAME ${SHARED_OUTPUT}
+ 				CLEAN_DIRECT_OUTPUT 1
+ #				VERSION ${SDL_GPU_VERSION}
+-				ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/lib"
+-				LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/lib"
+-				RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/bin"
++				ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_INSTALL_LIBDIR}"
++				LIBRARY_OUTPUT_DIRECTORY "${CMAKE_INSTALL_LIBDIR}"
++				RUNTIME_OUTPUT_DIRECTORY "${CMAKE_INSTALL_BINDIR}"
+ 			)
+ 		endif()
+ 
+@@ -187,9 +176,9 @@ if(BUILD_STATIC)
+ 		OUTPUT_NAME ${STATIC_OUTPUT}
+ 		CLEAN_DIRECT_OUTPUT 1
+ 		VERSION ${SDL_GPU_VERSION}
+-		ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/lib"
+-		LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/lib"
+-		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUT_DIR}/bin"
++		ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_INSTALL_LIBDIR}"
++		LIBRARY_OUTPUT_DIRECTORY "${CMAKE_INSTALL_LIBDIR}"
++		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_INSTALL_BINDIR}"
+ 	)
+ 	set_target_properties(SDL_gpu PROPERTIES LINKER_LANGUAGE C)
+ 	if(APPLE)
+@@ -203,16 +192,16 @@ source_group(Common FILES ${SDL_gpu_SRCS} ${SDL_gpu_HDRS})
+ # Install the headers and library
+ if(INSTALL_LIBRARY)
+ 	if(USE_SDL1)
+-		install(FILES ${SDL_gpu_public_HDRS} DESTINATION include/SDL)
++		install(FILES ${SDL_gpu_public_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/SDL)
+ 	else(USE_SDL1)
+-		install(FILES ${SDL_gpu_public_HDRS} DESTINATION include/SDL2)
++		install(FILES ${SDL_gpu_public_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/SDL2)
+ 	endif(USE_SDL1)
+ 
+ 	if(BUILD_SHARED)
+-		install(TARGETS SDL_gpu_shared EXPORT SDL_gpu-targets DESTINATION lib)
++		install(TARGETS SDL_gpu_shared EXPORT SDL_gpu-targets DESTINATION ${CMAKE_INSTALL_LIBDIR})
+ 	endif()
+ 	if(BUILD_STATIC)
+-		install(TARGETS SDL_gpu EXPORT SDL_gpu-targets DESTINATION lib)
++		install(TARGETS SDL_gpu EXPORT SDL_gpu-targets DESTINATION ${CMAKE_INSTALL_LIBDIR})
+ 	endif()
+ 
+ endif(INSTALL_LIBRARY)

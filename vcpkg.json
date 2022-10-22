@@ -1,0 +1,10 @@
+{
+	"name": "iris-engine",
+	"version-semver": "1.0.0",
+	"dependencies": [
+		"sdl2",
+		"sol2",
+		"sdl-gpu",
+		"opengl"
+	]
+}

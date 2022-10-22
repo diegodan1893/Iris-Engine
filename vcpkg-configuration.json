@@ -1,0 +1,10 @@
+{
+	"registries": [
+		{
+			"kind": "filesystem",
+			"path": "registry",
+			"baseline": "v1",
+			"packages": [ "sdl-gpu" ]
+		}
+	]
+}
