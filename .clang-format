@@ -1,5 +1,6 @@
 BasedOnStyle: Microsoft
 
 UseTab: Always
+AccessModifierOffset: -4
 PointerAlignment: Left
 ColumnLimit: 80
