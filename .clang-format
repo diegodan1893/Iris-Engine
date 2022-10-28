@@ -1,0 +1,5 @@
+BasedOnStyle: Microsoft
+
+UseTab: Always
+PointerAlignment: Left
+ColumnLimit: 80
